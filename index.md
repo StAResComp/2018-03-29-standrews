@@ -46,6 +46,8 @@ eventbrite:           # optional: alphanumeric key for Eventbrite registration, 
 </iframe>
 {% endif %}
 
+<p id="registration"><a href="https://www.st-andrews.ac.uk/pdms/index.php?Mode=Search&CourseID=7984">Registration is open via the University of St Andrews Personal Development Management System</a></p>
+
 <h2 id="general">General Information</h2>
 
 {% comment %}
