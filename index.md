@@ -287,6 +287,11 @@ eventbrite:           # optional: alphanumeric key for Eventbrite registration, 
   you will need access to the software described below.
   In addition, you will need an up-to-date web browser.
 </p>
+<p>If you have any questions or encounter any difficulties downloading the software that needs to be installed prior to the workshop, please come along to one of the following drop-in sessions:</p>
+<ul>
+	<li>Wednesday 21st March, 14:00-16:00, Town venue: Old Union Diner</li>
+	<li>Friday 23rd March, 14:00 -16:00, North Haugh venue: Computer Science (Jack Cole Building)</li>
+</ul>
 <p>
   We maintain a list of common issues that occur during installation as a reference for instructors
   that may be useful on the
