@@ -2,6 +2,15 @@
 
 These notes are intended for the tutor as they work through the material, but
 
+<!-- TOC -->
+
+- [TITLE: Building Programs With Python](#title-building-programs-with-python)
+- [SECTION 01: Setup](#section-01-setup)
+- [SECTION 02: Getting Started](#section-02-getting-started)
+- [SECTION 03: Data Analysis](#section-03-data-analysis)
+
+<!-- /TOC -->
+
 
 # Start the slides
 
@@ -119,7 +128,7 @@ cd python-novice-inflammation
 
 ----
 
-## SECTION 02: Starting `Python`
+## SECTION 02: Getting Started
 
 ----
 
@@ -149,6 +158,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 - You learned about the REPL (read-evaluate-print-loop) in the shell lesson
   - `Python`'s console implements the REPL
 - We can use `Python` like a complex calculator
+- **Note the spaces around operators** - good `Python` style
 
 ```python
 >>> 3 + 5
@@ -262,3 +272,67 @@ weight in kilograms: 100 and in pounds: 126.50000000000001
 ```
 
 - Although we changed the value in `weight_kg`, **`weight_lb` did not change** when we did so
+
+----
+
+**SLIDE** Exercise 01 (5min)
+
+- **PUT THE EXERCISE SLIDE ON SCREEN**
+
+**MCQ: put up four colours of sticky notes**
+
+- The solution is `2`
+
+----
+
+**SLIDE** Exercise 03 (5min)
+
+**MCQ: put up four colours of sticky notes**
+
+- The code prints `Hopper Grace`
+
+----
+
+## SECTION 03: Data Analysis
+
+----
+
+**SLIDE** Examine the data
+
+- **SHOW THE TERMINAL ON SCREEN**
+- In the terminal (`head` was used this morning)
+
+- **Exit `Python` first!**
+  - `Ctrl-D`
+  - `quit()`
+ 
+```bash
+$ head data/inflammation-01.csv 
+```
+
+- **Describe the data**: plain text, csv format
+- **Can you tell what the data is?** (i.e. is this good practice for sharing data?)
+  - One row per patient
+  - One column per day
+  - Values separated by commas
+- **State that we'll use the `numpy` library** to work with this in Python
+
+----
+
+**SLIDE** `Python` libraries
+
+- Most programming languages have **libraries** (also known as **modules**, or **packages**).
+  - **Libraries contain code that's not in the main language** but is useful for something specific - they can define **functions**, **data types**, and whole programs
+  - **Libraries add specific functionality to the language** - you import as many as you neeed
+
+- `Python` has libraries for many types of work and operations
+  - **In `Python`, we call on libraries with the `import` statement**, when we need them
+  - Importing a library is like getting a new piece of equipment out of the locker and onto the lab bench
+
+- **Import and describe libraries**
+
+```python
+>>> import numpy
+```
+
+* `numpy` is a library that provides functions and methods to **work with arrays and matrices**, such as those in your dataset

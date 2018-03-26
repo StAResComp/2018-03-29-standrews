@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+</style>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 10px;
+	padding: 0 0px;
+	line-height: 18px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 10px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+	display: block;
+    margin: 0 auto;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 10px;
+	line-height: 16px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 10px;
+	line-height: 16px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+</head>
+<body>
+<h1>2018-03-29 Python lesson tutor notes</h1>
+<p>These notes are intended for the tutor as they work through the material, but</p>
+<!-- TOC -->
+<ul>
+<li><a href="#title-building-programs-with-python">TITLE: Building Programs With Python</a></li>
+<li><a href="#section-01-setup">SECTION 01: Setup</a></li>
+<li><a href="#section-02-getting-started">SECTION 02: Getting Started</a></li>
+<li><a href="#section-03-data-analysis">SECTION 03: Data Analysis</a></li>
+</ul>
+<!-- /TOC -->
+<h1>Start the slides</h1>
+<hr>
+<h2>TITLE: Building Programs With Python</h2>
+<hr>
+<p><strong>SLIDE:</strong> Etherpad</p>
+<ul>
+<li>Please use the Etherpad for the course <strong>DEMONSTRATE LINK</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE:</strong> Why Are We Here?</p>
+<ul>
+<li>We're here to learn <strong>how to program</strong> (this lesson just happens to be in Python)</li>
+<li>This is a way to <strong>solve problems in your research</strong> through making a computer do work <strong>quickly</strong> and <strong>accurately</strong></li>
+<li>You'll build <strong>functions</strong> that do specific, defined tasks</li>
+<li>You'll <strong>automate</strong> those functions to perform tasks over and over again (in various combinations)</li>
+<li>You'll <strong>manipulate data</strong>, which is at the heart of all academia</li>
+<li>You'll learn some <strong>file input/output</strong> to make the computer read and write useful information</li>
+<li>You'll learn some <strong>data structures</strong>, which are ways to organise data so that the computer can deal with it efficiently</li>
+</ul>
+<hr>
+<p><strong>SLIDE:</strong> XKCD</p>
+<ul>
+<li>The XKCD comic is tongue-in cheek, but there's a <strong>lot of truth in this</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> How are we doing this?</p>
+<ul>
+<li>We'll be learning how to program <strong>using Python</strong></li>
+<li><strong>Why Python?</strong></li>
+<li>We need to use <em>some</em> language</li>
+<li>Python is <strong>free</strong>, with <strong>good documentation</strong> and lots of books and online courses.</li>
+<li>Python is <strong>widely-used</strong> in academia, and there's lots of support online</li>
+<li>It can be <strong>easier for novices</strong> to pick up than other languages</li>
+<li><strong>We won't be covering the entire language in detail</strong></li>
+<li>For those with a bit more experience, note: <strong>we will be using some long-handed ways of doing things to keep them clear for novices</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> No, I mean &quot;<em>How</em> are we doing this?&quot;</p>
+<ul>
+<li>We'll use <strong>two tools to write Python</strong></li>
+<li>The **bulk of the course will be in a <strong>text editor</strong>
+<ul>
+<li>Text editors are part of the <strong>edit-save-execute</strong> cycle, which is how much code is written</li>
+</ul>
+</li>
+<li>We'll also spend a little bit of time writing code in the <code>Jupyter</code> notebook**
+<ul>
+<li><code>Jupyter</code> is <strong>good for exploring data, prototyping code, data-wrangling, and teaching</strong></li>
+<li>However, it's <strong>not so good for writing &quot;production code&quot;</strong> in a general sense</li>
+</ul>
+</li>
+<li>There are also specialist <strong>integrated development environments (IDEs)</strong> for Python that are extremely useful for developers, but we'll not be using them</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Do I need to use <code>Python</code> afterwards?</p>
+<ul>
+<li><strong>No.</strong></li>
+<li>The lesson and principles are general, we're just teaching in Python</li>
+<li>What you learn here will be relevant in other languages</li>
+<li>If your field or colleagues use another language in preference, <strong>there may be very good reasons for that</strong>, and they <strong>may be able to offer detailed, relevant support and help to you in that language</strong>. This is valuable.</li>
+<li>Language Wars waste everyone's time.</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> What are we doing?</p>
+<ul>
+<li>We're using <strong>a motivating example of data analysis</strong></li>
+<li>We've got some data relating to a new treatment for arthritis, and we're going to <strong>explore it.</strong></li>
+<li>Data represents patients and <strong>daily measurements of inflammation</strong></li>
+<li>We're going to <strong>analyse</strong> the data</li>
+<li>We're going to <strong>visualise</strong> the data</li>
+<li>We're going to get the computer to do this for us</li>
+<li><strong>Automation</strong> is key:
+<ul>
+<li><strong>fewer human mistakes</strong></li>
+<li>easier to <strong>apply to other future datasets</strong></li>
+<li>easier to share with others (<strong>transparency</strong>)</li>
+</ul>
+</li>
+<li>We can also <strong>share our code and results</strong> <em>via</em> sites such as GitHub and BitBucket (supplementary information, impact)</li>
+</ul>
+<hr>
+<h2>SECTION 01: Setup</h2>
+<hr>
+<p><strong>SLIDE</strong> Setting Up - 1 - <strong>DEMO</strong></p>
+<ul>
+<li>We want a <strong>neat (clean) working environment</strong>: always a good idea when starting a new project - it helps for when you might want to use <code>git</code> to put it under version control, later.</li>
+<li><strong>Change directory to desktop</strong> (in terminal or Explorer)</li>
+<li><strong>Create directory</strong> <code>python-novice-inflammation</code></li>
+<li><strong>Change your working directory</strong> to that directory</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> ~/Desktop
+mkdir python-novice-inflammation
+<span class="hljs-built_in">cd</span> python-novice-inflammation
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Setting Up - 2 - <strong>DEMO</strong></p>
+<ul>
+<li>
+<p>We need to <strong>download our data</strong> (and also a little code that can help us)</p>
+</li>
+<li>
+<p><strong>Go to Etherpad in browser</strong> <a href="http://pad.software-carpentry.org/2018-03-29-standrews">http://pad.software-carpentry.org/2018-03-29-standrews</a></p>
+</li>
+<li>
+<p><strong>Point out file links</strong> <a href="http://swcarpentry.github.io/python-novice-inflammation/data/python-novice-inflammation-data.zip">http://swcarpentry.github.io/python-novice-inflammation/data/python-novice-inflammation-data.zip</a></p>
+</li>
+<li>
+<p><strong>Click on file links to download</strong></p>
+</li>
+<li>
+<p><strong>Move files</strong> to <code>python-novice-inflammation</code> directory</p>
+</li>
+<li>
+<p><strong>Extract files</strong> - this will create a subdirectory called <code>data</code> in that folder</p>
+</li>
+<li>
+<p><strong>CHECK WHETHER EVERYONE HAS EXTRACTED THE DATA</strong></p>
+</li>
+</ul>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<h2>SECTION 02: Getting Started</h2>
+<hr>
+<p><strong>SLIDE</strong> <code>Python</code> in the terminal</p>
+<ul>
+<li>We start the <strong><code>Python</code> console</strong> with the command <code>python</code>
+<ul>
+<li>This should bring up the interactive console</li>
+</ul>
+</li>
+<li><strong>Explain</strong> header information</li>
+<li><strong>Explain</strong> the prompt</li>
+</ul>
+<pre class="hljs"><code><div>$ python
+Python 3.6.3 |Anaconda custom (64-bit)| (default, Oct  6 2017, 12:04:38) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
+Type <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> or <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.
+&gt;&gt;&gt; 
+</div></code></pre>
+<ul>
+<li><strong>CHECK WHETHER EVERYONE HAS STARTED THE CONSOLE</strong></li>
+</ul>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> <code>Python</code> REPL</p>
+<ul>
+<li>You learned about the REPL (read-evaluate-print-loop) in the shell lesson
+<ul>
+<li><code>Python</code>'s console implements the REPL</li>
+</ul>
+</li>
+<li>We can use <code>Python</code> like a complex calculator</li>
+<li><strong>Note the spaces around operators</strong> - good <code>Python</code> style</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">3</span> + <span class="hljs-number">5</span>
+<span class="hljs-number">8</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">12</span> / <span class="hljs-number">7</span>
+<span class="hljs-number">1.7142857142857142</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">2</span> ** <span class="hljs-number">16</span>
+<span class="hljs-number">65536</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">15</span> % <span class="hljs-number">4</span>
+<span class="hljs-number">3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>(<span class="hljs-number">2</span> + <span class="hljs-number">4</span>) * (<span class="hljs-number">3</span> - <span class="hljs-number">7</span>)
+<span class="hljs-number">-24</span>
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> My first variable</p>
+<ul>
+<li>
+<p>We've seen how to use the REPL</p>
+<ul>
+<li>To build interesting things, we'll need to store values</li>
+<li>We need to work with <strong>variables</strong></li>
+</ul>
+</li>
+<li>
+<p>Variables are like <strong>named boxes</strong></p>
+<ul>
+<li>An item of data goes into the box</li>
+<li>When we refer to the box/variable name, we get the <strong>contents of the box</strong></li>
+</ul>
+</li>
+<li>
+<p>We need a <strong>variable name</strong></p>
+</li>
+<li>
+<p>We need <strong>variable contents</strong></p>
+</li>
+<li>
+<p><strong>Use a real-life example to hand if possible</strong></p>
+</li>
+<li>
+<p>You can think of a variable as a labelled box, containing a data item</p>
+<ul>
+<li>Here, we have a box labelled <code>Name</code> - this is the variable name</li>
+<li>We've put the value <code>Samia</code> into the box</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE:</strong> Creating a variable</p>
+<ul>
+<li>
+<p>We <strong>assign</strong> a value to a variable with the equals sign: <code>=</code></p>
+</li>
+<li>
+<p>Variable <strong>name goes on the left</strong>, <strong>value on the right</strong></p>
+<ul>
+<li>Character strings (words etc.) are enclosed in quotes</li>
+</ul>
+</li>
+<li>
+<p>After assignment, if we refer to the variable <code>Name</code>, we get the value that's in the box, which is: <code>Samia</code></p>
+</li>
+<li>
+<p>The <strong><code>print()</code></strong> function shows the value of a variable</p>
+<ul>
+<li><strong>We refer to the name of the variable, and get its contents</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>name = <span class="hljs-string">"Samia"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>name
+<span class="hljs-string">'Samia'</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(name)
+Samia
+</div></code></pre>
+<ul>
+<li><strong>CHECK THAT EVERYONE GETS THE CONCEPT/SEES THE NAME</strong></li>
+</ul>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE:</strong> Working with variables</p>
+<ul>
+<li><strong>Lead the students</strong> through the code:</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>weight_kg = <span class="hljs-number">55</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(weight_kg)
+<span class="hljs-number">55</span>
+</div></code></pre>
+<ul>
+<li>Note, we're assigning an integer now (no quotes), but <strong>assignment is the same for all data items</strong></li>
+<li>Print <code>weight_kg</code> to see its value</li>
+<li><strong>Variables can be substituted by name wherever a value would go</strong>, in calculations for example</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-number">2.2</span> * weight_kg
+<span class="hljs-number">121.00000000000001</span>
+</div></code></pre>
+<ul>
+<li>
+<p>People may ask about floating point representations here - an introduction is at <a href="https://docs.python.org/3/tutorial/floatingpoint.html">https://docs.python.org/3/tutorial/floatingpoint.html</a> - this is on the Etherpad.</p>
+</li>
+<li>
+<p>The <code>print()</code> function will <strong>take more than one argument</strong>, separated by commas, and print them</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"weight in pounds"</span>, <span class="hljs-number">2.2</span> * weight_kg)
+weight <span class="hljs-keyword">in</span> pounds <span class="hljs-number">121.00000000000001</span>
+</div></code></pre>
+<ul>
+<li><strong>Reassigning</strong> to the same variable overwrites the old value</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>weight_kg = <span class="hljs-number">57.5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"weight in kilograms is now:"</span>, weight_kg)
+weight <span class="hljs-keyword">in</span> kilograms <span class="hljs-keyword">is</span> now: <span class="hljs-number">57.5</span>
+</div></code></pre>
+<ul>
+<li>Changing the value of one variable <strong>does not automatically change</strong> the values of other defined variables</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>weight_lb = <span class="hljs-number">2.2</span> * weight_kg
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'weight in kilograms:'</span>, weight_kg, <span class="hljs-string">'and in pounds:'</span>, weight_lb)
+weight <span class="hljs-keyword">in</span> kilograms: <span class="hljs-number">57.5</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">in</span> pounds: <span class="hljs-number">126.50000000000001</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>weight_kg = <span class="hljs-number">100</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'weight in kilograms:'</span>, weight_kg, <span class="hljs-string">'and in pounds:'</span>, weight_lb)
+weight <span class="hljs-keyword">in</span> kilograms: <span class="hljs-number">100</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">in</span> pounds: <span class="hljs-number">126.50000000000001</span>
+</div></code></pre>
+<ul>
+<li>Although we changed the value in <code>weight_kg</code>, <strong><code>weight_lb</code> did not change</strong> when we did so</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Exercise 01 (5min)</p>
+<ul>
+<li><strong>PUT THE EXERCISE SLIDE ON SCREEN</strong></li>
+</ul>
+<p><strong>MCQ: put up four colours of sticky notes</strong></p>
+<ul>
+<li>The solution is <code>2</code></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Exercise 03 (5min)</p>
+<p><strong>MCQ: put up four colours of sticky notes</strong></p>
+<ul>
+<li>The code prints <code>Hopper Grace</code></li>
+</ul>
+<hr>
+<h2>SECTION 03: Data Analysis</h2>
+<hr>
+<p><strong>SLIDE</strong> Examine the data</p>
+<ul>
+<li>
+<p><strong>SHOW THE TERMINAL ON SCREEN</strong></p>
+</li>
+<li>
+<p>In the terminal (<code>head</code> was used this morning)</p>
+</li>
+<li>
+<p><strong>Exit <code>Python</code> first!</strong></p>
+<ul>
+<li><code>Ctrl-D</code></li>
+<li><code>quit()</code></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ head data/inflammation-01.csv 
+</div></code></pre>
+<ul>
+<li><strong>Describe the data</strong>: plain text, csv format</li>
+<li><strong>Can you tell what the data is?</strong> (i.e. is this good practice for sharing data?)
+<ul>
+<li>One row per patient</li>
+<li>One column per day</li>
+<li>Values separated by commas</li>
+</ul>
+</li>
+<li><strong>State that we'll use the <code>numpy</code> library</strong> to work with this in Python</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>Python</code> libraries</p>
+<ul>
+<li>
+<p>Most programming languages have <strong>libraries</strong> (also known as <strong>modules</strong>, or <strong>packages</strong>).</p>
+<ul>
+<li><strong>Libraries contain code that's not in the main language</strong> but is useful for something specific - they can define <strong>functions</strong>, <strong>data types</strong>, and whole programs</li>
+<li><strong>Libraries add specific functionality to the language</strong> - you import as many as you neeed</li>
+</ul>
+</li>
+<li>
+<p><code>Python</code> has libraries for many types of work and operations</p>
+<ul>
+<li><strong>In <code>Python</code>, we call on libraries with the <code>import</code> statement</strong>, when we need them</li>
+<li>Importing a library is like getting a new piece of equipment out of the locker and onto the lab bench</li>
+</ul>
+</li>
+<li>
+<p><strong>Import and describe libraries</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> numpy
+</div></code></pre>
+<ul>
+<li><code>numpy</code> is a library that provides functions and methods to <strong>work with arrays and matrices</strong>, such as those in your dataset</li>
+</ul>
+
+</body>
+</html>
