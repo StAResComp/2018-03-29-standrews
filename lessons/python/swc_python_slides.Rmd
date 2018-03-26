@@ -1,0 +1,271 @@
+---
+title: "Building Programs With Python"
+author: "Leighton Pritchard"
+date: "26/03/2018"
+output:
+  ioslides_presentation:
+    css: ./includes/custom.css
+    font-family: 'Helvetica'
+    widescreen: True
+    self_contained: True
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Etherpad
+
+Please do use the course Etherpad:
+
+- [http://pad.software-carpentry.org/2018-03-29-standrews](http://pad.software-carpentry.org/2018-03-29-standrews)
+
+<div class="highlight">
+- **Communal notes**: share your understanding, and benefit from others
+- **Ask questions**: get detailed answers with links and examples
+- **A record/reference for after the course**
+</div>
+
+
+## Why Are We Here?
+
+- **To learn basic concepts of programming** (in Python)
+
+<div class="attention">
+- **How to solve problems in your research by…**
+  - Building functions
+  - Automating tasks
+</div>
+  
+<div class="highlight">
+- **Mechanics of manipulating data**
+  - File I/O
+  - Data structures
+</div>
+
+
+## XKCD
+
+<center>
+<img src="images/11th_grade.png" height="100%" />
+</center>
+
+## How Are We Doing This?
+
+<div class="highlight">
+**Using the `Python` language**
+</div>
+
+- we need *something* ;)
+- free, well-documented, and cross-platform
+- large academic userbase
+- many *libraries* for specialist work
+
+
+<div class="attention">
+**we won't be covering the entire language**
+</div>
+
+
+## No, I mean "*how* are we doing this?"
+
+<div class="attention">
+**Text editor**
+
+- the more usual way to write code
+- edit-save-execute cycle
+</div>
+
+<div class="highlight">
+**`Jupyter` notebook**
+
+- interactive notebook-based interface
+- good for data exploration, prototyping, and teaching
+- not so good for writing scripts/'production code'
+</div>
+
+
+## Do I need to use `Python` afterwards?
+
+- No. ;)
+  - The lesson is general, it's just taught in `Python`
+  - The principles are the same in nearly all languages
+  - If your colleagues/field settled on another language(s), maybe learn that
+  - (language wars are unproductive… ;) )
+
+
+## What are we doing?
+
+<div class="highlight">
+**Analysing and visualising experimental data**
+
+- Effectiveness of a new treatment for arthritis
+- Several patients, recording inflammation on each day
+- Tabular (comma-separated) data
+</div>
+
+<div class="attention">
+**We're going to get the computer to do this for us**
+
+- Why not just do it by hand?
+- **AUTOMATION**, **REUSE**, **SHARING**
+</div>
+
+
+# 1. Setup
+
+## Setting Up - 1
+
+Before we begin… 
+
+- **make a neat working environment in the terminal**
+- obtain data
+
+```bash
+cd ~/Desktop
+mkdir python-novice-inflammation
+cd python-novice-inflammation
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Setting up - 2
+
+Before we begin… 
+
+* make a neat working environment
+* **obtain data**
+
+```bash
+cp 2018-03-29-standrews/lessons/python/files/python-novice-inflammation-data.zip ./
+unzip python-novice-inflammation-data.zip
+cp 2018-03-29-standrews/lessons/python/files/python-novice-inflammation-code.zip ./
+unzip python-novice-inflammation-code.zip
+```
+
+(you can download files via [`Etherpad`](http://pad.software-carpentry.org/2018-03-29-standrews): [http://pad.software-carpentry.org/2018-03-29-standrews](http://pad.software-carpentry.org/2018-03-29-standrews))
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+# 02. Starting `Python`
+
+## `Python` in the terminal
+
+<div class="highlight">
+We start the `Python` console by executing the command `python`
+</div>
+
+```bash
+$ python
+Python 3.6.3 |Anaconda custom (64-bit)| (default, Oct  6 2017, 12:04:38) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+## `Python` REPL
+
+- `Python`'s **console** is a *read-evaluate-print-loop*, just like the shell
+
+```python
+>>> 3 + 5
+8
+>>> 12 / 7
+1.7142857142857142
+>>> 2 ** 16
+65536
+>>> 15 % 4
+3
+>>> (2 + 4) * (3 - 7)
+-24
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+## My first variable
+
+- To do interesting things, we want *persistent* values
+
+<div class="highlight">
+- variables are like *named boxes*
+- data goes in the box
+- when we use the name of the box, we mean **what's in the box**
+</div>
+
+<center>
+<img src="images/boxes_variables_arrow.png" height="300px" />
+</center>
+
+## Creating a variable
+
+<div class="attention">
+- To *assign* a value use the *equals sign*: `=`
+- The variable name/box label goes on the left, and the data item goes on the right
+- *Character strings*, or just *strings*, are enclosed in quotes
+</div>
+
+```python
+>>> name = "Samia"
+>>> name
+'Samia'
+>>> print(name)
+Samia
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+## Working with variables
+
+```python
+weight_kg = 55
+print(weight_kg)
+2.2 * weight_kg
+print("weight in pounds", 2.2 * weight_kg)
+weight_kg = 57.5
+print("weight in kilograms is now:", weight_kg)
+weight_lb = 2.2 * weight_kg
+print('weight in kilograms:', weight_kg, 'and in pounds:', weight_lb)
+weight_kg = 100
+print('weight in kilograms:', weight_kg, 'and in pounds:', weight_lb)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
