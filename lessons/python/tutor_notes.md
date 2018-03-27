@@ -19,6 +19,7 @@ These notes are intended for the tutor as they work through the material, but
 - [TITLE: Building Programs With Python (Part 2)](#title-building-programs-with-python-part-2)
 - [SECTION 10: `Jupyter` notebooks](#section-10-jupyter-notebooks)
 - [SECTION 11: Functions](#section-11-functions)
+- [SECTION 12: Refactoring](#section-12-refactoring)
 
 <!-- /TOC -->
 
@@ -2232,3 +2233,225 @@ def outer(s)
 ![progress check](images/red_green_sticky.png)
 
 - **RETURN TO THE NOTEBOOK**
+
+----
+
+**SLIDE** Function scope
+
+- **Make a Markdown note**
+
+```markdown
+## Function scope
+
+Variables defined within a function (including parameters) are not available outside the function unless they are returned.
+```
+
+- **This is called *function scope***
+
+- **DEMO THE CODE BELOW**
+
+```python
+a = "Hello"
+
+print(a)
+```
+
+- This code defines a variable `a` and gives it a value "Hello"
+
+- **NOW DECLARE A FUNCTION (IN THE SAME CELL) AND CALL IT**
+
+```python
+a = "Hello"
+
+def my_fn(a):
+    a = "Goodbye"
+
+my_fn(a)
+print(a)
+```
+
+- Returning `a` doesn't - by itself - change anything
+
+```python
+a = "Hello"
+
+def my_fn():
+    a = "Goodbye"
+    return a
+
+my_fn(a)
+print(a)
+```
+
+- To move values to and from functions, you should generally `return` them from the function, *and* catch them in a variable
+- **COMPLETE THE CODE EXAMPLE IN THE CELL**
+
+```python
+a = "Hello"
+
+def my_fn(a):
+  a = "Goodbye"
+  return a
+  
+a = my_fn(a)
+print(a)
+```
+
+----
+
+**SLIDE** Exercise 09 (5min)
+
+- **PUT THE SLIDES ON SCREEN**
+- **MCQ: put coloured stickies up**
+
+- Solution: `1: 7 3` (this differs from that on the SWC page)
+
+----
+
+## SECTION 12: Refactoring
+
+----
+
+**SLIDE** Tidying up
+
+- Now we can write functions, **let's make the inflammation analysis easier to reuse**
+  - **ONE FUNCTION PER OPERATION**
+
+- **CLOSE THE NOTEBOOKS**
+- **OPEN UP THE `ANALYSE_FILES.PY` SCRIPT
+
+- **TALK THE STUDENTS THROUGH THE CODE LOGIC: TWO SECTIONS - ANALYSE AND DETECT PROBLEMS**
+
+- The code can be divided into two main sections, which could be functions:
+  1. check the data for problems
+  2. plot the data
+
+----
+
+**SLIDE** `detect_problems()`
+
+- We noticed that some data was questionable
+- This function spots problems with the data
+  - Call the function after loading, before plotting
+
+- **OPEN EDITOR AND CHANGE CODE**
+
+```bash
+$ nano analyse_files.py
+```
+
+```python
+# Detect problems with a dataset
+def detect_problems(data):
+    if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
+        print("Suspicious-looking maxima!")
+    elif np.sum(data.min(axis=0)) == 0:
+        print('Minima sum to zero!')
+    else:
+        print('Seems OK!')
+
+# Analyse each file in turn
+for fname in files:
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # identify problems in the data
+    detect_problems(data)
+```
+
+- **SAVE AND RUN SCRIPT**
+
+```bash
+$ python analyse_files.py
+```
+
+----
+**SLIDE** `plot_data()`
+
+- We'll write **a function that plots the data**
+
+```python
+# Plot passed data in the specified file
+def plot_data(data, fname):
+    # create figure and three axes
+    fig = plt.figure(figsize=(10.0, 3.0))
+    axes1 = fig.add_subplot(1, 3, 1)
+    axes2 = fig.add_subplot(1, 3, 2)
+    axes3 = fig.add_subplot(1, 3, 3)
+
+    # decorate the axes
+    axes1.set_ylabel('average')
+    axes2.set_ylabel('maximum')
+    axes3.set_ylabel('minimum')
+
+    # plot the data
+    axes1.plot(data.mean(axis=0))
+    axes2.plot(data.max(axis=0))
+    axes3.plot(data.min(axis=0))
+
+    # tidy plot and render
+    fig.tight_layout()
+    print('Writing image to', imgname)
+    plt.savefig(imgname)
+
+# Analyse each file in turn
+for fname in files:
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # identify problems in the data
+    detect_problems(data)
+
+    # plot image in file
+    imgname = fname[:-4] + '.png'
+    plot_data(data, imgname)
+```
+
+----
+**SLIDE** Code reuse
+
+- **The logic of the code is now easier to understand**
+- We identify the input files, then apply one function per action in a loop:
+  - Print the filename
+  - Load the data with `np.loadtxt()`
+  - `detect_problems()` in the data
+  - `plot_data()` the data
+
+
+```python
+# Analyse each file in turn
+for fname in files:
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # identify problems in the data
+    detect_problems(data)
+
+    # plot image in file
+    imgname = fname[:-4] + '.png'
+    plot_data(data, imgname)
+```
+
+- **THIS HAS ADVANTAGES**
+  - **The code is much shorter (as we read it, here)**
+  - **The function names are human-readable and descriptive**
+  - **It is much easier to see what the code is doing**
+
+![progress check](images/red_green_sticky.png)
+
+----
+**SLIDE** Good code pays off
+
+- **YOU MAY BE ASKING YOURSELF WHY YOU WANT TO BOTHER WITH THIS**
+  - After 6 months, the referee report arrives and you need to rerun experiments
+  - Another student is continuing the project
+  - Some random person reads your article and asks for the code
+  - Helps spot errors quickly
+  - Clarifies structure in your mind as well as in the code
+  - Saves you time in the long run! ("Future You" will back this up)

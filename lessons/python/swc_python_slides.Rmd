@@ -1838,7 +1838,9 @@ temp_c = kelvin_to_celsius(fahr_to_kelvin(temp_f))
 ## New functions from old
 
 <div class="highlight">
-We can wrap this composed function inside a new function: `fahr_to_celsius`:
+We can wrap this composed function inside a new function: 
+
+`fahr_to_celsius`:
 </div>
 
 ```python
@@ -1848,7 +1850,9 @@ print('freezing point of water in Celsius:', fahr_to_celsius(32.0))
 ```
 
 <div class="attention">
-**This is how programs are built: combining small bits into larger bits until the function we want is obtained**
+**This is how programs are built:**
+
+combining small bits into larger bits until the behaviour we want is obtained
 </div>
 
 <div class="attention">
@@ -1873,3 +1877,150 @@ hm
 <center>
 <img src="images/red_green_sticky.png" width="100%" />
 </center>
+
+
+## Function scope
+
+<div class="highlight">
+Variables defined within a function, including parameters, are not 'visible' outside the function
+</div>
+
+- This is called *function scope*
+
+```python
+a = "Hello"
+
+def my_fn(a):
+  a = "Goodbye"
+
+my_fn(a)  
+print(a)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## <img src="images/exercise.png" height="75px" /> Exercise 09 (5min)
+
+What would be printed if you ran the code below?
+
+```python
+a, b = 3, 7
+
+def swap(a, b):
+    temp = a
+    a = b
+    b = temp
+
+swap(a, b)
+print(b, a)
+```
+
+1. `7 3`
+2. `3 7`
+3. `3 3`
+4. `7 7`
+
+
+# 12. Refactoring
+
+## Tidying Up
+
+<div class="highlight">
+Now we can write functions!
+
+Let's make the inflammation analysis easier to reuse: one function per operation
+</div>
+
+- Open the `analyse_files.py` notebook from the first lesson
+
+<div class="attention">
+**What operations should be put into functions?**
+</div>
+
+<div class="highlight">
+The code is divisible into two sections
+</div>
+
+1. check the data for problems
+2. plot the data
+
+
+## `detect_problems()`
+
+- We noticed that some data was questionable
+- This function spots problems with the data
+  - Call the function after loading, before plotting
+
+```python
+def detect_problems(data):
+    if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
+        print('Suspicious looking maxima!')
+    elif np.sum(data.min(axis=0)) == 0:
+        print('Minima add up to zero!')
+    else:
+        print('Seems OK!')
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `plot_data()`
+
+<div class="highlight">
+We'll write a function called `plot_data()` that plots the data to file
+</div>
+
+```python
+def plot_data(data, fname):
+    # create figure and three axes
+    fig = plt.figure(figsize=(10.0, 3.0))
+    [...]
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Code reuse
+
+<div class="highlight">
+Our code is now much more readable
+</div>
+
+- Loop over the files, load data, `detect_problems()` and `plot_data()`
+
+```python
+# Analyse each file in turn
+for fname in files:
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # identify problems in the data
+    detect_problems(data)
+
+    # plot image in file
+    imgname = fname[:-4] + '.png'
+    plot_data(data, imgname)        
+```
+
+
+## Good code pays off
+
+<div class="attention">
+Why should I bother?
+</div>
+
+- After 6 months, the referee report arrives and you need to rerun experiments
+- Another student is continuing the project
+- Some random person reads your article and asks for the code
+- Helps spot errors quickly
+- Clarifies structure in your mind as well as in the code
+- Saves you time in the long run! ("Future You" will back this up)
