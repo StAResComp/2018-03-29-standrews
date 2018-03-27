@@ -12,6 +12,7 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 03: Data Analysis](#section-03-data-analysis)
 - [SECTION 04: Visualisation](#section-04-visualisation)
 - [SECTION 05: Loops](#section-05-loops)
+- [SECTION 06: Lists](#section-06-lists)
 
 <!-- /TOC -->
 
@@ -1084,3 +1085,90 @@ after the loop, letter is: c
 
 - **ASK THE LEARNERS WHAT OUTPUT THEY EXPECT**
   - The value of `letter` is `c`, the last updated value in the loop - not `z`, which would be the case if the loop variable only had scope within the loop
+
+----
+
+**SLIDE** `range()`
+
+- The `range()` function creates a **sequence of numbers.**
+- The sequence depends on the number and value of arguments given
+
+```python
+>>> seq = range(3)
+>>> print("Range is:", seq)
+Range is: range(0, 3)
+>>> for val in seq:
+...     print(val)
+... 
+0
+1
+2
+```
+
+- **Substitute other ranges and run again**
+
+```python
+>>> seq = range(2, 5)
+>>> print("Range is:", seq)
+Range is: range(2, 5)
+>>> for val in seq:
+...     print(val)
+... 
+2
+3
+4
+>>> seq = range(3, 10, 3)
+>>> print("Range is:", seq)
+Range is: range(3, 10, 3)
+>>> for val in seq:
+...     print(val)
+... 
+3
+6
+9
+>>> seq = range(10, 0, -1)
+>>> print("Range is:", seq)
+Range is: range(10, 0, -1)
+>>> for val in seq:
+...     print(val)
+... 
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+```
+
+- A single value *n* gives the sequence `[0, ..., n-1]`
+- Two values: *m, n* gives the sequence `[m, ..., n-1]`
+- Three values: *m, n, p* gives the sequence `[m, m+p, ..., n-1]` and skips `n-1` if it's not in the sequence.
+
+- **NOTE: `range()` returns a `range` type that can be iterated over.**
+
+----
+
+**SLIDE** Exercise 06 (5min)
+
+- Tell learners that you can **add strings**
+
+```python
+>>> instr = "Newton"
+>>> outstr = ""
+>>> for char in instr:
+...     outstr = char + outstr
+... 
+>>> print(outstr)
+notweN
+```
+
+----
+
+## SECTION 06: Lists
+
+----
+

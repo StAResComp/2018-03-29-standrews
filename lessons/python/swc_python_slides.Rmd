@@ -907,3 +907,49 @@ z
 <div class="attention">
 **LIVE DEMO**
 </div>
+
+
+## `range()`
+
+<div class="highlight">
+`range()` is a `Python` function that creates a sequence of numbers
+</div>
+
+- It returns a `range` type that can be iterated over in a loop
+
+```python
+>>> seq = range(3)
+>>> print("Range is:", seq)
+>>> for val in seq:
+...     print(val)
+>>> seq = range(2, 5)
+>>> seq = range(3, 10, 3)
+>>> seq = range(10, 0, -1)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## <img src="images/exercise.png" height="75px" /> Exercise 06 (5min)
+
+<div class="highlight">
+Can you write a loop that takes a string, e.g. `Newton`, and produces a new string with the characters in reverse order, e.g. `notweN`?
+</div>
+
+<div class="attention">
+**HINTS**
+
+1. You can "add" strings, e.g. `ab` + `cd`
+2. An *empty string* can be created with `mystr = ""`
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+# 06. Lists
+
+
