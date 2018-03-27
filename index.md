@@ -463,7 +463,7 @@ eventbrite:           # optional: alphanumeric key for Eventbrite registration, 
       <a href="https://www.youtube.com/watch?v=339AEqk9c-8">Video Tutorial</a>
       <p>
         nano is a basic editor and the default that instructors use in the workshop.
-        To install it,
+	It should have been installed as part of the Git Bash installation, but if not,
         download the <a href="{{site.swc_installer}}">
           {% if page.carpentry == "swc" %}
           Software Carpentry
