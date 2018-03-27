@@ -424,3 +424,96 @@ float64
 
 - `print(data.dtype)` tells us that the **data type for values in the array** is: 64-bit floating point numbers
 - `print(data.shape)` tells us that there are **60 rows and 40 columns** in the dataset
+
+----
+
+**SLIDE** Indexing arrays
+
+- We often want to work with subsets of data
+  - individual rows and columns
+  - subgroups of rows and columns
+  - **individual patients** (rows)
+  - **individual days** (columns)
+
+- Arrays are indexed by *row* and *column*, using *square bracket* notation
+- To get a single element from the array, **index using *square bracket* notation** - row first, then column
+
+```python
+>>> data[10, 10]
+5.0
+```
+
+* In **`Python` we index from zero**, so the first element is `data[0, 0]`
+
+```python
+>>> print('first value in data:', data[0, 0])
+first value in data: 0.0
+>>> print('middle value in data:', data[30, 20])
+middle value in data: 13.0
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** Slicing arrays
+
+- To get a section from the array, index using *square bracket* notation - but specify start and end points, separated by a colon
+- The slice `0:4` means start at index zero and go up to, but not including, index 4. So it takes elements `0, 1, 2, 3` (four elements)
+
+```python
+>>> print(data[0:4, 0:10])
+[[ 0.  0.  1.  3.  1.  2.  4.  7.  8.  3.]
+ [ 0.  1.  2.  1.  2.  1.  3.  2.  2.  6.]
+ [ 0.  1.  1.  3.  3.  2.  6.  2.  5.  9.]
+ [ 0.  0.  2.  0.  4.  2.  2.  1.  6.  7.]]
+>>> print(data[5:10, 0:10])
+[[ 0.  0.  1.  2.  2.  4.  2.  1.  6.  4.]
+ [ 0.  0.  2.  2.  4.  2.  2.  5.  5.  8.]
+ [ 0.  0.  1.  2.  3.  1.  2.  3.  5.  3.]
+ [ 0.  0.  0.  3.  1.  5.  6.  5.  5.  8.]
+ [ 0.  1.  1.  2.  1.  3.  5.  3.  5.  8.]]
+>>> print(data[2:4, 2:4])
+[[ 1.  3.]
+ [ 2.  0.]]
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** More slices, please!
+
+- If we don't specify a start for the slice, `Python` assumes the first element is meant (element zero)
+- If we don't specify an end for the slice, `Python` assumes the last element is meant
+- To get the top-right corner of the array, we can specify `data[:3, 36:]`
+
+- **Explain `\n`**
+
+```python
+>>> small = data[:3, 36:]
+>>> print('small is:\n', small)
+small is:
+ [[ 2.  3.  0.  0.]
+ [ 1.  1.  0.  1.]
+ [ 2.  2.  1.  1.]]
+```
+
+- **QUESTION: What does `:` on its own mean?**
+
+```python
+>>> print(data[0:2, :])
+[[  0.   0.   1.   3.   1.   2.   4.   7.   8.   3.   3.   3.  10.   5.
+    7.   4.   7.   7.  12.  18.   6.  13.  11.  11.   7.   7.   4.   6.
+    8.   8.   4.   4.   5.   7.   3.   4.   2.   3.   0.   0.]
+ [  0.   1.   2.   1.   2.   1.   3.   2.   2.   6.  10.  11.   5.   9.
+    4.   4.   7.  16.   8.   6.  18.   4.  12.   5.  12.   7.  11.   5.
+   11.   3.   3.   5.   4.   4.   5.   5.   1.   1.   0.   1.]]
+```
+
+----
+**SLIDE** Exercise 03
+
+**MCQ: put up four colours of sticky notes**
+
+- The value is `oxyg`, number `1`
