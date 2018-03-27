@@ -660,6 +660,104 @@ maximum inflammation for patient 2: 19.0
   11.03333333  10.16666667  10.           8.66666667   9.15         7.25
    7.33333333   6.58333333   6.06666667   5.95         5.11666667   3.6
    3.3          3.56666667   2.48333333   1.5          1.13333333
-   0.56666667]```
+   0.56666667]
+   ```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+## SECTION 04: Visualisation
+
+----
+
+**SLIDE** Visualisation
+
+> "The purpose of computing is insight, not numbers" - Richard Hamming
+
+- The best way to gain insight is often to visualise data.
+- Visualisation is a large topic that deserves more attention
+  - **We're just scratching the surface, here**
+
+----
+
+**SLIDE** Graphics package `matplotlib`
+
+- `matplotlib` is the *de facto* standard/base plotting library in `Python`
+
+```python
+>>> import matplotlib.pyplot
+```
+
+- We use `matplotlib.pyplot` to make the interaction a bit more like `matlab`
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** `matplotlib.pyplot.imshow()` 
+
+- The `.imshow()` function **converts matrix values into an image**
+
+```python
+>>> image = matplotlib.pyplot.imshow(data)
+>>> matplotlib.pyplot.show()
+```
+
+- Here, small values are blue, and large values are yellow (**you can change this colour scheme with other settings…**)
+- From the image, we can see **inflammation rising and falling** over a 40-day period for all patients.
+
+- **QUESTION: does this look reasonable?**
+
+----
+
+**SLIDE** `matplotlib.pyplot.plot()`
+
+- **`.plot()` shows a conventional line graph**
+- We're going to use it to **plot the average inflammation level on each day of the study**
+- We'll create the variable `ave_inflammation` and use `numpy.mean()` on axis `0` of the data
+
+```python
+>>> ave_inflammation = numpy.mean(data, axis=0)
+>>> ave_plot = matplotlib.pyplot.plot(ave_inflammation)
+>>> matplotlib.pyplot.show()
+```
+
+- **NOTE: ask students if the data looks reasonable?**
+  - The **data does not look reasonable**. Biologically, we expect a sharp rise in inflammation, followed by a slow tail-off
+
+----
+
+**SLIDE** Investigating data
+
+- Since **our plot of `.mean()` values looks artificial, let's check on other statistics** to see if we can see what's going on.
+- We'll plot the maximum value by day
+
+```python
+>>> max_plot = matplotlib.pyplot.plot(numpy.max(data, axis=0))
+>>> matplotlib.pyplot.show()
+```
+
+- **NOTE we're not defining a variable, this time**
+
+```python
+>>> min_plot = matplotlib.pyplot.plot(numpy.min(data, axis=0))
+>>> matplotlib.pyplot.show()
+```
+
+- **Ask students if the data looks reasonable?**
+  - The data looks very artificial. The maxima are completely smooth, but the minima are a 
+step function.
+
+- **NOTE: we would not have noticed this without visualisation**
+
+----
+
+**SLIDE** Exercise 04 (5min)
+
+```python
+>>> std_plot = matplotlib.pyplot.plot(numpy.std(data, axis=0))
+>>> matplotlib.pyplot.show()
+```
 
 ![progress check](images/red_green_sticky.png)

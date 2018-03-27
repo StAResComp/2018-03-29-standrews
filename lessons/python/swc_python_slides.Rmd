@@ -646,3 +646,112 @@ maximum inflammation for patient 2: 19.0
 <div class="attention">
 **LIVE DEMO**
 </div>
+
+
+# 04. Visualisation
+
+## Visualisation
+
+> "The purpose of computing is insight, not numbers" - Richard Hamming
+
+<div class="highlight">
+The best way to gain insight is often to visualise data
+</div>
+
+- Visualisation deserves a course to itself
+- Here's one I prepared earlier (for the [Software Sustainability Institute](https://www.software.ac.uk/)):
+
+<center>
+<img src="images/rdvw.png" width="60%">
+</center>
+
+- [Research Data Visualisation Workshop](https://widdowquinn.github.io/Teaching-Data-Visualisation/)
+
+
+## Graphics package: `matplotlib`
+
+<div class="highlight">
+`matplotlib` is the *de facto* standard/base plotting library in `Python`
+</div>
+
+```python
+>>> import matplotlib.pyplot
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+## `matplotlib.pyplot.imshow()`
+
+<div class="highlight">
+`matplotlib.pyplot.imshow()` renders matrix values as an image
+</div>
+
+```python
+>>> image = matplotlib.pyplot.imshow(data)
+>>> matplotlib.pyplot.show()
+```
+
+- small values are dark blue, large values are yellow
+- inflammation rises and falls over a 40-day period
+
+<center>
+<img src="images/matplotlib-01.png" width="40%"/>
+</center>
+
+
+## `matplotlib.pyplot.plot()`
+
+- `matplotlib.pyplot.plot()` renders a line graph
+
+<div class="highlight">
+We want to plot the average inflammation level on each day
+</div>
+
+```python
+>>> ave_inflammation = numpy.mean(data, axis=0)
+>>> ave_plot = matplotlib.pyplot.plot(ave_inflammation)
+>>> matplotlib.pyplot.show()
+```
+
+<center>
+<img src="images/matplotlib-02.png" width="40%"/>
+</center>
+
+<div class="attention">
+**QUESTION: does this look reasonable?**
+</div>
+
+
+## Investigating data
+
+- The plot of `.mean()` looks artificial
+- Look at other statistics to gain insight
+
+```python
+>>> max_plot = matplotlib.pyplot.plot(numpy.max(data, axis=0))
+>>> matplotlib.pyplot.show()
+>>> min_plot = matplotlib.pyplot.plot(numpy.min(data, axis=0))
+>>> matplotlib.pyplot.show()
+```
+
+<div class="attention">
+**QUESTION: does this look reasonable?**
+</div>
+
+
+## <img src="images/exercise.png" height="75px" /> Exercise 04 (5min)
+
+<div class="highlight">
+Can you create a plot showing the standard deviation (`numpy.std()`) of the inflammation data for each day across all patients?
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
