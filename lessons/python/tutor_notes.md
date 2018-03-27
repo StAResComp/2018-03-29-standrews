@@ -6,7 +6,7 @@ These notes are intended for the tutor as they work through the material, but
 
 <!-- TOC -->
 
-- [TITLE: Building Programs With Python](#title-building-programs-with-python)
+- [TITLE: Building Programs With Python (Part 1)](#title-building-programs-with-python-part-1)
 - [SECTION 01: Setup](#section-01-setup)
 - [SECTION 02: Getting Started](#section-02-getting-started)
 - [SECTION 03: Data Analysis](#section-03-data-analysis)
@@ -14,12 +14,17 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 05: `for` loops](#section-05-for-loops)
 - [SECTION 06: `list`s](#section-06-lists)
 - [SECTION 07: Making choices](#section-07-making-choices)
+- [SECTION 08: Analysing multiple files](#section-08-analysing-multiple-files)
+- [SECTION 09: Conclusions (Part 1)](#section-09-conclusions-part-1)
+- [TITLE: Building Programs With Python (Part 2)](#title-building-programs-with-python-part-2)
+- [SECTION 10: `Jupyter` notebooks](#section-10-jupyter-notebooks)
+- [SECTION 11: Functions](#section-11-functions)
 
 <!-- /TOC -->
 
 ----
 
-## TITLE: Building Programs With Python
+## TITLE: Building Programs With Python (Part 1)
 
 ----
 
@@ -1505,3 +1510,725 @@ True
 >>> print(1 in range(2, 10))
 False
 ```
+
+----
+
+## SECTION 08: Analysing multiple files
+
+----
+
+**SLIDE** Analysing multiple files
+
+- We have **received several files of data** from the inflammation studies, and we would like to **perform the same operations on each of them**.
+- We have **learned how to open files, read data, visualise data, loop over data, and make decisions** based on that content.
+
+- We're going to write a new script to do this
+  - **Exit `Python` console**
+  - **Start new script**
+
+```bash
+$ nano analyse_files.py
+```
+
+- Now we need to know how to **interact with the *filesystem*** to get our data files.
+
+-----
+
+**SLIDE** The `os` module
+
+- To interact with the filesystem, **we need to import the `os` module**
+- This allows us to interact with the filesystem in the same way, regardless of the operating system we work on! **INTEROPERABILITY AND REPRODUCIBILITY**
+
+- **Put imports at the top of the script**
+
+```python
+import matplotlib.pyplot
+import numpy as np
+import os
+```
+
+----
+**SLIDE** `os.listdir()`
+
+- The `os.listdir()` function lists the contents of a directory
+
+- **SAVE AND EXIT SCRIPT**
+
+```bash
+$ python
+```
+
+```python
+>>> import os
+>>> os.listdir('.')
+['subplots.py', 'code', 'exercise_05.py', 'analyse_files.py', 'data']
+```
+
+ Our data is in the `'data'` directory
+
+```python
+>>> os.listdir('data')
+['inflammation-05.csv', 'inflammation-11.csv', 'inflammation-10.csv', 'inflammation-04.csv', 'inflammation-12.csv', 'inflammation-06.csv', 'inflammation-07.csv', 'inflammation-03.csv', 'small-02.csv', 'small-03.csv', 'inflammation-02.csv', 'small-01.csv', 'inflammation-01.csv', 'inflammation-09.csv', 'inflammation-08.csv']
+```
+
+- **We only want `inflammation` data** so we would like to ignore the `small` files
+  - We want to turn the list from `os.listdir()` into a list that contains only `inflammation*` files: **use `for` loop and `if` to filter**
+  - The list can be filtered with a `for` loop or *list comprehension*
+
+```python
+>>> for file in os.listdir('data'):
+...     if 'inflammation' in file:
+...             print(file)
+... 
+inflammation-05.csv
+inflammation-11.csv
+inflammation-10.csv
+inflammation-04.csv
+inflammation-12.csv
+inflammation-06.csv
+inflammation-07.csv
+inflammation-03.csv
+inflammation-02.csv
+inflammation-01.csv
+inflammation-09.csv
+inflammation-08.csv
+```
+
+- We'd like to work with this set of files, so we store it in a variable, called `files`.
+  - A suitable data type here is a `list`, and we can populate it one file at a time, using `.append()`
+
+```python
+>>> files = []
+>>> for file in os.listdir('data'):
+...     if 'inflammation' in file:
+...             files.append(file)
+... 
+>>> print(files)
+['inflammation-05.csv', 'inflammation-11.csv', 'inflammation-10.csv', 'inflammation-04.csv', 'inflammation-12.csv', 'inflammation-06.csv', 'inflammation-07.csv', 'inflammation-03.csv', 'inflammation-02.csv', 'inflammation-01.csv', 'inflammation-09.csv', 'inflammation-08.csv']
+```
+
+- **Let's put this in our script**
+  - **EXIT THE CONSOLE**
+  - **OPEN THE SCRIPT**
+
+```bash
+nano analyse_files.py
+```
+
+```python
+# Get a list of inflammation data files
+files = []
+for fname in os.listdir('data'):
+  if 'inflammation' in fname:
+    files.append(fname)
+print("Inflammation data files:", files)
+```
+
+- **EXIT EDITOR AND RUN THE SCRIPT**
+
+```bash
+$ python analyse_files.py
+Inflammation data files: ['inflammation-05.csv', 'inflammation-11.csv', 'inflammation-10.csv', 'inflammation-04.csv', 'inflammation-12.csv', 'inflammation-06.csv', 'inflammation-07.csv', 'inflammation-03.csv', 'inflammation-02.csv', 'inflammation-01.csv', 'inflammation-09.csv', 'inflammation-08.csv']
+```
+
+- **QUESTION: what's wrong with the filenames?**
+
+----
+
+**SLIDE** `os.path.join()`
+
+- The **`os.listdir()` function only returns filenames**, not the *path* (relative or absolute) to those files.
+  - **WE NEED THE FULL PATH TO A FILE TO BE ABLE TO USE IT**
+
+- To **construct a path**, we can use the `os.path.join()` function. 
+  - `os.path.join()` takes directory and file names, and returns a path built from them as a string, suitable for the underlying operating system.
+  - **This is useful for making code shareable and usable on all OS/computers**
+
+- **START PYTHON CONSOLE**
+
+```bash
+python
+```
+
+```python
+>>> os.path.join('parent', 'child', 'file.txt')
+'parent/child/file.txt'
+>>> os.path.join('data', 'inflammation-01.csv')
+'data/inflammation-01.csv'
+```
+
+- **CLOSE CONSOLE AND OPEN EDITOR**
+
+```bash
+$ nano analyse_files.py
+```
+
+```python
+# Get a list of inflammation data files
+files = []
+for fname in os.listdir('data'):
+  if 'inflammation' in fname:
+    files.append(os.path.join('data', fname))
+print("Inflammation data files:", files)
+```
+
+- **SAVE AND EXIT SCRIPT, THEN RUN**
+
+```bash
+$ python analyse_files.py
+Inflammation data files: ['data/inflammation-05.csv', 'data/inflammation-11.csv', 'data/inflammation-10.csv', 'data/inflammation-04.csv', 'data/inflammation-12.csv', 'data/inflammation-06.csv', 'data/inflammation-07.csv', 'data/inflammation-03.csv', 'data/inflammation-02.csv', 'data/inflammation-01.csv', 'data/inflammation-09.csv', 'data/inflammation-08.csv']
+```
+
+----
+
+**SLIDE** Visualising the data
+
+- Now **we have all the tools we need** to load all the inflammation data files, and visualise the mean, minimum and maximum values in an array of plots.
+  - We can get a **list of paths to the data files** with `os` and a *list comprehension*
+  - We can **load data from a file** with `numpy.loadtxt()`
+  - We can **calculate summary statistics** with `numpy.mean()`, `numpy.max()`, etc.
+  - We can **create figures** with `matplotlib`, and arrays of figures with `.add_subplot()`
+
+----
+
+**SLIDE** Visualisation code
+
+- **BUILD THE CODE IN STAGES**
+  - **OPEN THE SCRIPT IN THE EDITOR**
+
+```bash
+$ nano analyse_files.py
+```
+
+- **1 - show that we see each filename in turn**
+```python
+# Analyse each file in turn
+for fname in files: 
+    print("Analysing", fname)
+```
+
+- **2 - load the data in each file**
+
+```python
+# Analyse each file in turn
+for fname in files: 
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+```
+
+* **3 - create a figure for each file**
+
+```python
+# Analyse each file in turn
+for fname in files: 
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # create figure and three axes 
+    fig = plt.figure(figsize=(10.0, 3.0))
+    axes1 = fig.add_subplot(1, 3, 1)
+    axes2 = fig.add_subplot(1, 3, 2)
+    axes3 = fig.add_subplot(1, 3, 3)
+```
+
+- **4 - decorate the axes**
+
+```python
+# Analyse each file in turn
+for fname in files: 
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # create figure and three axes 
+    fig = plt.figure(figsize=(10.0, 3.0))
+    axes1 = fig.add_subplot(1, 3, 1)
+    axes2 = fig.add_subplot(1, 3, 2)
+    axes3 = fig.add_subplot(1, 3, 3)
+
+    # decorate the axes
+    axes1.set_ylabel('average')
+    axes2.set_ylabel('maximum')
+    axes3.set_ylabel('minimum')
+```
+
+- **5 - plot the data**
+
+```python
+# Analyse each file in turn
+for fname in files: 
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # create figure and three axes 
+    fig = plt.figure(figsize=(10.0, 3.0))
+    axes1 = fig.add_subplot(1, 3, 1)
+    axes2 = fig.add_subplot(1, 3, 2)
+    axes3 = fig.add_subplot(1, 3, 3)
+
+    # decorate the axes
+    axes1.set_ylabel('average')
+    axes2.set_ylabel('maximum')
+    axes3.set_ylabel('minimum')
+
+    # plot the data
+    axes1.plot(data.mean(axis=0))
+    axes2.plot(data.max(axis=0))
+    axes3.plot(data.min(axis=0))
+```
+
+- **6 - tidy and show plot**
+
+```python
+# Analyse each file in turn
+for fname in files: 
+    print("Analysing", fname)
+
+    # load data
+    data = np.loadtxt(fname=fname, delimiter=',')
+
+    # create figure and three axes 
+    fig = plt.figure(figsize=(10.0, 3.0))
+    axes1 = fig.add_subplot(1, 3, 1)
+    axes2 = fig.add_subplot(1, 3, 2)
+    axes3 = fig.add_subplot(1, 3, 3)
+
+    # decorate the axes
+    axes1.set_ylabel('average')
+    axes2.set_ylabel('maximum')
+    axes3.set_ylabel('minimum')
+
+    # plot the data
+    axes1.plot(data.mean(axis=0))
+    axes2.plot(data.max(axis=0))
+    axes3.plot(data.min(axis=0))
+
+    # tidy plot and render
+    fig.tight_layout()
+    plt.show()
+```
+
+- **EXIT THE EDITOR AND RUN SCRIPT**
+
+```bash
+$ python analyse_files.py
+```
+
+![progress check](images/red_green_sticky.png)
+
+- **THIS IS INTERACTIVE. WHAT IF WE WANT TO SAVE IMAGES?**
+  - **OPEN THE EDITOR AND CHANGE THE SCRIPT**
+
+```python
+[...]
+
+# Get a list of inflammation data files
+files = []
+for fname in os.listdir('data'):
+  if 'inflammation' in fname and fname[-4:] == '.csv':
+    files.append(os.path.join('data', fname))
+
+[...]
+
+    # tidy plot and render
+    fig.tight_layout()
+    # plt.show()
+
+    # save image to file
+    imgname = fname[:-4] + '.png'
+    print('Writing image to', imgname)
+    plt.savefig(imgname)
+```
+
+- **EXIT THE EDITOR AND RUN SCRIPT**
+
+```bash
+$ python analyse_files.py
+```
+
+- **CHECK CONTENTS OF `data` DIRECTORY, AND VIEW `.png` FILES**
+
+----
+
+**SLIDE** Checking data
+
+- There are **two suspicious features** to some of the datasets
+
+1. The **maximum values rose and fell as straight lines**
+2. The **minimum values are consistently zero**
+
+- We'll use `if` statements to **test for these conditions and give a warning**
+
+----
+
+**SLIDE** Test for suspicious maxima
+
+- Is day zero value 0, and day 20 value 20?
+
+```bash
+$ nano analyse_files.py
+```
+
+- **ADD TO EXISTING CODE BEFORE CREATING FIGURE**
+
+```python
+    # Test for suspicious maxima
+    if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
+        print("Suspicious-looking maxima!")
+```
+
+- **RUN SCRIPT**
+
+```bash
+$ python analyse_files.py
+```
+
+----
+
+**SLIDE** SUSPICIOUS MINIMA
+
+- Are all the minima zero? (do they sum to zero?)
+
+```bash
+$ nano analyse_files.py
+```
+
+- **ADD TO EXISTING CODE BEFORE CREATING FIGURE**
+
+```python
+    # Test for suspicious maxima
+    if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
+        print("Suspicious-looking maxima!")
+    elif np.sum(data.min(axis=0)) == 0:
+        print('Minima sum to zero!')
+```
+
+- **RUN SCRIPT**
+
+```bash
+$ python analyse_files.py
+```
+
+----
+
+**SLIDE** BEING TIDY
+
+- If everything's OK, **let's be reassuring**
+* **ADD TO EXISTING CODE BEFORE PLOT**
+
+
+- **ADD TO EXISTING CODE BEFORE CREATING FIGURE**
+
+```python
+    # Test for suspicious maxima
+    if np.max(data, axis=0)[0] == 0 and np.max(data, axis=0)[20] == 20:
+        print("Suspicious-looking maxima!")
+    elif np.sum(data.min(axis=0)) == 0:
+        print('Minima sum to zero!')
+    else:
+        print('Seems OK!')
+```
+
+- **RUN SCRIPT**
+
+```bash
+$ python analyse_files.py
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+## SECTION 09: Conclusions (Part 1)
+
+----
+
+**SLIDE** Learning outcomes
+
+Some things you might not have known about at lunchtime:
+
+- variables
+- data types: arrays, lists, strings, numbers
+- file IO: loading data, listing files, manipulating filenames
+- calculating statistics
+- plotting data: plots and subplots
+- program flow: loops and conditionals
+- automating multiple analyses
+- `Python` scripts: edit-save-execute
+ 
+----
+**SLIDE** WELL DONE!
+
+* **SEND THEM HOME HAPPY!**
+
+----
+
+## TITLE: Building Programs With Python (Part 2)
+
+----
+
+**SLIDE:** Etherpad
+
+* Please use the Etherpad for the course **DEMONSTRATE LINK**
+
+----
+
+**SLIDE** Why are we here?
+
+- We're here to learn **how to program**
+- This is a way to **solve problems in your research** through making a computer do work **quickly** and **accurately**
+  - You'll be continuing to **build your data analysis** script from yesterday
+  - You'll **automate** functions to perform tasks over and over again (in various combinations)
+- You'll **manipulate data**, which is at the heart of all academia
+  - You'll learn how to build **functions** that do specific, defined tasks and encapsulate code, making it reusable and readable
+  - You'll learn some **defensive programming**, so that you automatically catch problems in your code/data handling
+
+----
+
+**SLIDE** XKCD
+
+- Again, this slide is only a little bit flippant
+- *No-one* writes perfect code, first time
+  - It's all about revision, and good practice: **defensive programming**
+  - These principles will make your life, and other people's lives, much easier
+
+----
+
+**SLIDE** Setting up
+
+- We want a neat (clean) working environment
+
+- Change directory to desktop (in terminal or Explorer)
+- Change your working directory to `python-novice-inflammation` (from yesterday/earlier)
+
+```bash
+$ cd ~/Desktop
+$ cd python-novice-inflammation
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+## SECTION 10: `Jupyter` notebooks
+
+----
+
+**SLIDE** Starting `Jupyter`
+
+- Make sure you're in the project directory `python-novice-inflammation`
+- **Start `Jupyter`** from the command-line
+- **CHECK WHETHER EVERYONE SEES A WORKING JUPYTER NOTEBOOK**
+
+```bash
+$ jupyter notebook
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** `Jupyter` landing page
+
+- **`Jupyter` landing page is a file browser**, like Explorer/Finder
+  - Point out `Python` (`.py`) files, `.zip` files, and directories)
+  - Point out directory (`data`), and how the file symbols are different. (*the triangle by the check box gives a key*)
+  
+- **Point out `New` button.**
+
+----
+
+**SLIDE** Create a new notebook
+
+- Click on `New -> Python 3`
+- Point out that there may or may not be other options in the student's installation
+- Indicate the new features on the empty notebook:
+  - The **notebook name**: `Untitled`
+  - **Checkpoint** information (the last time the notebook was saved, for safety)
+  - The **menu bar** (`File Edit etc.`) - just like `Word` or `Excel`
+  - An indication of **which kernel you're using/language you're in**
+  - **Icon view** (just like `Word` or `Excel`)
+  - An empty cell with `In [ ]:`
+- Point out the **box around the cell**, and that it **changes colour** when you start to edit
+
+----
+
+**SLIDE** My first notebook
+
+- **Give the notebook the name `functions`**
+- Click on `Untitled` and enter the name `functions`
+
+----
+
+**SLIDE** Cell types 
+
+- `Jupyter` documents are comprised of `cells`
+- A `cell` can be one of **several types** - we'll focus on two:
+  - `Code`: **code** in the current kernel/language
+  - `Markdown`: **text**, with the opportunity for formatting
+
+- **Change the first cell type to `Markdown`**
+  - The box **colour changes** from green to blue
+  - The `In []` **prompt disappears**
+
+----
+
+**SLIDE** Markdown text
+
+- `Markdown` lets us **enter formatted text**
+  - **Headers** are preceded by a hash: `#`
+  - The **level of header** is determined by the number of hashes: `#`
+  - **Typewriter text/code** is shown by enclosing in backticks: ```
+  - **Italics** are shown by enclosing text in single asterisks: `*italic*`
+  - **LaTeX** can be entered within dollar signs `$`
+
+- Press `Shift + Enter` to execute a cell
+- The cell is rendered, and a new cell appears beneath the executed cell
+
+```markdown
+# Functions
+
+Functions are pieces of code that take an input and return an output. They enable us to break our code into logical chunks that are easier to understand and maintain.
+
+## Temperature conversion
+
+As an example in `Python`, we will create a function that converts temperature between *Fahrenheit* and *Kelvin* scales.
+```
+
+----
+
+## SECTION 11: Functions
+
+----
+
+**SLIDE** Motivation
+
+- We wrote some code that plots values of interest from multiple datasets
+  - **but that code is long and complicated**
+
+- The code is also not very flexible if we want to deal with thousands of files, and we can't modify it to plot only a subset of files very easily
+  - Cutting and pasting is slow and error-prone
+
+- **SO** we will package our code for reuse.
+  - **We do this by writing functions**
+
+----
+
+**SLIDE** What is a function?
+
+- Functions in code work **like mathematical functions**, like $y = f(x)$
+  - $f()$  is the function
+  - $x$  is an **input** (or inputs)
+  - $y$  is the **returned value**, or output(s)
+- The function's output  $y$ depends in some way on the value of  $x$ - the dependency is defined by $f()$.
+
+- **Not all functions in code take an input, or produce a usable output, but the principle is generally the same.**
+- **You've already been using functions in this course: `print()`, `numpy.max()`, etc.**
+
+----
+
+**SLIDE** My first function
+
+- **REFER TO THE CODE IN THE NOTEBOOK**
+  - We've written a function to convert Fahrenheit to Kelvin, called `fahr_to_kelvin()`
+* **Describe the mathematical function**:
+  - This function takes `x`, subtracts 32, multiplies by 5/9, and adds 273.15
+
+- In `Python` this **translates to the code below**:
+  - The function **performs a calculation, which is *returned* by the `return` statement**.
+  - The value of **the variable `temp` is taken through the same calculation as in the mathematical function**, and is then *return*ed.
+  - Functions are *defined* by the `def` keyword
+  - The name of the function follows the `def` keyword (equivalent to `f` in the mathematical example)
+  - The first line ends in a colon, just like a `for` loop or `if` statement.
+  - The code, or *body* of the function is indented, just like a `for` loop or `if` statement.
+  - The *parameters* or *inputs* to the function are then defined in parentheses. These get a variable name **which only exists within the function**. Here, there is one parameter, called `temp`.
+
+----
+
+**SLIDE** Calling the function
+
+- We **call `fahr_to_kelvin` in exactly the same way we call any other function we've seen** so far
+  - e.g. `print()` or `numpy.mean()`
+
+```python
+print('freezing point of water:', fahr_to_kelvin(32))
+print('boiling point of water:', fahr_to_kelvin(212))
+```
+
+- **NOTE: that the returned values from executing code show up in the notebook below the cell**
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** Create a new function
+
+- **ASK THE LEARNERS HOW WE WOULD CREATE A NEW FUNCTION TO CONVERT KELVIN TO CELSIUS**
+- **Walk through the process, being prompted**
+
+```python
+def kelvin_to_celsius(temp):
+  return temp - 273.15
+```
+
+- **ASK THE LEARNERS HOW TO CALL THE FUNCTION**
+
+```python
+print('freezing point of water', kelvin_to_celsius(273.15))
+```
+
+----
+
+**SLIDE** Composing functions
+
+- **Composing `Python` functions works just like mathematical functions**: `y = f(g(x))`
+
+- **ASK HOW WE CAN CONVERT FAHRENHEIT TO CELSIUS WITH OUR EXISTING FUNCTIONS**
+  - We could convert a temperature in fahrenheit (`temp_f`) to a temperature in celsius (`temp_c`) by **executing the code**:
+
+```python
+temp_f = 212.0
+temp_c = kelvin_to_celsius(fahr_to_kelvin(temp_f))
+print(temp_c)
+```
+
+----
+
+**SLIDE** New functions from old
+
+- **ASK LEARNERS HOW WE CAN TURN THIS INTO A NEW FUNCTION: `fahr_to_celsius()`:
+
+```python
+def fahr_to_celsius(temp_f):
+    return kelvin_to_celsius(fahr_to_kelvin(temp_f))
+```
+
+- We can call this just like any other function
+   
+```python 
+print('freezing point of water in Celsius:', fahr_to_celsius(32.0))
+```
+
+- **THIS IS HOW PROGRAMS ARE BUILT: COMBINING SMALL CHUNKS OF CODE INTO LARGER BITS UNTIL WE GET THE RESULT WE WANT**
+
+----
+
+**SLIDE** Exercise 08 (10min)
+
+- **SHOW THE SLIDES FOR THE EXERCISE**
+
+```python
+def outer(s)
+    return s[0] + s[-1]
+```
+
+![progress check](images/red_green_sticky.png)
+
+- **RETURN TO THE NOTEBOOK**

@@ -635,15 +635,21 @@ pre.hljs code > div {
 <body>
 <h1>2018-03-29 Python lesson tutor notes</h1>
 <p>These notes are intended for the tutor as they work through the material, but</p>
+<h1>Start the slides</h1>
 <!-- TOC -->
 <ul>
 <li><a href="#title-building-programs-with-python">TITLE: Building Programs With Python</a></li>
 <li><a href="#section-01-setup">SECTION 01: Setup</a></li>
 <li><a href="#section-02-getting-started">SECTION 02: Getting Started</a></li>
 <li><a href="#section-03-data-analysis">SECTION 03: Data Analysis</a></li>
+<li><a href="#section-04-visualisation">SECTION 04: Visualisation</a></li>
+<li><a href="#section-05-for-loops">SECTION 05: <code>for</code> loops</a></li>
+<li><a href="#section-06-lists">SECTION 06: <code>list</code>s</a></li>
+<li><a href="#section-07-making-choices">SECTION 07: Making choices</a></li>
+<li><a href="#section-08-analysing-multiple-files">SECTION 08: Analysing multiple files</a></li>
+<li><a href="#section-09-conclusions-part-1">SECTION 09: Conclusions (Part 1)</a></li>
 </ul>
 <!-- /TOC -->
-<h1>Start the slides</h1>
 <hr>
 <h2>TITLE: Building Programs With Python</h2>
 <hr>
@@ -960,15 +966,23 @@ weight <span class="hljs-keyword">in</span> kilograms: <span class="hljs-number"
 <pre class="hljs"><code><div>$ head data/inflammation-01.csv 
 </div></code></pre>
 <ul>
-<li><strong>Describe the data</strong>: plain text, csv format</li>
-<li><strong>Can you tell what the data is?</strong> (i.e. is this good practice for sharing data?)
+<li>
+<p><strong>Describe the data</strong>: plain text, csv format</p>
+</li>
+<li>
+<p><strong>Can you tell what the data is?</strong> (i.e. is this good practice for sharing data?)</p>
 <ul>
 <li>One row per patient</li>
 <li>One column per day</li>
 <li>Values separated by commas</li>
 </ul>
 </li>
-<li><strong>State that we'll use the <code>numpy</code> library</strong> to work with this in Python</li>
+<li>
+<p><strong>State that we'll use the <code>numpy</code> library</strong> to work with this in Python</p>
+</li>
+<li>
+<p><strong>WE WANT TO FIND SUMMARY INFORMATION ABOUT INFLAMMATION BY PATIENT AND BY DAY</strong></p>
+</li>
 </ul>
 <hr>
 <p><strong>SLIDE</strong> <code>Python</code> libraries</p>
@@ -988,6 +1002,13 @@ weight <span class="hljs-keyword">in</span> kilograms: <span class="hljs-number"
 </ul>
 </li>
 <li>
+<p>There are several repositories that host <code>Python</code> packages</p>
+<ul>
+<li><a href="https://pypi.python.org/pypi"><code>PyPI</code></a></li>
+<li><a href="https://conda.io/docs/"><code>conda</code></a></li>
+</ul>
+</li>
+<li>
 <p><strong>Import and describe libraries</strong></p>
 </li>
 </ul>
@@ -995,6 +1016,1625 @@ weight <span class="hljs-keyword">in</span> kilograms: <span class="hljs-number"
 </div></code></pre>
 <ul>
 <li><code>numpy</code> is a library that provides functions and methods to <strong>work with arrays and matrices</strong>, such as those in your dataset</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Load data from file</p>
+<ul>
+<li>The <code>numpy</code> library gives us a function called <strong><code>loadtxt()</code> that loads tabular data from a file</strong></li>
+<li>To use a <code>function</code> from a <code>library</code>, <strong>the format is usually <code>library.function()</code>: <em>dotted notation</em></strong></li>
+<li><strong><code>loadtxt()</code> expects two <em>arguments</em> or <em>parameters</em></strong> - values it needs to know to work</li>
+<li>The parameter <code>fname</code> takes the <strong>path to the file we want to load</strong></li>
+<li>The parameter <code>delimiter</code> takes the <strong>character that we think separates columns</strong> in that file</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>numpy.loadtxt(fname=<span class="hljs-string">'data/inflammation-01.csv'</span>, delimiter=<span class="hljs-string">','</span>)
+array([[ <span class="hljs-number">0.</span>,  <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>, ...,  <span class="hljs-number">3.</span>,  <span class="hljs-number">0.</span>,  <span class="hljs-number">0.</span>],
+       [ <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>,  <span class="hljs-number">2.</span>, ...,  <span class="hljs-number">1.</span>,  <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>],
+       [ <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>,  <span class="hljs-number">1.</span>, ...,  <span class="hljs-number">2.</span>,  <span class="hljs-number">1.</span>,  <span class="hljs-number">1.</span>],
+       ..., 
+       [ <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>,  <span class="hljs-number">1.</span>, ...,  <span class="hljs-number">1.</span>,  <span class="hljs-number">1.</span>,  <span class="hljs-number">1.</span>],
+       [ <span class="hljs-number">0.</span>,  <span class="hljs-number">0.</span>,  <span class="hljs-number">0.</span>, ...,  <span class="hljs-number">0.</span>,  <span class="hljs-number">2.</span>,  <span class="hljs-number">0.</span>],
+       [ <span class="hljs-number">0.</span>,  <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>, ...,  <span class="hljs-number">1.</span>,  <span class="hljs-number">1.</span>,  <span class="hljs-number">0.</span>]])
+</div></code></pre>
+<ul>
+<li>Here, our function is <code>numpy.loadtxt()</code>, and  <em>Dotted notation</em> tells us that <code>loadtxt()</code> belongs to <code>numpy</code></li>
+<li><code>Python</code> will accept <strong>double- or single-quotes</strong> around strings</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Loaded data</p>
+<ul>
+<li>If we don't ask <code>Python</code> to do anything with the data, it just loads the data, then shows the data to us.</li>
+<li>The data display is truncated by default - <em>ellipses</em> (<code>...</code>) show rows and columns that were excluded for space</li>
+<li>Significant digits are not shown</li>
+<li><strong>NOTE that integers in the file have been converted to floating point numbers</strong></li>
+<li><strong>Ask the learners to assign the matrix to a variable called <code>data</code>: MAKE THIS CHANGE IN-PLACE</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>data = numpy.loadtxt(fname=<span class="hljs-string">"data/inflammation-01.csv"</span>, delimiter=<span class="hljs-string">","</span>)
+</div></code></pre>
+<ul>
+<li>Now when we execute the cell <strong>we see no output</strong>, but <code>data</code> now contains the array, which we can see by <strong>printing the variable</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(data)
+[[ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span> ...,  <span class="hljs-number">3.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span> ...,  <span class="hljs-number">1.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span> ...,  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>]
+ ..., 
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span> ...,  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span> ...,  <span class="hljs-number">0.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">0.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span> ...,  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">0.</span>]]
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> What is our data?</p>
+<ul>
+<li>We've loaded some data, but <strong>what is it?</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>type(data)
+&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> '<span class="hljs-title">numpy</span>.<span class="hljs-title">ndarray</span>'&gt;
+</span></div></code></pre>
+<ul>
+<li><strong><code>Python</code> sees our data as a special <code>type</code>: <code>numpy.ndarray</code></strong></li>
+<li>From <em>dotted notation</em> we see that <code>ndarray</code> belongs to (was defined in) the <code>numpy</code> library</li>
+<li><code>ndarray</code> stands for &quot;n-dimensional array&quot; - so this is <strong>an n-dimensional array from the <code>numpy</code> library</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Members and attributes</p>
+<ul>
+<li><strong>Creating our <code>data</code> array created a lot of information, too</strong></li>
+<li>We created <strong>information about the array</strong> called <em>attributes</em></li>
+<li>This information belongs to <code>data</code> so is <strong>accessed in the same way as a module function</strong>, through <em>dotted notation</em></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(data.dtype)
+float64
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(data.shape)
+(<span class="hljs-number">60</span>, <span class="hljs-number">40</span>)
+</div></code></pre>
+<ul>
+<li><code>print(data.dtype)</code> tells us that the <strong>data type for values in the array</strong> is: 64-bit floating point numbers</li>
+<li><code>print(data.shape)</code> tells us that there are <strong>60 rows and 40 columns</strong> in the dataset</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Indexing arrays</p>
+<ul>
+<li>
+<p>We often want to work with subsets of data</p>
+<ul>
+<li>individual rows and columns</li>
+<li>subgroups of rows and columns</li>
+<li><strong>individual patients</strong> (rows)</li>
+<li><strong>individual days</strong> (columns)</li>
+</ul>
+</li>
+<li>
+<p>Arrays are indexed by <em>row</em> and <em>column</em>, using <em>square bracket</em> notation</p>
+</li>
+<li>
+<p>To get a single element from the array, <strong>index using <em>square bracket</em> notation</strong> - row first, then column</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>data[<span class="hljs-number">10</span>, <span class="hljs-number">10</span>]
+<span class="hljs-number">5.0</span>
+</div></code></pre>
+<ul>
+<li>In <strong><code>Python</code> we index from zero</strong>, so the first element is <code>data[0, 0]</code></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'first value in data:'</span>, data[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>])
+first value <span class="hljs-keyword">in</span> data: <span class="hljs-number">0.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'middle value in data:'</span>, data[<span class="hljs-number">30</span>, <span class="hljs-number">20</span>])
+middle value <span class="hljs-keyword">in</span> data: <span class="hljs-number">13.0</span>
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> Slicing arrays</p>
+<ul>
+<li>To get a section from the array, index using <em>square bracket</em> notation - but specify start and end points, separated by a colon</li>
+<li>The slice <code>0:4</code> means start at index zero and go up to, but not including, index 4. So it takes elements <code>0, 1, 2, 3</code> (four elements)</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(data[<span class="hljs-number">0</span>:<span class="hljs-number">4</span>, <span class="hljs-number">0</span>:<span class="hljs-number">10</span>])
+[[ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">4.</span>  <span class="hljs-number">7.</span>  <span class="hljs-number">8.</span>  <span class="hljs-number">3.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">6.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">6.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">9.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">4.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">6.</span>  <span class="hljs-number">7.</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(data[<span class="hljs-number">5</span>:<span class="hljs-number">10</span>, <span class="hljs-number">0</span>:<span class="hljs-number">10</span>])
+[[ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">4.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">6.</span>  <span class="hljs-number">4.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">4.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">8.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">3.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">6.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">8.</span>]
+ [ <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">5.</span>  <span class="hljs-number">8.</span>]]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(data[<span class="hljs-number">2</span>:<span class="hljs-number">4</span>, <span class="hljs-number">2</span>:<span class="hljs-number">4</span>])
+[[ <span class="hljs-number">1.</span>  <span class="hljs-number">3.</span>]
+ [ <span class="hljs-number">2.</span>  <span class="hljs-number">0.</span>]]
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> More slices, please!</p>
+<ul>
+<li>
+<p>If we don't specify a start for the slice, <code>Python</code> assumes the first element is meant (element zero)</p>
+</li>
+<li>
+<p>If we don't specify an end for the slice, <code>Python</code> assumes the last element is meant</p>
+</li>
+<li>
+<p>To get the top-right corner of the array, we can specify <code>data[:3, 36:]</code></p>
+</li>
+<li>
+<p><strong>Explain <code>\n</code></strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>small = data[:<span class="hljs-number">3</span>, <span class="hljs-number">36</span>:]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'small is:\n'</span>, small)
+small <span class="hljs-keyword">is</span>:
+ [[ <span class="hljs-number">2.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>]
+ [ <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>]
+ [ <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>]]
+</div></code></pre>
+<ul>
+<li><strong>QUESTION: What does <code>:</code> on its own mean?</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(data[<span class="hljs-number">0</span>:<span class="hljs-number">2</span>, :])
+[[  <span class="hljs-number">0.</span>   <span class="hljs-number">0.</span>   <span class="hljs-number">1.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">1.</span>   <span class="hljs-number">2.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">7.</span>   <span class="hljs-number">8.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">3.</span>  <span class="hljs-number">10.</span>   <span class="hljs-number">5.</span>
+    <span class="hljs-number">7.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">7.</span>   <span class="hljs-number">7.</span>  <span class="hljs-number">12.</span>  <span class="hljs-number">18.</span>   <span class="hljs-number">6.</span>  <span class="hljs-number">13.</span>  <span class="hljs-number">11.</span>  <span class="hljs-number">11.</span>   <span class="hljs-number">7.</span>   <span class="hljs-number">7.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">6.</span>
+    <span class="hljs-number">8.</span>   <span class="hljs-number">8.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">5.</span>   <span class="hljs-number">7.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">2.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">0.</span>   <span class="hljs-number">0.</span>]
+ [  <span class="hljs-number">0.</span>   <span class="hljs-number">1.</span>   <span class="hljs-number">2.</span>   <span class="hljs-number">1.</span>   <span class="hljs-number">2.</span>   <span class="hljs-number">1.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">2.</span>   <span class="hljs-number">2.</span>   <span class="hljs-number">6.</span>  <span class="hljs-number">10.</span>  <span class="hljs-number">11.</span>   <span class="hljs-number">5.</span>   <span class="hljs-number">9.</span>
+    <span class="hljs-number">4.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">7.</span>  <span class="hljs-number">16.</span>   <span class="hljs-number">8.</span>   <span class="hljs-number">6.</span>  <span class="hljs-number">18.</span>   <span class="hljs-number">4.</span>  <span class="hljs-number">12.</span>   <span class="hljs-number">5.</span>  <span class="hljs-number">12.</span>   <span class="hljs-number">7.</span>  <span class="hljs-number">11.</span>   <span class="hljs-number">5.</span>
+   <span class="hljs-number">11.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">3.</span>   <span class="hljs-number">5.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">4.</span>   <span class="hljs-number">5.</span>   <span class="hljs-number">5.</span>   <span class="hljs-number">1.</span>   <span class="hljs-number">1.</span>   <span class="hljs-number">0.</span>   <span class="hljs-number">1.</span>]]
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Exercise 03</p>
+<p><strong>MCQ: put up four colours of sticky notes</strong></p>
+<ul>
+<li>The value is <code>oxyg</code>, number <code>1</code></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Array operations</p>
+<ul>
+<li>Arithmetic operations on <code>array</code>s are <strong>performed elementwise.</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>doubledata = data * <span class="hljs-number">2.0</span>
+</div></code></pre>
+<ul>
+<li>This operation multiplies every array element by 2.0.</li>
+<li><strong>Look at the top right corner of the original array</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"original:\n"</span>, data[:<span class="hljs-number">3</span>, <span class="hljs-number">36</span>:])
+original:
+ [[ <span class="hljs-number">2.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>]
+ [ <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">1.</span>]
+ [ <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">1.</span>  <span class="hljs-number">1.</span>]]
+</div></code></pre>
+<ul>
+<li><strong>Look at the top right corner of the doubled array</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"doubledata:\n"</span>, doubledata[:<span class="hljs-number">3</span>, <span class="hljs-number">36</span>:])
+doubledata:
+ [[ <span class="hljs-number">4.</span>  <span class="hljs-number">6.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>]
+ [ <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">2.</span>]
+ [ <span class="hljs-number">4.</span>  <span class="hljs-number">4.</span>  <span class="hljs-number">2.</span>  <span class="hljs-number">2.</span>]]
+ &gt;&gt;&gt; tripledata = doubledata + data
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"tripledata:\n"</span>, tripledata[:<span class="hljs-number">3</span>, <span class="hljs-number">36</span>:])
+tripledata:
+ [[ <span class="hljs-number">6.</span>  <span class="hljs-number">9.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">0.</span>]
+ [ <span class="hljs-number">3.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">0.</span>  <span class="hljs-number">3.</span>]
+ [ <span class="hljs-number">6.</span>  <span class="hljs-number">6.</span>  <span class="hljs-number">3.</span>  <span class="hljs-number">3.</span>]]
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>numpy</code> functions</p>
+<ul>
+<li><code>numpy</code> provides functions that can perform <em>more complex</em> operations on arrays</li>
+<li>Some of the <strong><code>numpy</code> operations include statistical summaries: <code>.mean()</code>, <code>.min()</code>, <code>.max()</code> etc.</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(numpy.mean(data))
+<span class="hljs-number">6.14875</span>
+</div></code></pre>
+<ul>
+<li>
+<p>We can asssign the output from these functions to variables</p>
+</li>
+<li>
+<p><strong>By default, these functions give summaries of the whole array</strong></p>
+</li>
+<li>
+<p><strong>Introduce multiple assignment on one line, or use three lines</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>maxval, minval, stdval = numpy.max(data), numpy.min(data), numpy.std(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'maximum inflammation:'</span>, maxval)
+maximum inflammation: <span class="hljs-number">20.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'minimum inflammation:'</span>, minval)
+minimum inflammation: <span class="hljs-number">0.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'standard deviation:'</span>, stdval)
+standard deviation: <span class="hljs-number">4.61383319712</span>
+</div></code></pre>
+<ul>
+<li>These functions can also be <strong>applied directly to arrays</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>maxval, minval, stdval = data.max(), data.min(), data.std()
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'maximum inflammation:'</span>, maxval)
+maximum inflammation: <span class="hljs-number">20.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'minimum inflammation:'</span>, minval)
+minimum inflammation: <span class="hljs-number">0.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'standard deviation:'</span>, stdval)
+standard deviation: <span class="hljs-number">4.61383319712</span>
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> Summary for one patient</p>
+<ul>
+<li><strong>What if we want to get summaries patient-by-patient (row-by-row)?</strong></li>
+<li>We can extract a single row into a <em>temporary variable</em>, and calculate the mean for that variable</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>patient_0 = data[<span class="hljs-number">0</span>, :] <span class="hljs-comment"># temporary variable</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'maximum inflammation for patient 0:'</span>, patient_0.max())
+maximum inflammation <span class="hljs-keyword">for</span> patient <span class="hljs-number">0</span>: <span class="hljs-number">18.0</span>
+</div></code></pre>
+<ul>
+<li>
+<p><strong>NOTE: that comments are preceded with a hash <code>#</code> and can be placed after a line of code</strong></p>
+</li>
+<li>
+<p><strong>EXPLAIN: why leaving comments is good (can do that in all code - not just Jupyter notebooks)</strong></p>
+</li>
+<li>
+<p>We can also <strong>apply the <code>numpy</code> function directly</strong>, without creating a variable</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'maximum inflammation for patient 0:'</span>, numpy.max(data[<span class="hljs-number">0</span>, :]))
+maximum inflammation <span class="hljs-keyword">for</span> patient <span class="hljs-number">0</span>: <span class="hljs-number">18.0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'maximum inflammation for patient 2:'</span>, numpy.max(data[<span class="hljs-number">2</span>, :]))
+maximum inflammation <span class="hljs-keyword">for</span> patient <span class="hljs-number">2</span>: <span class="hljs-number">19.0</span>
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Summary for all patients</p>
+<ul>
+<li>
+<p>But <strong>what if we want to know about all patients at once?</strong></p>
+</li>
+<li>
+<p>Or <strong>what if we want an average inflammation per day?</strong></p>
+</li>
+<li>
+<p>Writing one line per row, or per column, is likely to lead to mistakes and typos</p>
+<ul>
+<li><strong>We can specify which axis a function applies to</strong></li>
+</ul>
+</li>
+<li>
+<p>Specifying <code>axis=0</code> makes the function work on columns (days)</p>
+<ul>
+<li><strong>working on values 'by' row/row-wise</strong></li>
+</ul>
+</li>
+<li>
+<p>Specifying <code>axis=1</code> makes the function work on rows (patients)</p>
+<ul>
+<li><strong>working on values 'by' column/column-wise</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>numpy</code> operations on axes</p>
+<ul>
+<li><strong><code>numpy</code> functions take an <code>axis=</code> parameter</strong> which controls the axis for summary statistic calculations.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(numpy.max(data, axis=<span class="hljs-number">1</span>))
+[ <span class="hljs-number">18.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">20.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">16.</span>  <span class="hljs-number">17.</span>
+  <span class="hljs-number">18.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">16.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">15.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">20.</span>  <span class="hljs-number">17.</span>
+  <span class="hljs-number">16.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">15.</span>  <span class="hljs-number">15.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">16.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">16.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">16.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">18.</span>
+  <span class="hljs-number">16.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">15.</span>  <span class="hljs-number">16.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">14.</span>  <span class="hljs-number">20.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">15.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">16.</span>  <span class="hljs-number">17.</span>  <span class="hljs-number">19.</span>  <span class="hljs-number">18.</span>  <span class="hljs-number">18.</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(data.mean(axis=<span class="hljs-number">0</span>))
+[  <span class="hljs-number">0.</span>           <span class="hljs-number">0.45</span>         <span class="hljs-number">1.11666667</span>   <span class="hljs-number">1.75</span>         <span class="hljs-number">2.43333333</span>   <span class="hljs-number">3.15</span>
+   <span class="hljs-number">3.8</span>          <span class="hljs-number">3.88333333</span>   <span class="hljs-number">5.23333333</span>   <span class="hljs-number">5.51666667</span>   <span class="hljs-number">5.95</span>         <span class="hljs-number">5.9</span>
+   <span class="hljs-number">8.35</span>         <span class="hljs-number">7.73333333</span>   <span class="hljs-number">8.36666667</span>   <span class="hljs-number">9.5</span>          <span class="hljs-number">9.58333333</span>
+  <span class="hljs-number">10.63333333</span>  <span class="hljs-number">11.56666667</span>  <span class="hljs-number">12.35</span>        <span class="hljs-number">13.25</span>        <span class="hljs-number">11.96666667</span>
+  <span class="hljs-number">11.03333333</span>  <span class="hljs-number">10.16666667</span>  <span class="hljs-number">10.</span>           <span class="hljs-number">8.66666667</span>   <span class="hljs-number">9.15</span>         <span class="hljs-number">7.25</span>
+   <span class="hljs-number">7.33333333</span>   <span class="hljs-number">6.58333333</span>   <span class="hljs-number">6.06666667</span>   <span class="hljs-number">5.95</span>         <span class="hljs-number">5.11666667</span>   <span class="hljs-number">3.6</span>
+   <span class="hljs-number">3.3</span>          <span class="hljs-number">3.56666667</span>   <span class="hljs-number">2.48333333</span>   <span class="hljs-number">1.5</span>          <span class="hljs-number">1.13333333</span>
+   <span class="hljs-number">0.56666667</span>]
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<h2>SECTION 04: Visualisation</h2>
+<hr>
+<p><strong>SLIDE</strong> Visualisation</p>
+<blockquote>
+<p>&quot;The purpose of computing is insight, not numbers&quot; - Richard Hamming</p>
+</blockquote>
+<ul>
+<li>The best way to gain insight is often to visualise data.</li>
+<li>Visualisation is a large topic that deserves more attention
+<ul>
+<li><strong>We're just scratching the surface, here</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Graphics package <code>matplotlib</code></p>
+<ul>
+<li><code>matplotlib</code> is the <em>de facto</em> standard/base plotting library in <code>Python</code></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> matplotlib.pyplot
+</div></code></pre>
+<ul>
+<li>We use <code>matplotlib.pyplot</code> to make the interaction a bit more like <code>matlab</code></li>
+</ul>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> <code>matplotlib.pyplot.imshow()</code></p>
+<ul>
+<li>The <code>.imshow()</code> function <strong>converts matrix values into an image</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>image = matplotlib.pyplot.imshow(data)
+<span class="hljs-meta">&gt;&gt;&gt; </span>matplotlib.pyplot.show()
+</div></code></pre>
+<ul>
+<li>
+<p>Here, small values are blue, and large values are yellow (<strong>you can change this colour scheme with other settings…</strong>)</p>
+</li>
+<li>
+<p>From the image, we can see <strong>inflammation rising and falling</strong> over a 40-day period for all patients.</p>
+</li>
+<li>
+<p><strong>QUESTION: does this look reasonable?</strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>matplotlib.pyplot.plot()</code></p>
+<ul>
+<li><strong><code>.plot()</code> shows a conventional line graph</strong></li>
+<li>We're going to use it to <strong>plot the average inflammation level on each day of the study</strong></li>
+<li>We'll create the variable <code>ave_inflammation</code> and use <code>numpy.mean()</code> on axis <code>0</code> of the data</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>ave_inflammation = numpy.mean(data, axis=<span class="hljs-number">0</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>ave_plot = matplotlib.pyplot.plot(ave_inflammation)
+<span class="hljs-meta">&gt;&gt;&gt; </span>matplotlib.pyplot.show()
+</div></code></pre>
+<ul>
+<li><strong>NOTE: ask students if the data looks reasonable?</strong>
+<ul>
+<li>The <strong>data does not look reasonable</strong>. Biologically, we expect a sharp rise in inflammation, followed by a slow tail-off</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Investigating data</p>
+<ul>
+<li>Since <strong>our plot of <code>.mean()</code> values looks artificial, let's check on other statistics</strong> to see if we can see what's going on.</li>
+<li>We'll plot the maximum value by day</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>max_plot = matplotlib.pyplot.plot(numpy.max(data, axis=<span class="hljs-number">0</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>matplotlib.pyplot.show()
+</div></code></pre>
+<ul>
+<li><strong>NOTE we're not defining a variable, this time</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>min_plot = matplotlib.pyplot.plot(numpy.min(data, axis=<span class="hljs-number">0</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>matplotlib.pyplot.show()
+</div></code></pre>
+<ul>
+<li>
+<p><strong>Ask students if the data looks reasonable?</strong></p>
+<ul>
+<li>The data looks very artificial. The maxima are completely smooth, but the minima are a
+step function.</li>
+</ul>
+</li>
+<li>
+<p><strong>NOTE: we would not have noticed this without visualisation</strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Exercise 04 (5min)</p>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>std_plot = matplotlib.pyplot.plot(numpy.std(data, axis=<span class="hljs-number">0</span>))
+<span class="hljs-meta">&gt;&gt;&gt; </span>matplotlib.pyplot.show()
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> FIGURES AND SUBPLOTS</p>
+<p><strong>WE'RE WORKING IN A SCRIPT FOR THE FIRST TIME</strong></p>
+<ul>
+<li><strong>Exit <code>Python</code></strong></li>
+<li><strong>Open a new script called <code>subplots.py</code></strong></li>
+</ul>
+<pre class="hljs"><code><div>$ nano subplots.py
+</div></code></pre>
+<ul>
+<li>
+<p><strong>You're now in the <code>nano</code> editor</strong></p>
+</li>
+<li>
+<p>We write the <code>Python</code> code here, then save it, exit, and run it with <code>python subplots.py</code>.</p>
+</li>
+<li>
+<p><strong>DESCRIBE SCRIPT</strong></p>
+</li>
+<li>
+<p>First we <strong>import packages</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> numpy
+<span class="hljs-keyword">import</span> matplotlib.pyplot
+</div></code></pre>
+<ul>
+<li>Next we <strong>load data</strong>
+<ul>
+<li>Comments tell us why/what we are doing</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Load inflammation data</span>
+data = numpy.loadtxt(fname=<span class="hljs-string">'data/inflammation-01.csv'</span>, delimiter=<span class="hljs-string">','</span>)
+</div></code></pre>
+<ul>
+<li>We can put all three plots we just drew into a single figure</li>
+<li>To do this, we use <code>matplotlib</code> to <strong>create a figure</strong>, and put it in a variable called <code>fig</code>
+<ul>
+<li>the <code>figsize</code> argument sets the <code>(width, height)</code> of the figure in inches</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Create a figure</span>
+fig = matplotlib.pyplot.figure(figsize=(<span class="hljs-number">10.0</span>, <span class="hljs-number">3.0</span>))
+</div></code></pre>
+<ul>
+<li>We then <strong>create three <em>axes</em></strong>
+<ul>
+<li>these are the variables that hold the individual plots</li>
+<li>one axis per plot</li>
+</ul>
+</li>
+<li>Using the <code>.add_subplot()</code> function, we need to specify three things:
+-* number of rows, number of columns, which cell this figure goes into
+<ul>
+<li><strong>THIS NEEDS TO BE DRAWN OUT ON THE BOARD</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Add subplots for statistical summaries</span>
+axes1 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>) 
+axes2 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+axes3 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>)
+</div></code></pre>
+<ul>
+<li>Once we've created our plot axes, we can add labels and plots to each of them in turn</li>
+<li>Plot axes properties are usually changed using the <code>.set_&lt;something&gt;()</code> syntax
+<ul>
+<li>Here we're changing only the label on the <em>y</em>-axis</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Add y-axis label to each subplot</span>
+axes1.set_ylabel(<span class="hljs-string">'average'</span>)
+axes2.set_ylabel(<span class="hljs-string">'max'</span>)
+axes3.set_ylabel(<span class="hljs-string">'min'</span>)
+</div></code></pre>
+<ul>
+<li>We can plot on an axis by using its <code>.plot()</code> function
+<ul>
+<li>As before, we can pass the output from the <code>numpy.max()</code> function directly</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Plot the summary data</span>
+axes1.plot(numpy.mean(data, axis=<span class="hljs-number">0</span>))
+axes2.plot(numpy.max(data, axis=<span class="hljs-number">0</span>))
+axes3.plot(numpy.min(data, axis=<span class="hljs-number">0</span>))
+</div></code></pre>
+<ul>
+<li>We'll tighten up the presentation by using <code>fig.tight_layout()</code>
+<ul>
+<li>this is a function that moves the axes until they are visually pleasing.</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Tidy the figure</span>
+fig.tight_layout()
+</div></code></pre>
+<ul>
+<li>Finally, we'll show the figure in the interactive window</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Show figure in the interactive window</span>
+matplotlib.pyplot.show()
+</div></code></pre>
+<ul>
+<li>
+<p><strong>Write the file</strong></p>
+</li>
+<li>
+<p><strong>Save the file</strong></p>
+</li>
+<li>
+<p><strong>Exit to terminal</strong></p>
+</li>
+<li>
+<p>Now we run the script with <code>python subplots.py</code></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ python subplots.py
+</div></code></pre>
+<ul>
+<li><strong>This is the most demanding code you have written, so far! ROUND OF APPLAUSE FOR YOURSELVES!</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Exercise 05 (5min)</p>
+<ul>
+<li>
+<p>Note that it helps to change <code>figsize</code></p>
+</li>
+<li>
+<p>Otherwise the only change is in <code>add_subplot()</code></p>
+</li>
+<li>
+<p><code>cp</code> the file to prepare for a new script</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ cp subplots.py exercise_05.py
+$ nano exercise_05.py
+</div></code></pre>
+<ul>
+<li>New script:</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> numpy
+<span class="hljs-keyword">import</span> matplotlib.pyplot
+
+<span class="hljs-comment"># Load inflammation data</span>
+data = numpy.loadtxt(fname=<span class="hljs-string">'data/inflammation-01.csv'</span>, delimiter=<span class="hljs-string">','</span>)
+
+<span class="hljs-comment"># Create a figure</span>
+fig = matplotlib.pyplot.figure(figsize=(<span class="hljs-number">3.0</span>, <span class="hljs-number">10.0</span>))
+
+<span class="hljs-comment"># Add subplots for statistical summaries</span>
+axes1 = fig.add_subplot(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+axes2 = fig.add_subplot(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+axes3 = fig.add_subplot(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>)
+
+<span class="hljs-comment"># Add y-axis label to each subplot</span>
+axes1.set_ylabel(<span class="hljs-string">'average'</span>)
+axes2.set_ylabel(<span class="hljs-string">'max'</span>)
+axes3.set_ylabel(<span class="hljs-string">'min'</span>)
+
+<span class="hljs-comment"># Plot the summary data</span>
+axes1.plot(numpy.mean(data, axis=<span class="hljs-number">0</span>))
+axes2.plot(numpy.max(data, axis=<span class="hljs-number">0</span>))
+axes3.plot(numpy.min(data, axis=<span class="hljs-number">0</span>))
+
+<span class="hljs-comment"># Tidy the figure</span>
+fig.tight_layout()
+
+<span class="hljs-comment"># Show figure in the interactive window</span>
+matplotlib.pyplot.show()
+</div></code></pre>
+<ul>
+<li>Execute script</li>
+</ul>
+<pre class="hljs"><code><div>$ python subplots.py
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<ul>
+<li><strong>NOW, TO DO <em>EVEN MORE</em> INTERESTING THINGS, WE NEED TO LEARN A LITTLE MORE ABOUT PROGRAMMING</strong></li>
+</ul>
+<hr>
+<h2>SECTION 05: <code>for</code> loops</h2>
+<hr>
+<p><strong>SLIDE</strong> Motivation</p>
+<ul>
+<li>We wrote code that plots values of interest from our dataset</li>
+<li><strong>BUT</strong> soon we're going to get <strong>dozens of datasets</strong> to analyse</li>
+<li>So, we need to tell the computer to <strong>repeat our plots and analysis on each dataset</strong></li>
+<li>We're going to do this with <code>for</code> loops</li>
+</ul>
+<ul>
+<li><strong>NOTE: <code>for</code> loops are a fundamental method for program control across nearly every programming language</strong></li>
+<li><strong>NOTE: <code>for</code> loops in python work just like those the learners saw in <code>bash</code>, but are syntactically different</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Spelling bee</p>
+<ul>
+<li>
+<p>If we wanted to spell a word, like 'lead' one letter at a time</p>
+</li>
+<li>
+<p><strong>START UP A PYTHON CONSOLE</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ python
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>word = <span class="hljs-string">"lead"</span>
+</div></code></pre>
+<ul>
+<li>We could <em>index</em> each letter in turn (just like elements of an array)</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(word[<span class="hljs-number">0</span>])
+l
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(word[<span class="hljs-number">1</span>])
+e
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(word[<span class="hljs-number">2</span>])
+a
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(word[<span class="hljs-number">3</span>])
+d
+</div></code></pre>
+<ul>
+<li>But this has some problems - <strong>ASK LEARNERS WHAT PROBLEMS THEY SEE</strong>
+<ul>
+<li>The <strong>approach doesn't scale</strong> - what if our word is hundreds of letters long?</li>
+<li><strong>What if our word is longer than the indices?</strong> We don't get all the data; if it's shorter, we get an error.</li>
+<li><strong>demonstrate with <code>oxygen</code> and <code>tin</code> - MODIFY THE WORD IN PLACE</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>word = <span class="hljs-string">"tin"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(word[<span class="hljs-number">3</span>])
+Traceback (most recent call last):
+  File <span class="hljs-string">"&lt;stdin&gt;"</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+IndexError: string index out of range
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>for</code> loops</p>
+<ul>
+<li>
+<p><code>for</code> loops perform an operation <strong><em>for</em> every item <em>in</em> a collection</strong></p>
+</li>
+<li>
+<p><strong>NOTE: importance of the <code>tab</code> character and syntactic whitespace</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>word = <span class="hljs-string">"lead"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> word:
+<span class="hljs-meta">... </span>    print(char)
+<span class="hljs-meta">... </span>
+l
+e
+a
+d
+</div></code></pre>
+<ul>
+<li>Why is this better? <strong>ASK THE LEARNERS</strong>
+<ul>
+<li><strong>It's shorter code</strong> (less opportunity for error)</li>
+<li><strong>It's more flexible and robust</strong> - it doesn't matter how long <code>word</code> is, the code will still spell it out one letter at a time</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>word = <span class="hljs-string">"oxygen"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> word:
+<span class="hljs-meta">... </span>    print(char)
+<span class="hljs-meta">... </span>
+o
+x
+y
+g
+e
+n
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>for</code> loop syntax</p>
+<ul>
+<li>
+<p>The general loop syntax is defined by a <code>for</code> statement, and a <em>code block</em></p>
+<ul>
+<li>The <code>for</code> loop <strong>statement ends in a colon, <code>:</code></strong></li>
+<li>The <em>code block</em> is <strong>indented</strong> with a <code>tab</code> (<code>\t</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Everything indented immediately below the <code>for</code> statement is part of the <code>for</code> loop</strong></p>
+</li>
+<li>
+<p><strong>There is no command or statement to signify the end of the loop body - only a change in indentation</strong></p>
+</li>
+<li>
+<p>This is quite different from most other languages (and some people hate <code>Python</code> because of it)</p>
+</li>
+<li>
+<p><strong>If further example needed, put the code below in a script</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> word:
+    print(char)
+    print(<span class="hljs-string">"I'm in the loop"</span>)
+    <span class="hljs-comment"># This is a comment</span>
+    print(<span class="hljs-string">"Still in the loop"</span>)
+    
+    print(<span class="hljs-string">"I'm in the loop as well"</span>)
+print(<span class="hljs-string">"Not in the loop"</span>)
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Counting with a <code>for</code> loop</p>
+<ul>
+<li>Code in a <code>for</code> loop can see and modify variables defined outside the loop</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>length = <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> vowel <span class="hljs-keyword">in</span> <span class="hljs-string">'aeiou'</span>:
+<span class="hljs-meta">... </span>    length = length + <span class="hljs-number">1</span>
+<span class="hljs-meta">... </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"There are"</span>, length, <span class="hljs-string">"vowels"</span>) 
+There are <span class="hljs-number">5</span> vowels
+</div></code></pre>
+<ul>
+<li><strong>Ask the learners what output they expect</strong></li>
+<li>Talk through the operations of the loop, if necessary</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>for</code> loop variables</p>
+<ul>
+<li>The <em>loop variable</em> gets updated once per cycle of the loop</li>
+<li>The <em>loop variable</em> also still exists once the loop is finished</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>letter = <span class="hljs-string">"z"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(letter)
+z
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> letter <span class="hljs-keyword">in</span> <span class="hljs-string">"abc"</span>:
+<span class="hljs-meta">... </span>    print(letter)
+<span class="hljs-meta">... </span>
+a
+b
+c
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"after the loop, letter is:"</span>, letter)
+after the loop, letter <span class="hljs-keyword">is</span>: c
+</div></code></pre>
+<ul>
+<li><strong>ASK THE LEARNERS WHAT OUTPUT THEY EXPECT</strong>
+<ul>
+<li>The value of <code>letter</code> is <code>c</code>, the last updated value in the loop - not <code>z</code>, which would be the case if the loop variable only had scope within the loop</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>range()</code></p>
+<ul>
+<li>The <code>range()</code> function creates a <strong>sequence of numbers.</strong></li>
+<li>The sequence depends on the number and value of arguments given</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>seq = range(<span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"Range is:"</span>, seq)
+Range <span class="hljs-keyword">is</span>: range(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> seq:
+<span class="hljs-meta">... </span>    print(val)
+<span class="hljs-meta">... </span>
+<span class="hljs-number">0</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+</div></code></pre>
+<ul>
+<li><strong>Substitute other ranges and run again</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>seq = range(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"Range is:"</span>, seq)
+Range <span class="hljs-keyword">is</span>: range(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> seq:
+<span class="hljs-meta">... </span>    print(val)
+<span class="hljs-meta">... </span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>seq = range(<span class="hljs-number">3</span>, <span class="hljs-number">10</span>, <span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"Range is:"</span>, seq)
+Range <span class="hljs-keyword">is</span>: range(<span class="hljs-number">3</span>, <span class="hljs-number">10</span>, <span class="hljs-number">3</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> seq:
+<span class="hljs-meta">... </span>    print(val)
+<span class="hljs-meta">... </span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">6</span>
+<span class="hljs-number">9</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>seq = range(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"Range is:"</span>, seq)
+Range <span class="hljs-keyword">is</span>: range(<span class="hljs-number">10</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> seq:
+<span class="hljs-meta">... </span>    print(val)
+<span class="hljs-meta">... </span>
+<span class="hljs-number">10</span>
+<span class="hljs-number">9</span>
+<span class="hljs-number">8</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">6</span>
+<span class="hljs-number">5</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">1</span>
+</div></code></pre>
+<ul>
+<li>
+<p>A single value <em>n</em> gives the sequence <code>[0, ..., n-1]</code></p>
+</li>
+<li>
+<p>Two values: <em>m, n</em> gives the sequence <code>[m, ..., n-1]</code></p>
+</li>
+<li>
+<p>Three values: <em>m, n, p</em> gives the sequence <code>[m, m+p, ..., n-1]</code> and skips <code>n-1</code> if it's not in the sequence.</p>
+</li>
+<li>
+<p><strong>NOTE: <code>range()</code> returns a <code>range</code> type that can be iterated over.</strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Exercise 06 (5min)</p>
+<ul>
+<li>Tell learners that you can <strong>add strings</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>instr = <span class="hljs-string">"Newton"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>outstr = <span class="hljs-string">""</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> instr:
+<span class="hljs-meta">... </span>    outstr = char + outstr
+<span class="hljs-meta">... </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(outstr)
+notweN
+</div></code></pre>
+<hr>
+<h2>SECTION 06: <code>list</code>s</h2>
+<hr>
+<p><strong>SLIDE</strong> Lists</p>
+<ul>
+<li>Lists are defined as ordered lists of values
+<ul>
+<li>enclosed in <strong>square brackets</strong></li>
+<li>separated by commas</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>odds = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"odds are:"</span>, odds)
+odds are: [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>]
+</div></code></pre>
+<ul>
+<li>They can be <strong>indexed and sliced</strong>, as seen for arrays</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'first and last:'</span>, odds[<span class="hljs-number">0</span>], odds[<span class="hljs-number">-1</span>])
+first <span class="hljs-keyword">and</span> last: <span class="hljs-number">1</span> <span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(odds[<span class="hljs-number">2</span>:])
+[<span class="hljs-number">5</span>, <span class="hljs-number">7</span>]
+</div></code></pre>
+<ul>
+<li>They can be iterated over, in `for' loops</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> odds:
+<span class="hljs-meta">... </span>    print(number)
+<span class="hljs-meta">... </span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">5</span>
+<span class="hljs-number">7</span>
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Mutability</p>
+<ul>
+<li>
+<p><code>Python</code> has a concept of <strong>mutability</strong>.</p>
+<ul>
+<li>Items that can be modified in-place are <em>mutable</em>.</li>
+<li>Those that can't are <em>immutable</em>.</li>
+</ul>
+</li>
+<li>
+<p>Lists are <em>mutable</em>, strings are <em>immutable</em>.</p>
+<ul>
+<li><code>list</code>s and <code>string</code>s are both sequences, <strong>BUT</strong> you can change the elements in a list, after it is created: <strong>lists are mutable</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>names = [<span class="hljs-string">"Curie"</span>, <span class="hljs-string">"Darwing"</span>, <span class="hljs-string">"Turing"</span>] <span class="hljs-comment"># typo in Darwin's name</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"names is originally:"</span>, names)
+names <span class="hljs-keyword">is</span> originally: [<span class="hljs-string">'Curie'</span>, <span class="hljs-string">'Darwing'</span>, <span class="hljs-string">'Turing'</span>]
+</div></code></pre>
+<ul>
+<li><strong>We have a typo - let's correct it</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>names[<span class="hljs-number">1</span>] = <span class="hljs-string">'Darwin'</span>    <span class="hljs-comment"># correct the name</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'final value of names:'</span>, names)
+final value of names: [<span class="hljs-string">'Curie'</span>, <span class="hljs-string">'Darwin'</span>, <span class="hljs-string">'Turing'</span>]
+</div></code></pre>
+<ul>
+<li><code>string</code>s are <strong>NOT</strong> mutable</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>name = <span class="hljs-string">"darwin"</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>name[<span class="hljs-number">0</span>] = <span class="hljs-string">"D"</span>
+Traceback (most recent call last):
+  File <span class="hljs-string">"&lt;stdin&gt;"</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+TypeError: <span class="hljs-string">'str'</span> object does <span class="hljs-keyword">not</span> support item assignment
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Changer danger</p>
+<ul>
+<li>
+<p><strong>There are risks associated with modifying lists in-place</strong></p>
+</li>
+<li>
+<p>Rather than make copies of lists, when assigned to more than one variable, <code>Python</code> will make <em>reference</em> to the original list</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>my_list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>your_list = my_list
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"my list:"</span>, my_list)
+my list: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>my_list[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>
+</div></code></pre>
+<ul>
+<li><strong>ASK LEARNERS WHAT THEY THINK <code>your_list</code> contains</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"your list:"</span>, your_list)
+your list: [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+</div></code></pre>
+<ul>
+<li><strong>If two variables refer to the same list, any changes to that list are reflected in both variables.</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> List copies</p>
+<ul>
+<li>To avoid this kind of effect:
+<ul>
+<li>make a <em>copy</em> of a <code>list</code> by <em>slicing</em> it**, or using the <code>list()</code> function that returns a new list</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>my_list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]           <span class="hljs-comment"># original list</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>your_list = my_list[:]           <span class="hljs-comment"># copy 1</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>your_other_list = list(my_list)  <span class="hljs-comment"># copy 2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"my_list:"</span>, my_list)
+my_list: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>my_list[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"my_list:"</span>, my_list)
+my_list: [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"your_list:"</span>, your_list)
+your_list: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"your_other_list:"</span>, your_list)
+your_other_list: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> <code>list</code> functions</p>
+<ul>
+<li>
+<p><strong><code>list</code>s are <code>Python</code> objects and have a number of useful functions (called <em>methods</em>) to modify their contents</strong></p>
+</li>
+<li>
+<p><code>.append()</code> adds a value to the end of the list</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(odds)
+[<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>odds.append(<span class="hljs-number">9</span>)
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"odds after adding a value:"</span>, odds)
+odds after adding a value: [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+</div></code></pre>
+<ul>
+<li><code>.reverse()</code> reverses the order of list items <strong>in place</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>odds.reverse()
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"odds after reversing the list:"</span>, odds)
+odds after reversing the list: [<span class="hljs-number">9</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>]
+</div></code></pre>
+<ul>
+<li><code>.pop()</code> returns the last item in the list, and removes it from the list</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>odds.pop()
+<span class="hljs-number">1</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">"odds after popping:"</span>, odds)
+odds after popping: [<span class="hljs-number">9</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">3</span>]
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Overloading</p>
+<ul>
+<li><em>Overloading</em> refers to an <em>operator</em> (e.g. <code>+</code>) having more than one meaning, depending on the thing it operates on.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>vowels = [<span class="hljs-string">'a'</span>, <span class="hljs-string">'e'</span>, <span class="hljs-string">'i'</span>, <span class="hljs-string">'o'</span>, <span class="hljs-string">'u'</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>vowels_welsh = [<span class="hljs-string">'a'</span>, <span class="hljs-string">'e'</span>, <span class="hljs-string">'i'</span>, <span class="hljs-string">'o'</span>, <span class="hljs-string">'u'</span>, <span class="hljs-string">'w'</span>, <span class="hljs-string">'y'</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(vowels + vowels_welsh)
+[<span class="hljs-string">'a'</span>, <span class="hljs-string">'e'</span>, <span class="hljs-string">'i'</span>, <span class="hljs-string">'o'</span>, <span class="hljs-string">'u'</span>, <span class="hljs-string">'a'</span>, <span class="hljs-string">'e'</span>, <span class="hljs-string">'i'</span>, <span class="hljs-string">'o'</span>, <span class="hljs-string">'u'</span>, <span class="hljs-string">'w'</span>, <span class="hljs-string">'y'</span>]
+</div></code></pre>
+<ul>
+<li>We can add (<code>+</code>) and <strong>even multiply</strong> (<code>*</code>) lists, even though they're not really arithmetic operations
+<strong>NOTE: multiplication of lists does not work like multiplication of <code>numpy</code> arrays</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>counts = [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>repeats = counts * <span class="hljs-number">2</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(repeats)
+[<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>]
+</div></code></pre>
+<ul>
+<li><strong>Ask the learners what 'multiplication' (<code>*</code>) does for lists</strong></li>
+</ul>
+<hr>
+<p>## SECTION 07: Making choices</p>
+<hr>
+<p><strong>SLIDE</strong> Conditionals</p>
+<ul>
+<li>We often want the computer to do <code>&lt;something&gt;</code> <strong><code>if</code></strong> some condition is <strong>true</strong></li>
+<li>To do this, we can use an <strong><code>if</code> statement</strong>
+<ul>
+<li><strong><code>if</code> statements end in a colon (<code>:</code>)</strong></li>
+<li><strong>they also have a <em>condition</em></strong> - the <em>condition</em> is evaluated and, if found to be <code>true</code>, the code block is executed</li>
+<li>The code block is <em>indented</em> as was the case with the <code>for</code> loop</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>This is an almost universal construct in programming languages</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>num = <span class="hljs-number">37</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">100</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'greater'</span>)
+<span class="hljs-meta">... </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>num = <span class="hljs-number">149</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">100</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'greater'</span>)
+<span class="hljs-meta">... </span>
+greater
+</div></code></pre>
+<ul>
+<li><strong>Any condition</strong> that might evaluate to <code>True</code> or <code>False</code> can be used:</li>
+<li><strong>SHOW A DIFFERENT TEST</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> <span class="hljs-string">'atlas'</span> == <span class="hljs-string">'atlas'</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">"The same"</span>)
+<span class="hljs-meta">... </span>
+The same
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>if-else</code> statements</p>
+<ul>
+<li>
+<p><strong>An <code>if</code> statement executes code if the condition evaluates as <code>true</code></strong></p>
+<ul>
+<li>But <strong>what if the condition evaluates as <code>false</code>?</strong></li>
+</ul>
+</li>
+<li>
+<p>The <strong><code>else</code> structure</strong> is like the <code>if</code> structure</p>
+<ul>
+<li>it <strong>ends in a colon (<code>:</code>)</strong></li>
+<li>the <strong>indented code block beneath it executes if the condition is <code>false</code></strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>num = <span class="hljs-number">37</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">100</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'greater'</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">else</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'not greater'</span>)
+<span class="hljs-meta">... </span>
+<span class="hljs-keyword">not</span> greater
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Conditional logic</p>
+<ul>
+<li><strong>OPTIONALLY SHOW THIS SLIDE</strong></li>
+</ul>
+<ul>
+<li>Describe flowchart</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>if-elif-else</code> conditionals</p>
+<ul>
+<li>We can <strong>chain conditional tests together with <code>elif</code> (short for <code>else if</code>)</strong></li>
+<li>The <code>elif</code> statement structure is the same as the <code>if</code> statement structure
+<ul>
+<li>the indented code block is executed if the condition is true, and <strong>no previous conditions have been met</strong>.</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>num = <span class="hljs-number">-3</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">0</span>:
+<span class="hljs-meta">... </span>    print(num, <span class="hljs-string">"is positive"</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">elif</span> num == <span class="hljs-number">0</span>:
+<span class="hljs-meta">... </span>    print(num, <span class="hljs-string">"is zero"</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">else</span>:
+<span class="hljs-meta">... </span>    print(num, <span class="hljs-string">"is negative"</span>)
+<span class="hljs-meta">... </span>
+<span class="hljs-number">-3</span> <span class="hljs-keyword">is</span> negative
+</div></code></pre>
+<ul>
+<li><strong>NOTE: the test for equality is a double-equals!</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> COMBINING CONDITIONS</p>
+<ul>
+<li>We can <strong>combine conditions using <em>Boolean Logic</em></strong>
+<ul>
+<li>Operators include <code>and</code>, <code>or</code> and <code>not</code></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> (<span class="hljs-number">1</span> &gt; <span class="hljs-number">0</span>) <span class="hljs-keyword">and</span> (<span class="hljs-number">-1</span> &gt; <span class="hljs-number">0</span>):
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'both parts are true'</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">else</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'at least one part is false'</span>)
+<span class="hljs-meta">... </span>
+at least one part <span class="hljs-keyword">is</span> false
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> (<span class="hljs-number">4</span> &gt; <span class="hljs-number">0</span>) <span class="hljs-keyword">and</span> (<span class="hljs-number">2</span> &gt; <span class="hljs-number">0</span>):
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'both parts are true'</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">else</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'at least one part is false'</span>)
+<span class="hljs-meta">... </span>
+both parts are true
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">if</span> (<span class="hljs-number">4</span> &gt; <span class="hljs-number">0</span>) <span class="hljs-keyword">or</span> (<span class="hljs-number">2</span> &gt; <span class="hljs-number">0</span>):
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'at least one part is true'</span>)
+<span class="hljs-meta">... </span><span class="hljs-keyword">else</span>:
+<span class="hljs-meta">... </span>    print(<span class="hljs-string">'both parts are false'</span>)
+<span class="hljs-meta">... </span>
+at least one part <span class="hljs-keyword">is</span> true
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> Exercise 07 (5min)</p>
+<ul>
+<li>
+<p><strong>MCQ: Put up four stickies</strong></p>
+</li>
+<li>
+<p>Solution: <code>C</code></p>
+</li>
+<li>
+<p><strong>NOTE: There are two <code>elif</code>s and no <code>else</code></strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> More operators</p>
+<ul>
+<li>These are <strong>two operators</strong> you will meet and use frequently
+<ul>
+<li><code>==</code> <strong>(double-equals) is the equality operator</strong>, and returns <code>True</code> if the left-hand-side value is equal to the right-hand-side value</li>
+<li><strong>we've already been using this</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-number">1</span> == <span class="hljs-number">1</span>)
+<span class="hljs-keyword">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-number">1</span> ==<span class="hljs-number">2</span>)
+<span class="hljs-keyword">False</span>
+</div></code></pre>
+<ul>
+<li><code>in</code> is the <strong>membership operator</strong>, and returns <code>True</code> if the left-hand-side value is in the right-hand-side value (which should be a collection)</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'a'</span> <span class="hljs-keyword">in</span> <span class="hljs-string">'toast'</span>)
+<span class="hljs-keyword">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-string">'b'</span> <span class="hljs-keyword">in</span> <span class="hljs-string">'toast'</span>)
+<span class="hljs-keyword">False</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-number">1</span> <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-keyword">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-number">1</span> <span class="hljs-keyword">in</span> range(<span class="hljs-number">3</span>))
+<span class="hljs-keyword">True</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(<span class="hljs-number">1</span> <span class="hljs-keyword">in</span> range(<span class="hljs-number">2</span>, <span class="hljs-number">10</span>))
+<span class="hljs-keyword">False</span>
+</div></code></pre>
+<hr>
+<p>## SECTION 08: Analysing multiple files</p>
+<hr>
+<p><strong>SLIDE</strong> Analysing multiple files</p>
+<ul>
+<li>
+<p>We have <strong>received several files of data</strong> from the inflammation studies, and we would like to <strong>perform the same operations on each of them</strong>.</p>
+</li>
+<li>
+<p>We have <strong>learned how to open files, read data, visualise data, loop over data, and make decisions</strong> based on that content.</p>
+</li>
+<li>
+<p>We're going to write a new script to do this</p>
+<ul>
+<li><strong>Exit <code>Python</code> console</strong></li>
+<li><strong>Start new script</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ nano analyse_files.py
+</div></code></pre>
+<ul>
+<li>Now we need to know how to <strong>interact with the <em>filesystem</em></strong> to get our data files.</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> The <code>os</code> module</p>
+<ul>
+<li>
+<p>To interact with the filesystem, <strong>we need to import the <code>os</code> module</strong></p>
+</li>
+<li>
+<p>This allows us to interact with the filesystem in the same way, regardless of the operating system we work on! <strong>INTEROPERABILITY AND REPRODUCIBILITY</strong></p>
+</li>
+<li>
+<p><strong>Put imports at the top of the script</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> matplotlib.pyplot
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> os
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>os.listdir()</code></p>
+<ul>
+<li>
+<p>The <code>os.listdir()</code> function lists the contents of a directory</p>
+</li>
+<li>
+<p><strong>SAVE AND EXIT SCRIPT</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ python
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> os
+<span class="hljs-meta">&gt;&gt;&gt; </span>os.listdir(<span class="hljs-string">'.'</span>)
+[<span class="hljs-string">'subplots.py'</span>, <span class="hljs-string">'code'</span>, <span class="hljs-string">'exercise_05.py'</span>, <span class="hljs-string">'analyse_files.py'</span>, <span class="hljs-string">'data'</span>]
+</div></code></pre>
+<p>Our data is in the <code>'data'</code> directory</p>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>os.listdir(<span class="hljs-string">'data'</span>)
+[<span class="hljs-string">'inflammation-05.csv'</span>, <span class="hljs-string">'inflammation-11.csv'</span>, <span class="hljs-string">'inflammation-10.csv'</span>, <span class="hljs-string">'inflammation-04.csv'</span>, <span class="hljs-string">'inflammation-12.csv'</span>, <span class="hljs-string">'inflammation-06.csv'</span>, <span class="hljs-string">'inflammation-07.csv'</span>, <span class="hljs-string">'inflammation-03.csv'</span>, <span class="hljs-string">'small-02.csv'</span>, <span class="hljs-string">'small-03.csv'</span>, <span class="hljs-string">'inflammation-02.csv'</span>, <span class="hljs-string">'small-01.csv'</span>, <span class="hljs-string">'inflammation-01.csv'</span>, <span class="hljs-string">'inflammation-09.csv'</span>, <span class="hljs-string">'inflammation-08.csv'</span>]
+</div></code></pre>
+<ul>
+<li><strong>We only want <code>inflammation</code> data</strong> so we would like to ignore the <code>small</code> files
+<ul>
+<li>We want to turn the list from <code>os.listdir()</code> into a list that contains only <code>inflammation*</code> files: <strong>use <code>for</code> loop and <code>if</code> to filter</strong></li>
+<li>The list can be filtered with a <code>for</code> loop or <em>list comprehension</em></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> os.listdir(<span class="hljs-string">'data'</span>):
+<span class="hljs-meta">... </span>    <span class="hljs-keyword">if</span> <span class="hljs-string">'inflammation'</span> <span class="hljs-keyword">in</span> file:
+<span class="hljs-meta">... </span>            print(file)
+<span class="hljs-meta">... </span>
+inflammation<span class="hljs-number">-05.</span>csv
+inflammation<span class="hljs-number">-11.</span>csv
+inflammation<span class="hljs-number">-10.</span>csv
+inflammation<span class="hljs-number">-04.</span>csv
+inflammation<span class="hljs-number">-12.</span>csv
+inflammation<span class="hljs-number">-06.</span>csv
+inflammation<span class="hljs-number">-07.</span>csv
+inflammation<span class="hljs-number">-03.</span>csv
+inflammation<span class="hljs-number">-02.</span>csv
+inflammation<span class="hljs-number">-01.</span>csv
+inflammation<span class="hljs-number">-09.</span>csv
+inflammation<span class="hljs-number">-08.</span>csv
+</div></code></pre>
+<ul>
+<li>We'd like to work with this set of files, so we store it in a variable, called <code>files</code>.
+<ul>
+<li>A suitable data type here is a <code>list</code>, and we can populate it one file at a time, using <code>.append()</code></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>files = []
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> file <span class="hljs-keyword">in</span> os.listdir(<span class="hljs-string">'data'</span>):
+<span class="hljs-meta">... </span>    <span class="hljs-keyword">if</span> <span class="hljs-string">'inflammation'</span> <span class="hljs-keyword">in</span> file:
+<span class="hljs-meta">... </span>            files.append(file)
+<span class="hljs-meta">... </span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>print(files)
+[<span class="hljs-string">'inflammation-05.csv'</span>, <span class="hljs-string">'inflammation-11.csv'</span>, <span class="hljs-string">'inflammation-10.csv'</span>, <span class="hljs-string">'inflammation-04.csv'</span>, <span class="hljs-string">'inflammation-12.csv'</span>, <span class="hljs-string">'inflammation-06.csv'</span>, <span class="hljs-string">'inflammation-07.csv'</span>, <span class="hljs-string">'inflammation-03.csv'</span>, <span class="hljs-string">'inflammation-02.csv'</span>, <span class="hljs-string">'inflammation-01.csv'</span>, <span class="hljs-string">'inflammation-09.csv'</span>, <span class="hljs-string">'inflammation-08.csv'</span>]
+</div></code></pre>
+<ul>
+<li><strong>Let's put this in our script</strong>
+<ul>
+<li><strong>EXIT THE CONSOLE</strong></li>
+<li><strong>OPEN THE SCRIPT</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>nano analyse_files.py
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># Get a list of inflammation data files</span>
+files = []
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> os.listdir(<span class="hljs-string">'data'</span>):
+  <span class="hljs-keyword">if</span> <span class="hljs-string">'inflammation'</span> <span class="hljs-keyword">in</span> fname:
+    files.append(fname)
+print(<span class="hljs-string">"Inflammation data files:"</span>, files)
+</div></code></pre>
+<ul>
+<li><strong>EXIT EDITOR AND RUN THE SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+Inflammation data files: [<span class="hljs-string">'inflammation-05.csv'</span>, <span class="hljs-string">'inflammation-11.csv'</span>, <span class="hljs-string">'inflammation-10.csv'</span>, <span class="hljs-string">'inflammation-04.csv'</span>, <span class="hljs-string">'inflammation-12.csv'</span>, <span class="hljs-string">'inflammation-06.csv'</span>, <span class="hljs-string">'inflammation-07.csv'</span>, <span class="hljs-string">'inflammation-03.csv'</span>, <span class="hljs-string">'inflammation-02.csv'</span>, <span class="hljs-string">'inflammation-01.csv'</span>, <span class="hljs-string">'inflammation-09.csv'</span>, <span class="hljs-string">'inflammation-08.csv'</span>]
+</div></code></pre>
+<ul>
+<li><strong>QUESTION: what's wrong with the filenames?</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>os.path.join()</code></p>
+<ul>
+<li>
+<p>The <strong><code>os.listdir()</code> function only returns filenames</strong>, not the <em>path</em> (relative or absolute) to those files.</p>
+<ul>
+<li><strong>WE NEED THE FULL PATH TO A FILE TO BE ABLE TO USE IT</strong></li>
+</ul>
+</li>
+<li>
+<p>To <strong>construct a path</strong>, we can use the <code>os.path.join()</code> function.</p>
+<ul>
+<li><code>os.path.join()</code> takes directory and file names, and returns a path built from them as a string, suitable for the underlying operating system.</li>
+<li><strong>This is useful for making code shareable and usable on all OS/computers</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>START PYTHON CONSOLE</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>python
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">&gt;&gt;&gt; </span>os.path.join(<span class="hljs-string">'parent'</span>, <span class="hljs-string">'child'</span>, <span class="hljs-string">'file.txt'</span>)
+<span class="hljs-string">'parent/child/file.txt'</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>os.path.join(<span class="hljs-string">'data'</span>, <span class="hljs-string">'inflammation-01.csv'</span>)
+<span class="hljs-string">'data/inflammation-01.csv'</span>
+</div></code></pre>
+<ul>
+<li><strong>CLOSE CONSOLE AND OPEN EDITOR</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ nano analyse_files.py
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># Get a list of inflammation data files</span>
+files = []
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> os.listdir(<span class="hljs-string">'data'</span>):
+  <span class="hljs-keyword">if</span> <span class="hljs-string">'inflammation'</span> <span class="hljs-keyword">in</span> fname:
+    files.append(os.path.join(<span class="hljs-string">'data'</span>, fname))
+print(<span class="hljs-string">"Inflammation data files:"</span>, files)
+</div></code></pre>
+<ul>
+<li><strong>SAVE AND EXIT SCRIPT, THEN RUN</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+Inflammation data files: [<span class="hljs-string">'data/inflammation-05.csv'</span>, <span class="hljs-string">'data/inflammation-11.csv'</span>, <span class="hljs-string">'data/inflammation-10.csv'</span>, <span class="hljs-string">'data/inflammation-04.csv'</span>, <span class="hljs-string">'data/inflammation-12.csv'</span>, <span class="hljs-string">'data/inflammation-06.csv'</span>, <span class="hljs-string">'data/inflammation-07.csv'</span>, <span class="hljs-string">'data/inflammation-03.csv'</span>, <span class="hljs-string">'data/inflammation-02.csv'</span>, <span class="hljs-string">'data/inflammation-01.csv'</span>, <span class="hljs-string">'data/inflammation-09.csv'</span>, <span class="hljs-string">'data/inflammation-08.csv'</span>]
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Visualising the data</p>
+<ul>
+<li>Now <strong>we have all the tools we need</strong> to load all the inflammation data files, and visualise the mean, minimum and maximum values in an array of plots.
+<ul>
+<li>We can get a <strong>list of paths to the data files</strong> with <code>os</code> and a <em>list comprehension</em></li>
+<li>We can <strong>load data from a file</strong> with <code>numpy.loadtxt()</code></li>
+<li>We can <strong>calculate summary statistics</strong> with <code>numpy.mean()</code>, <code>numpy.max()</code>, etc.</li>
+<li>We can <strong>create figures</strong> with <code>matplotlib</code>, and arrays of figures with <code>.add_subplot()</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Visualisation code</p>
+<ul>
+<li><strong>BUILD THE CODE IN STAGES</strong>
+<ul>
+<li><strong>OPEN THE SCRIPT IN THE EDITOR</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ nano analyse_files.py
+</div></code></pre>
+<ul>
+<li><strong>1 - show that we see each filename in turn</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files: 
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+</div></code></pre>
+<ul>
+<li><strong>2 - load the data in each file</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files: 
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+</div></code></pre>
+<ul>
+<li><strong>3 - create a figure for each file</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files: 
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-comment"># create figure and three axes </span>
+    fig = plt.figure(figsize=(<span class="hljs-number">10.0</span>, <span class="hljs-number">3.0</span>))
+    axes1 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
+    axes2 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+    axes3 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>)
+</div></code></pre>
+<ul>
+<li><strong>4 - decorate the axes</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files: 
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-comment"># create figure and three axes </span>
+    fig = plt.figure(figsize=(<span class="hljs-number">10.0</span>, <span class="hljs-number">3.0</span>))
+    axes1 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
+    axes2 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+    axes3 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>)
+
+    <span class="hljs-comment"># decorate the axes</span>
+    axes1.set_ylabel(<span class="hljs-string">'average'</span>)
+    axes2.set_ylabel(<span class="hljs-string">'maximum'</span>)
+    axes3.set_ylabel(<span class="hljs-string">'minimum'</span>)
+</div></code></pre>
+<ul>
+<li><strong>5 - plot the data</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files: 
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-comment"># create figure and three axes </span>
+    fig = plt.figure(figsize=(<span class="hljs-number">10.0</span>, <span class="hljs-number">3.0</span>))
+    axes1 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
+    axes2 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+    axes3 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>)
+
+    <span class="hljs-comment"># decorate the axes</span>
+    axes1.set_ylabel(<span class="hljs-string">'average'</span>)
+    axes2.set_ylabel(<span class="hljs-string">'maximum'</span>)
+    axes3.set_ylabel(<span class="hljs-string">'minimum'</span>)
+
+    <span class="hljs-comment"># plot the data</span>
+    axes1.plot(data.mean(axis=<span class="hljs-number">0</span>))
+    axes2.plot(data.max(axis=<span class="hljs-number">0</span>))
+    axes3.plot(data.min(axis=<span class="hljs-number">0</span>))
+</div></code></pre>
+<ul>
+<li><strong>6 - tidy and show plot</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files: 
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-comment"># create figure and three axes </span>
+    fig = plt.figure(figsize=(<span class="hljs-number">10.0</span>, <span class="hljs-number">3.0</span>))
+    axes1 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
+    axes2 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+    axes3 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>)
+
+    <span class="hljs-comment"># decorate the axes</span>
+    axes1.set_ylabel(<span class="hljs-string">'average'</span>)
+    axes2.set_ylabel(<span class="hljs-string">'maximum'</span>)
+    axes3.set_ylabel(<span class="hljs-string">'minimum'</span>)
+
+    <span class="hljs-comment"># plot the data</span>
+    axes1.plot(data.mean(axis=<span class="hljs-number">0</span>))
+    axes2.plot(data.max(axis=<span class="hljs-number">0</span>))
+    axes3.plot(data.min(axis=<span class="hljs-number">0</span>))
+
+    <span class="hljs-comment"># tidy plot and render</span>
+    fig.tight_layout()
+    plt.show()
+</div></code></pre>
+<ul>
+<li><strong>EXIT THE EDITOR AND RUN SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<ul>
+<li><strong>THIS IS INTERACTIVE. WHAT IF WE WANT TO SAVE IMAGES?</strong>
+<ul>
+<li><strong>OPEN THE EDITOR AND CHANGE THE SCRIPT</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>[...]
+
+<span class="hljs-comment"># Get a list of inflammation data files</span>
+files = []
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> os.listdir(<span class="hljs-string">'data'</span>):
+  <span class="hljs-keyword">if</span> <span class="hljs-string">'inflammation'</span> <span class="hljs-keyword">in</span> fname <span class="hljs-keyword">and</span> fname[<span class="hljs-number">-4</span>:] == <span class="hljs-string">'.csv'</span>:
+    files.append(os.path.join(<span class="hljs-string">'data'</span>, fname))
+
+[...]
+
+    <span class="hljs-comment"># tidy plot and render</span>
+    fig.tight_layout()
+    <span class="hljs-comment"># plt.show()</span>
+
+    <span class="hljs-comment"># save image to file</span>
+    imgname = fname[:<span class="hljs-number">-4</span>] + <span class="hljs-string">'.png'</span>
+    print(<span class="hljs-string">'Writing image to'</span>, imgname)
+    plt.savefig(imgname)
+</div></code></pre>
+<ul>
+<li><strong>EXIT THE EDITOR AND RUN SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+</div></code></pre>
+<ul>
+<li><strong>CHECK CONTENTS OF <code>data</code> DIRECTORY, AND VIEW <code>.png</code> FILES</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Checking data</p>
+<ul>
+<li>There are <strong>two suspicious features</strong> to some of the datasets</li>
+</ul>
+<ol>
+<li>The <strong>maximum values rose and fell as straight lines</strong></li>
+<li>The <strong>minimum values are consistently zero</strong></li>
+</ol>
+<ul>
+<li>We'll use <code>if</code> statements to <strong>test for these conditions and give a warning</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Test for suspicious maxima</p>
+<ul>
+<li>Is day zero value 0, and day 20 value 20?</li>
+</ul>
+<pre class="hljs"><code><div>$ nano analyse_files.py
+</div></code></pre>
+<ul>
+<li><strong>ADD TO EXISTING CODE BEFORE CREATING FIGURE</strong></li>
+</ul>
+<pre class="hljs"><code><div>    <span class="hljs-comment"># Test for suspicious maxima</span>
+    <span class="hljs-keyword">if</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">20</span>] == <span class="hljs-number">20</span>:
+        print(<span class="hljs-string">"Suspicious-looking maxima!"</span>)
+</div></code></pre>
+<ul>
+<li><strong>RUN SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> SUSPICIOUS MINIMA</p>
+<ul>
+<li>Are all the minima zero? (do they sum to zero?)</li>
+</ul>
+<pre class="hljs"><code><div>$ nano analyse_files.py
+</div></code></pre>
+<ul>
+<li><strong>ADD TO EXISTING CODE BEFORE CREATING FIGURE</strong></li>
+</ul>
+<pre class="hljs"><code><div>    <span class="hljs-comment"># Test for suspicious maxima</span>
+    <span class="hljs-keyword">if</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">20</span>] == <span class="hljs-number">20</span>:
+        print(<span class="hljs-string">"Suspicious-looking maxima!"</span>)
+    <span class="hljs-keyword">elif</span> np.sum(data.min(axis=<span class="hljs-number">0</span>)) == <span class="hljs-number">0</span>:
+        print(<span class="hljs-string">'Minima sum to zero!'</span>)
+</div></code></pre>
+<ul>
+<li><strong>RUN SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> BEING TIDY</p>
+<ul>
+<li>If everything's OK, <strong>let's be reassuring</strong></li>
+</ul>
+<ul>
+<li><strong>ADD TO EXISTING CODE BEFORE PLOT</strong></li>
+</ul>
+<ul>
+<li><strong>ADD TO EXISTING CODE BEFORE CREATING FIGURE</strong></li>
+</ul>
+<pre class="hljs"><code><div>    <span class="hljs-comment"># Test for suspicious maxima</span>
+    <span class="hljs-keyword">if</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">20</span>] == <span class="hljs-number">20</span>:
+        print(<span class="hljs-string">"Suspicious-looking maxima!"</span>)
+    <span class="hljs-keyword">elif</span> np.sum(data.min(axis=<span class="hljs-number">0</span>)) == <span class="hljs-number">0</span>:
+        print(<span class="hljs-string">'Minima sum to zero!'</span>)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">'Seems OK!'</span>)
+</div></code></pre>
+<ul>
+<li><strong>RUN SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<h2>SECTION 09: Conclusions (Part 1)</h2>
+<hr>
+<p><strong>SLIDE</strong> Learning outcomes</p>
+<p>Some things you might not have known about at lunchtime:</p>
+<ul>
+<li>variables</li>
+<li>data types: arrays, lists, strings, numbers</li>
+<li>file IO: loading data, listing files, manipulating filenames</li>
+<li>calculating statistics</li>
+<li>plotting data: plots and subplots</li>
+<li>program flow: loops and conditionals</li>
+<li>automating multiple analyses</li>
+<li><code>Python</code> scripts: edit-save-execute</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> WELL DONE!</p>
+<ul>
+<li><strong>SEND THEM HOME HAPPY!</strong></li>
 </ul>
 
 </body>
