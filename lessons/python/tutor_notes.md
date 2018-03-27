@@ -930,3 +930,157 @@ $ python subplots.py
 
 ----
 
+**SLIDE** Motivation
+
+- We wrote code that plots values of interest from our dataset
+- **BUT** soon we're going to get **dozens of datasets** to analyse
+- So, we need to tell the computer to **repeat our plots and analysis on each dataset**
+- We're going to do this with `for` loops
+
+* **NOTE: `for` loops are a fundamental method for program control across nearly every programming language**
+* **NOTE: `for` loops in python work just like those the learners saw in `bash`, but are syntactically different**
+
+----
+
+**SLIDE** Spelling bee
+
+- If we wanted to spell a word, like 'lead' one letter at a time
+
+- **START UP A PYTHON CONSOLE**
+
+```bash
+$ python
+```
+
+```python
+>>> word = "lead"
+```
+
+- We could *index* each letter in turn (just like elements of an array)
+
+```python
+>>> print(word[0])
+l
+>>> print(word[1])
+e
+>>> print(word[2])
+a
+>>> print(word[3])
+d
+```
+
+- But this has some problems - **ASK LEARNERS WHAT PROBLEMS THEY SEE**
+  - The **approach doesn't scale** - what if our word is hundreds of letters long?
+  - **What if our word is longer than the indices?** We don't get all the data; if it's shorter, we get an error.
+  - **demonstrate with `oxygen` and `tin` - MODIFY THE WORD IN PLACE**
+
+```python
+>>> word = "tin"
+>>> print(word[3])
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+IndexError: string index out of range
+```
+
+----
+
+**SLIDE** `for` loops
+
+- `for` loops perform an operation ***for* every item *in* a collection**
+
+- **NOTE: importance of the `tab` character and syntactic whitespace**
+
+```python
+>>> word = "lead"
+>>> for char in word:
+...     print(char)
+... 
+l
+e
+a
+d
+```
+
+- Why is this better? **ASK THE LEARNERS**
+  - **It's shorter code** (less opportunity for error)
+  - **It's more flexible and robust** - it doesn't matter how long `word` is, the code will still spell it out one letter at a time
+
+```python
+>>> word = "oxygen"
+>>> for char in word:
+...     print(char)
+... 
+o
+x
+y
+g
+e
+n
+```
+
+----
+
+**SLIDE** `for` loop syntax
+
+- The general loop syntax is defined by a `for` statement, and a *code block*
+  - The `for` loop **statement ends in a colon, `:`**
+  - The *code block* is **indented** with a `tab` (`\t`)
+
+- **Everything indented immediately below the `for` statement is part of the `for` loop**
+- **There is no command or statement to signify the end of the loop body - only a change in indentation**
+- This is quite different from most other languages (and some people hate `Python` because of it)
+
+- **If further example needed, put the code below in a script**
+
+```python
+for char in word:
+    print(char)
+    print("I'm in the loop")
+    # This is a comment
+    print("Still in the loop")
+    
+    print("I'm in the loop as well")
+print("Not in the loop")
+```
+
+----
+
+**SLIDE** Counting with a `for` loop
+
+- Code in a `for` loop can see and modify variables defined outside the loop
+
+```python
+>>> length = 0
+>>> for vowel in 'aeiou':
+...     length = length + 1
+... 
+>>> print("There are", length, "vowels") 
+There are 5 vowels
+```
+
+- **Ask the learners what output they expect**
+- Talk through the operations of the loop, if necessary
+
+----
+
+**SLIDE** `for` loop variables
+
+- The *loop variable* gets updated once per cycle of the loop
+- The *loop variable* also still exists once the loop is finished
+
+```python
+>>> letter = "z"
+>>> print(letter)
+z
+>>> for letter in "abc":
+...     print(letter)
+... 
+a
+b
+c
+>>> print("after the loop, letter is:", letter)
+after the loop, letter is: c
+```
+
+- **ASK THE LEARNERS WHAT OUTPUT THEY EXPECT**
+  - The value of `letter` is `c`, the last updated value in the loop - not `z`, which would be the case if the loop variable only had scope within the loop

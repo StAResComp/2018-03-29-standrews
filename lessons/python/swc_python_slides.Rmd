@@ -790,3 +790,120 @@ Can you modify your script to display the three graphs on top of one another, in
 <center>
 <img src="images/red_green_sticky.png" width="100%" />
 </center>
+
+
+# 05. Loops
+
+## Motivation
+
+- We wrote some code that plots values of interest from a single dataset
+
+<img src="images/matplotlib-06.png" width=100%/>
+
+- **BUT** we're soon going to receive *dozens* of datasets to plot
+- So we need to make the computer *iterate* over the data
+
+<div class="highlight">
+**`for` loops**
+</div>
+
+
+## Spelling Bee
+
+- Suppose we wanted to spell a word, one letter at a time
+
+```python
+word = "lead"
+print(word[0])
+print(word[1])
+print(word[2])
+print(word[3])
+```
+
+<div class="attention">
+**QUESTION:** Why is this not a good approach?
+</div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `for` loops
+
+- `for` loops perform actions *for* every item *in* a collection
+
+```python
+>>> word = "lead"
+>>> for char in word:
+...     print(char)
+... 
+l
+e
+a
+d
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `for` loop syntax
+
+```python
+for element in collection:
+    <do things with element>
+```
+
+- The `for` loop statement ends in a colon, `:`
+- The *code block* is **indented** with a `tab` (`\t`)
+
+<center>
+<img src="images/loops_image.png" width="30%" />
+</center>
+
+
+## Counting with a `for` loop
+
+<div class="highlight">
+Values defined outside a loop can be modified in the loop
+</div>
+
+```python
+>>> length = 0
+>>> for vowel in 'aeiou':
+...     length = length + 1
+... 
+>>> print("There are", length, "vowels") 
+```
+
+<div class="attention">
+**QUESTION:** What output does this program give you?
+</div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `for` loop variables
+
+<div class="highlight">
+- The *loop variable* is updated on each cycle
+- It keeps its value when the loop is finished
+</div>
+
+```python
+>>> letter = "z"
+>>> print(letter)
+z
+>>> for letter in "abc":
+...     print(letter)
+... 
+>>> print("after the loop, letter is:", letter)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
