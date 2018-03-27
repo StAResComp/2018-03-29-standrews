@@ -13,6 +13,7 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 04: Visualisation](#section-04-visualisation)
 - [SECTION 05: `for` loops](#section-05-for-loops)
 - [SECTION 06: `list`s](#section-06-lists)
+- [SECTION 07: Making choices](#section-07-making-choices)
 
 <!-- /TOC -->
 
@@ -1346,3 +1347,161 @@ odds after popping: [9, 7, 5, 3]
 ```
 
 - **Ask the learners what 'multiplication' (`*`) does for lists**
+
+----
+
+## SECTION 07: Making choices
+
+----
+
+**SLIDE** Conditionals
+
+- We often want the computer to do `<something>` **`if`** some condition is **true**
+- To do this, we can use an **`if` statement**
+  - **`if` statements end in a colon (`:`)**
+  - **they also have a *condition*** - the *condition* is evaluated and, if found to be `true`, the code block is executed
+  - The code block is *indented* as was the case with the `for` loop
+
+* **This is an almost universal construct in programming languages**
+
+```python
+>>> num = 37
+>>> if num > 100:
+...     print('greater')
+... 
+>>> num = 149
+>>> if num > 100:
+...     print('greater')
+... 
+greater
+```
+
+- **Any condition** that might evaluate to `True` or `False` can be used:
+- **SHOW A DIFFERENT TEST**
+
+```python
+>>> if 'atlas' == 'atlas':
+...     print("The same")
+... 
+The same
+```
+
+----
+
+**SLIDE** `if-else` statements
+
+- **An `if` statement executes code if the condition evaluates as `true`**
+  - But **what if the condition evaluates as `false`?**
+
+- The **`else` structure** is like the `if` structure
+  - it **ends in a colon (`:`)**
+  - the **indented code block beneath it executes if the condition is `false`**
+
+```python
+>>> num = 37
+>>> if num > 100:
+...     print('greater')
+... else:
+...     print('not greater')
+... 
+not greater
+```
+
+----
+
+**SLIDE** Conditional logic
+
+* **OPTIONALLY SHOW THIS SLIDE**
+
+- Describe flowchart
+
+----
+
+**SLIDE** `if-elif-else` conditionals
+
+- We can **chain conditional tests together with `elif` (short for `else if`)**
+- The `elif` statement structure is the same as the `if` statement structure 
+  - the indented code block is executed if the condition is true, and **no previous conditions have been met**.
+
+```python
+>>> num = -3
+>>> if num > 0:
+...     print(num, "is positive")
+... elif num == 0:
+...     print(num, "is zero")
+... else:
+...     print(num, "is negative")
+... 
+-3 is negative
+```
+
+- **NOTE: the test for equality is a double-equals!**
+
+----
+**SLIDE** COMBINING CONDITIONS
+
+- We can **combine conditions using *Boolean Logic***
+  - Operators include `and`, `or` and `not`
+
+```python
+>>> if (1 > 0) and (-1 > 0):
+...     print('both parts are true')
+... else:
+...     print('at least one part is false')
+... 
+at least one part is false
+>>> if (4 > 0) and (2 > 0):
+...     print('both parts are true')
+... else:
+...     print('at least one part is false')
+... 
+both parts are true
+>>> if (4 > 0) or (2 > 0):
+...     print('at least one part is true')
+... else:
+...     print('both parts are false')
+... 
+at least one part is true
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** Exercise 07 (5min)
+
+- **MCQ: Put up four stickies**
+
+- Solution: `C`
+
+- **NOTE: There are two `elif`s and no `else`**
+
+----
+
+**SLIDE** More operators
+
+- These are **two operators** you will meet and use frequently
+  - `==` **(double-equals) is the equality operator**, and returns `True` if the left-hand-side value is equal to the right-hand-side value
+  - **we've already been using this**
+
+```python
+>>> print(1 == 1)
+True
+>>> print(1 ==2)
+False
+```
+
+- `in` is the **membership operator**, and returns `True` if the left-hand-side value is in the right-hand-side value (which should be a collection)
+
+```python
+>>> print('a' in 'toast')
+True
+>>> print('b' in 'toast')
+False
+>>> print(1 in [1, 2, 3])
+True
+>>> print(1 in range(3))
+True
+>>> print(1 in range(2, 10))
+False
+```

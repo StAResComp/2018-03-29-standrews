@@ -1101,3 +1101,171 @@ odds after popping: [9, 7, 5, 3]
 <div class="attention">
 **QUESTION:** What does 'multiplication' (`*`) do for lists?
 </div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+# 07. Making choices
+
+## Conditionals
+
+* We often want to do `<something>` **`if`** some condition is **true**
+* To do this, we can use an `if` statement:
+
+```python
+if <condition>:
+  <executed if condition is True>
+```
+
+```python
+>>> num = 37
+>>> if num > 100:
+...     print('greater')
+... 
+>>> num = 149
+>>> if num > 100:
+...     print('greater')
+... 
+greater
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `if-else` statements
+
+- An `if` statement executes code if the condition evaluates as `true`
+  - But what if the condition evaluates as `false`?
+
+```python
+if <condition>:
+    <executed if condition is True>
+else:
+    <executed if condition is not True>
+```
+
+```python
+>>> num = 37
+>>> if num > 100:
+...     print('greater')
+... else:
+...     print('not greater')
+... 
+not greater
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Conditional logic
+
+<img src="images/python-flowchart-conditional.png" />
+
+
+## `if-elif-else`
+
+* We can chain tests together using `elif` (`else if`)
+
+```python
+if <condition1>:
+    <executed if condition1 is True>
+elif <condition2>:
+    <executed if condition2 is True and condition1 is not True>
+else:
+    <executed if no conditions True>
+```
+
+```python
+>>> num = -3
+>>> if num > 0:
+...     print(num, "is positive")
+... elif num == 0:
+...     print(num, "is zero")
+... else:
+...     print(num, "is negative")
+... 
+-3 is negative
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Combining conditions
+
+<div class="highlight">
+Conditions can be combined using *Boolean Logic*
+</div>
+
+- Operators include `and`, `or` and `not`
+
+```python
+>>> if (4 > 0) or (2 > 0):
+...     print('at least one part is true')
+... else:
+...     print('both parts are false')
+... 
+at least one part is true
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+## <img src="images/exercise.png" height="75px" /> Exercise 07 (5min)
+
+<div class="attention">
+What is the result of executing the code below?
+</div>
+
+```python
+>>> if 4 > 5:
+...     print('A')
+... elif 4 == 5:
+...     print('B')
+... elif 4 < 5:
+...     print('C')
+```
+
+1. `A`
+2. `B`
+3. `C`
+4. `B` and `C`
+
+
+## More operators
+
+<div class="highlight">
+Two useful condition operators are `==` (equality) and `in` (membership)
+</div>
+
+```python
+>>> print(1 == 1)
+True
+>>> print(1 ==2)
+False
+>>> print('a' in 'toast')
+True
+>>> print('b' in 'toast')
+False
+>>> print(1 in [1, 2, 3])
+True
+>>> print(1 in range(3))
+True
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
