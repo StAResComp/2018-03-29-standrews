@@ -761,3 +761,164 @@ step function.
 ```
 
 ![progress check](images/red_green_sticky.png)
+
+----
+**SLIDE** FIGURES AND SUBPLOTS
+
+**WE'RE WORKING IN A SCRIPT FOR THE FIRST TIME**
+
+- **Exit `Python`**
+- **Open a new script called `subplots.py`**
+
+```bash
+$ nano subplots.py
+```
+
+- **You're now in the `nano` editor**
+- We write the `Python` code here, then save it, exit, and run it with `python subplots.py`.
+
+- **DESCRIBE SCRIPT**
+- First we **import packages**
+
+```python
+import numpy
+import matplotlib.pyplot
+```
+
+- Next we **load data**
+  - Comments tell us why/what we are doing
+
+```python
+# Load inflammation data
+data = numpy.loadtxt(fname='data/inflammation-01.csv', delimiter=',')
+```
+
+- We can put all three plots we just drew into a single figure
+- To do this, we use `matplotlib` to **create a figure**, and put it in a variable called `fig`
+  - the `figsize` argument sets the `(width, height)` of the figure in inches
+
+```python
+# Create a figure
+fig = matplotlib.pyplot.figure(figsize=(10.0, 3.0))
+```
+
+- We then **create three *axes***
+  - these are the variables that hold the individual plots
+  - one axis per plot
+- Using the `.add_subplot()` function, we need to specify three things:
+-* number of rows, number of columns, which cell this figure goes into
+  - **THIS NEEDS TO BE DRAWN OUT ON THE BOARD**
+
+```python
+# Add subplots for statistical summaries
+axes1 = fig.add_subplot(1, 3, 1) 
+axes2 = fig.add_subplot(1, 3, 2)
+axes3 = fig.add_subplot(1, 3, 3)
+```
+
+- Once we've created our plot axes, we can add labels and plots to each of them in turn
+- Plot axes properties are usually changed using the `.set_<something>()` syntax
+  - Here we're changing only the label on the *y*-axis
+
+```python
+# Add y-axis label to each subplot
+axes1.set_ylabel('average')
+axes2.set_ylabel('max')
+axes3.set_ylabel('min')
+```
+  
+- We can plot on an axis by using its `.plot()` function
+  - As before, we can pass the output from the `numpy.max()` function directly
+
+```python
+# Plot the summary data
+axes1.plot(numpy.mean(data, axis=0))
+axes2.plot(numpy.max(data, axis=0))
+axes3.plot(numpy.min(data, axis=0))
+```
+
+- We'll tighten up the presentation by using `fig.tight_layout()`
+  - this is a function that moves the axes until they are visually pleasing.
+
+```python
+# Tidy the figure
+fig.tight_layout()
+```
+
+- Finally, we'll show the figure in the interactive window
+
+```python
+# Show figure in the interactive window
+matplotlib.pyplot.show()
+```
+
+- **Write the file**
+- **Save the file**
+- **Exit to terminal**
+
+- Now we run the script with `python subplots.py`
+
+```bash
+$ python subplots.py
+```
+
+* **This is the most demanding code you have written, so far! ROUND OF APPLAUSE FOR YOURSELVES!**
+
+----
+
+**SLIDE** Exercise 05 (5min)
+
+
+- Note that it helps to change `figsize`
+- Otherwise the only change is in `add_subplot()`
+
+- `cp` the file to prepare for a new script
+
+```bash
+$ cp subplots.py exercise_05.py
+$ nano exercise_05.py
+```
+
+- New script:
+
+```python
+import numpy
+import matplotlib.pyplot
+
+# Load inflammation data
+data = numpy.loadtxt(fname='data/inflammation-01.csv', delimiter=',')
+
+# Create a figure
+fig = matplotlib.pyplot.figure(figsize=(3.0, 10.0))
+
+# Add subplots for statistical summaries
+axes1 = fig.add_subplot(3, 1, 1)
+axes2 = fig.add_subplot(3, 1, 2)
+axes3 = fig.add_subplot(3, 1, 3)
+
+# Add y-axis label to each subplot
+axes1.set_ylabel('average')
+axes2.set_ylabel('max')
+axes3.set_ylabel('min')
+
+# Plot the summary data
+axes1.plot(numpy.mean(data, axis=0))
+axes2.plot(numpy.max(data, axis=0))
+axes3.plot(numpy.min(data, axis=0))
+
+# Tidy the figure
+fig.tight_layout()
+
+# Show figure in the interactive window
+matplotlib.pyplot.show()
+```
+
+- Execute script
+
+```bash
+$ python subplots.py
+```
+
+![progress check](images/red_green_sticky.png)
+
+* **NOW, TO DO *EVEN MORE* INTERESTING THINGS, WE NEED TO LEARN A LITTLE MORE ABOUT PROGRAMMING**

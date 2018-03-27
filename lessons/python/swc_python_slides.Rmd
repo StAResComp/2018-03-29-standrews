@@ -755,3 +755,38 @@ Can you create a plot showing the standard deviation (`numpy.std()`) of the infl
 <center>
 <img src="images/red_green_sticky.png" width="100%" />
 </center>
+
+
+## Figures and subplots
+
+<div class="highlight">
+We can put all three plots into a single *figure*
+</div>
+
+- create a *figure* (`fig`) with `fig = matplotlib.pyplot.figure()`
+- add subplots to `fig` with `ax = fig.add_subplot()`
+- set labels on a subplot with `ax.set_ylabel()`
+- plot data to a subplot with `ax.plot()`
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+## <img src="images/exercise.png" height="75px" /> Exercise 05 (5min)
+
+<div class="highlight">
+Can you modify your script to display the three graphs on top of one another, instead of side by side?
+</div>
+
+<div class="attention">
+**Save your new script as `exercise_05.py`**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
