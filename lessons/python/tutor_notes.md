@@ -2,17 +2,18 @@
 
 These notes are intended for the tutor as they work through the material, but
 
+# Start the slides
+
 <!-- TOC -->
 
 - [TITLE: Building Programs With Python](#title-building-programs-with-python)
 - [SECTION 01: Setup](#section-01-setup)
 - [SECTION 02: Getting Started](#section-02-getting-started)
 - [SECTION 03: Data Analysis](#section-03-data-analysis)
+- [SECTION 04: Visualisation](#section-04-visualisation)
+- [SECTION 05: Loops](#section-05-loops)
 
 <!-- /TOC -->
-
-
-# Start the slides
 
 ----
 
@@ -625,7 +626,7 @@ maximum inflammation for patient 0: 18.0
 maximum inflammation for patient 2: 19.0
 ```
 
----- 
+----
 
 **SLIDE** Summary for all patients
 
@@ -661,7 +662,7 @@ maximum inflammation for patient 2: 19.0
    7.33333333   6.58333333   6.06666667   5.95         5.11666667   3.6
    3.3          3.56666667   2.48333333   1.5          1.13333333
    0.56666667]
-   ```
+```
 
 ![progress check](images/red_green_sticky.png)
 
@@ -922,3 +923,10 @@ $ python subplots.py
 ![progress check](images/red_green_sticky.png)
 
 * **NOW, TO DO *EVEN MORE* INTERESTING THINGS, WE NEED TO LEARN A LITTLE MORE ABOUT PROGRAMMING**
+
+----
+
+## SECTION 05: Loops
+
+----
+
