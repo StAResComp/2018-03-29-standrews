@@ -312,7 +312,7 @@ print(third, fourth)
 
 ## Examine the data
 
-- Inspect the data using the shell
+- Inspect a data file using the shell
 
 ```bash
 $ head data/inflammation-01.csv 
@@ -329,16 +329,17 @@ $ head data/inflammation-01.csv
 ```
 
 <div class="highlight">
-- To load this data, we'll use the `numpy` *library*
+- To load this data in `Python`, we'll use the `numpy` *library*
 </div>
 
 
 ## `Python` libraries
 
 - `Python` contains many powerful, general tools
-- Specialised tools are contained in *libraries*
-- We call on libraries, when needed
-- Libraries are loaded with `import`
+- Specialised tools are contained in *libraries* or *packages*
+- We call on libraries/packages, when needed
+- Packages are loaded with `import`
+- Packages are shared via repositories, e.g. [`PyPI`](https://pypi.python.org/pypi) and [`conda`](https://conda.io/docs/)
 
 ```python
 >>> import numpy
@@ -351,3 +352,84 @@ $ head data/inflammation-01.csv
 <center>
 <img src="images/red_green_sticky.png" width="100%" />
 </center>
+
+
+## Load data from file
+
+- `numpy` provides a function `loadtxt()` to load tabular data:
+
+```python
+numpy.loadtxt(fname='data/inflammation-01.csv', delimiter=',')
+```
+
+<div class="highlight">
+- *dotted notation* tells us `loadtxt()` belongs to `numpy`
+- `fname`: an *argument* expecting the path to a file
+- `delimiter`: an *argument* expecting the character that separates columns
+</div>
+
+
+## Loaded data
+
+```python
+>>> numpy.loadtxt(fname='data/inflammation-01.csv', delimiter=',')
+array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
+       [ 0.,  1.,  2., ...,  1.,  0.,  1.],
+       [ 0.,  1.,  1., ...,  2.,  1.,  1.],
+       ..., 
+       [ 0.,  1.,  1., ...,  1.,  1.,  1.],
+       [ 0.,  0.,  0., ...,  0.,  2.,  0.],
+       [ 0.,  0.,  1., ...,  1.,  1.,  0.]])
+```
+
+- The matrix is truncated to fit the screen
+- `...` indicate missing rows or columns
+- If there are no significant digits, they are not shown (`1 == 1. == 1.0`)
+
+<div class="highlight">
+**Assign the matrix to a variable called `data`**
+</div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## What is our data?
+
+```python
+>>> type(data)
+<class 'numpy.ndarray'>
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+## Members and attributes
+
+- Creating the array created information, too
+- Info stored in *members* or *attributes* that belong to `data`
+- `data.<attribute>` e.g. `data.shape`
+
+```python
+>>> print(data.dtype)
+float64
+>>> print(data.shape)
+(60, 40)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+

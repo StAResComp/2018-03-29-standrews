@@ -329,6 +329,10 @@ $ head data/inflammation-01.csv
   - **In `Python`, we call on libraries with the `import` statement**, when we need them
   - Importing a library is like getting a new piece of equipment out of the locker and onto the lab bench
 
+- There are several repositories that host `Python` packages
+  - [`PyPI`](https://pypi.python.org/pypi)
+  - [`conda`](https://conda.io/docs/)
+
 - **Import and describe libraries**
 
 ```python
@@ -336,3 +340,87 @@ $ head data/inflammation-01.csv
 ```
 
 * `numpy` is a library that provides functions and methods to **work with arrays and matrices**, such as those in your dataset
+
+----
+
+**SLIDE** Load data from file
+
+- The `numpy` library gives us a function called **`loadtxt()` that loads tabular data from a file**
+- To use a `function` from a `library`, **the format is usually `library.function()`: *dotted notation***
+- **`loadtxt()` expects two *arguments* or *parameters*** - values it needs to know to work
+- The parameter `fname` takes the **path to the file we want to load**
+- The parameter `delimiter` takes the **character that we think separates columns** in that file
+
+```python
+>>> numpy.loadtxt(fname='data/inflammation-01.csv', delimiter=',')
+array([[ 0.,  0.,  1., ...,  3.,  0.,  0.],
+       [ 0.,  1.,  2., ...,  1.,  0.,  1.],
+       [ 0.,  1.,  1., ...,  2.,  1.,  1.],
+       ..., 
+       [ 0.,  1.,  1., ...,  1.,  1.,  1.],
+       [ 0.,  0.,  0., ...,  0.,  2.,  0.],
+       [ 0.,  0.,  1., ...,  1.,  1.,  0.]])
+```
+
+- Here, our function is `numpy.loadtxt()`, and  *Dotted notation* tells us that `loadtxt()` belongs to `numpy`
+- `Python` will accept **double- or single-quotes** around strings
+
+----
+
+**SLIDE** Loaded data
+
+- If we don't ask `Python` to do anything with the data, it just loads the data, then shows the data to us.
+- The data display is truncated by default - *ellipses* (`...`) show rows and columns that were excluded for space 
+- Significant digits are not shown
+- **NOTE that integers in the file have been converted to floating point numbers**
+- **Ask the learners to assign the matrix to a variable called `data`: MAKE THIS CHANGE IN-PLACE**
+
+```python
+>>> data = numpy.loadtxt(fname="data/inflammation-01.csv", delimiter=",")
+```
+
+- Now when we execute the cell **we see no output**, but `data` now contains the array, which we can see by **printing the variable**
+
+```python
+>>> print(data)
+[[ 0.  0.  1. ...,  3.  0.  0.]
+ [ 0.  1.  2. ...,  1.  0.  1.]
+ [ 0.  1.  1. ...,  2.  1.  1.]
+ ..., 
+ [ 0.  1.  1. ...,  1.  1.  1.]
+ [ 0.  0.  0. ...,  0.  2.  0.]
+ [ 0.  0.  1. ...,  1.  1.  0.]]
+```
+
+----
+
+**SLIDE** What is our data?
+
+- We've loaded some data, but **what is it?**
+
+```python
+>>> type(data)
+<class 'numpy.ndarray'>
+```
+
+- **`Python` sees our data as a special `type`: `numpy.ndarray`**
+- From *dotted notation* we see that `ndarray` belongs to (was defined in) the `numpy` library
+- `ndarray` stands for "n-dimensional array" - so this is **an n-dimensional array from the `numpy` library**
+
+----
+
+**SLIDE** Members and attributes
+
+- **Creating our `data` array created a lot of information, too**
+- We created **information about the array** called *attributes*
+- This information belongs to `data` so is **accessed in the same way as a module function**, through *dotted notation*
+
+```python
+>>> print(data.dtype)
+float64
+>>> print(data.shape)
+(60, 40)
+```
+
+- `print(data.dtype)` tells us that the **data type for values in the array** is: 64-bit floating point numbers
+- `print(data.shape)` tells us that there are **60 rows and 40 columns** in the dataset
