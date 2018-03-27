@@ -11,8 +11,8 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 02: Getting Started](#section-02-getting-started)
 - [SECTION 03: Data Analysis](#section-03-data-analysis)
 - [SECTION 04: Visualisation](#section-04-visualisation)
-- [SECTION 05: Loops](#section-05-loops)
-- [SECTION 06: Lists](#section-06-lists)
+- [SECTION 05: `for` loops](#section-05-for-loops)
+- [SECTION 06: `list`s](#section-06-lists)
 
 <!-- /TOC -->
 
@@ -927,7 +927,7 @@ $ python subplots.py
 
 ----
 
-## SECTION 05: Loops
+## SECTION 05: `for` loops
 
 ----
 
@@ -1168,7 +1168,7 @@ notweN
 
 ----
 
-## SECTION 06: Lists
+## SECTION 06: `list`s
 
 ----
 
