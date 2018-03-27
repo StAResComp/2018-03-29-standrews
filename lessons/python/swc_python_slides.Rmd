@@ -332,6 +332,10 @@ $ head data/inflammation-01.csv
 - To load this data in `Python`, we'll use the `numpy` *library*
 </div>
 
+<div class="attention">
+**We want to produce summary information about inflammation by patient and by day**
+</div>
+
 
 ## `Python` libraries
 
@@ -450,13 +454,13 @@ first value in data: 0.0
 middle value in data: 13.0
 ```
 
+<center>
+<img src="images/python-zero-index.png" width="100%" />
+</center>
+
 <div class="attention">
 **LIVE DEMO**
 </div>
-
-<center>
-<img src="images/red_green_sticky.png" width="100%" />
-</center>
 
 
 ## Slicing arrays
@@ -530,3 +534,115 @@ What is the value of `element[:4]`?
 2. `gen`
 3. `oxy`
 4. `en`
+
+## Array operations
+
+- `array`s know how to perform operations on their values
+- `+`, `-`, `*`, `/`, etc. are *elementwise*
+
+```python
+>>> doubledata = data * 2.0
+>>> print("original:\n", data[:3, 36:])
+original:
+ [[ 2.  3.  0.  0.]
+ [ 1.  1.  0.  1.]
+ [ 2.  2.  1.  1.]]
+>>> print("doubledata:\n", doubledata[:3, 36:])
+doubledata:
+ [[ 4.  6.  0.  0.]
+ [ 2.  2.  0.  2.]
+ [ 4.  4.  2.  2.]]
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `numpy` functions
+
+- `numpy` provides functions to operate on arrays
+
+```python
+>>> print(numpy.mean(data))
+6.14875
+>>> print(data.mean())
+6.14875
+>>> maxval = numpy.max(data)
+>>> print('maximum inflammation:', maxval)
+maximum inflammation: 20.0
+>>> minval = data.min()
+>>> print('minimum inflammation:', minval)
+minimum inflammation: 0.0
+```
+
+<div class="highlight">
+- By default, these give summaries of the whole array.
+</div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Summary for one patient
+
+- We want to summarise inflammation *by patient*
+
+<div class="highlight">
+Extract a single row, or operate directly on a row
+</div>
+
+```python
+>>> patient_0 = data[0, :] # temporary variable
+>>> print('maximum inflammation for patient 0:', patient_0.max())
+maximum inflammation for patient 0: 18.0
+>>> print('maximum inflammation for patient 0:', numpy.max(data[0, :]))
+maximum inflammation for patient 0: 18.0
+>>> print('maximum inflammation for patient 2:', numpy.max(data[2, :]))
+maximum inflammation for patient 2: 19.0
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Summary for all patients
+
+- What if we need maximum inflammation for *each patient* or average inflammation on *each day*?
+- One line per patient/per day?
+
+<div class="attention">
+**Tedious. Prone to errors/typos**: easier way to to do this…
+</div>
+
+<center>
+<img src="images/python-operations-across-axes.png" height="375px" />
+</center>
+
+
+## `numpy` operations on axes
+
+- `numpy` functions take an `axis=` parameter: `0` (columns) or `1` (rows)
+
+```python
+>>> print(numpy.max(data, axis=1))    # max by patient
+[ 18.  18.  19.  17.  17.  18.  17.  20.  17.  18.  18.  18.  17.  16.  17.
+  18.  19.  19.  17.  19.  19.  16.  17.  15.  17.  17.  18.  17.  20.  17.
+  16.  19.  15.  15.  19.  17.  16.  17.  19.  16.  18.  19.  16.  19.  18.
+  16.  19.  15.  16.  18.  14.  20.  17.  15.  17.  16.  17.  19.  18.  18.]
+>>> print(data.mean(axis=0))          # mean by day
+[  0.           0.45         1.11666667   1.75         2.43333333   3.15
+   3.8          3.88333333   5.23333333   5.51666667   5.95         5.9
+   8.35         7.73333333   8.36666667   9.5          9.58333333
+  10.63333333  11.56666667  12.35        13.25        11.96666667
+  11.03333333  10.16666667  10.           8.66666667   9.15         7.25
+   7.33333333   6.58333333   6.06666667   5.95         5.11666667   3.6
+   3.3          3.56666667   2.48333333   1.5          1.13333333
+   0.56666667]
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>

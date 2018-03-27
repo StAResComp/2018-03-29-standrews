@@ -317,6 +317,8 @@ $ head data/inflammation-01.csv
   - Values separated by commas
 - **State that we'll use the `numpy` library** to work with this in Python
 
+- **WE WANT TO FIND SUMMARY INFORMATION ABOUT INFLAMMATION BY PATIENT AND BY DAY**
+
 ----
 
 **SLIDE** `Python` libraries
@@ -512,8 +514,152 @@ small is:
 ```
 
 ----
+
 **SLIDE** Exercise 03
 
 **MCQ: put up four colours of sticky notes**
 
 - The value is `oxyg`, number `1`
+
+----
+
+**SLIDE** Array operations
+
+
+- Arithmetic operations on `array`s are **performed elementwise.**
+
+```python
+>>> doubledata = data * 2.0
+```
+
+- This operation multiplies every array element by 2.0.
+- **Look at the top right corner of the original array**
+
+```python
+>>> print("original:\n", data[:3, 36:])
+original:
+ [[ 2.  3.  0.  0.]
+ [ 1.  1.  0.  1.]
+ [ 2.  2.  1.  1.]]
+```
+
+- **Look at the top right corner of the doubled array**
+
+```python
+>>> print("doubledata:\n", doubledata[:3, 36:])
+doubledata:
+ [[ 4.  6.  0.  0.]
+ [ 2.  2.  0.  2.]
+ [ 4.  4.  2.  2.]]
+ >>> tripledata = doubledata + data
+>>> print("tripledata:\n", tripledata[:3, 36:])
+tripledata:
+ [[ 6.  9.  0.  0.]
+ [ 3.  3.  0.  3.]
+ [ 6.  6.  3.  3.]]
+```
+
+----
+
+**SLIDE** `numpy` functions
+
+- `numpy` provides functions that can perform *more complex* operations on arrays
+- Some of the **`numpy` operations include statistical summaries: `.mean()`, `.min()`, `.max()` etc.**
+
+```python
+>>> print(numpy.mean(data))
+6.14875
+```
+
+- We can asssign the output from these functions to variables
+- **By default, these functions give summaries of the whole array**
+
+- **Introduce multiple assignment on one line, or use three lines**
+
+```python
+>>> maxval, minval, stdval = numpy.max(data), numpy.min(data), numpy.std(data)
+>>> print('maximum inflammation:', maxval)
+maximum inflammation: 20.0
+>>> print('minimum inflammation:', minval)
+minimum inflammation: 0.0
+>>> print('standard deviation:', stdval)
+standard deviation: 4.61383319712
+```
+
+- These functions can also be **applied directly to arrays**
+
+```python
+>>> maxval, minval, stdval = data.max(), data.min(), data.std()
+>>> print('maximum inflammation:', maxval)
+maximum inflammation: 20.0
+>>> print('minimum inflammation:', minval)
+minimum inflammation: 0.0
+>>> print('standard deviation:', stdval)
+standard deviation: 4.61383319712
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** Summary for one patient
+
+- **What if we want to get summaries patient-by-patient (row-by-row)?**
+- We can extract a single row into a *temporary variable*, and calculate the mean for that variable
+
+```python
+>>> patient_0 = data[0, :] # temporary variable
+>>> print('maximum inflammation for patient 0:', patient_0.max())
+maximum inflammation for patient 0: 18.0
+```
+
+- **NOTE: that comments are preceded with a hash `#` and can be placed after a line of code**
+- **EXPLAIN: why leaving comments is good (can do that in all code - not just Jupyter notebooks)**
+
+- We can also **apply the `numpy` function directly**, without creating a variable
+
+```python 
+>>> print('maximum inflammation for patient 0:', numpy.max(data[0, :]))
+maximum inflammation for patient 0: 18.0
+>>> print('maximum inflammation for patient 2:', numpy.max(data[2, :]))
+maximum inflammation for patient 2: 19.0
+```
+
+---- 
+
+**SLIDE** Summary for all patients
+
+- But **what if we want to know about all patients at once?**
+- Or **what if we want an average inflammation per day?**
+
+- Writing one line per row, or per column, is likely to lead to mistakes and typos
+  - **We can specify which axis a function applies to**
+
+- Specifying `axis=0` makes the function work on columns (days)
+  - **working on values 'by' row/row-wise**
+- Specifying `axis=1` makes the function work on rows (patients)
+  - **working on values 'by' column/column-wise**
+
+----
+
+**SLIDE** `numpy` operations on axes
+
+- **`numpy` functions take an `axis=` parameter** which controls the axis for summary statistic calculations.
+
+```python
+>>> print(numpy.max(data, axis=1))
+[ 18.  18.  19.  17.  17.  18.  17.  20.  17.  18.  18.  18.  17.  16.  17.
+  18.  19.  19.  17.  19.  19.  16.  17.  15.  17.  17.  18.  17.  20.  17.
+  16.  19.  15.  15.  19.  17.  16.  17.  19.  16.  18.  19.  16.  19.  18.
+  16.  19.  15.  16.  18.  14.  20.  17.  15.  17.  16.  17.  19.  18.  18.]
+>>> print(data.mean(axis=0))
+[  0.           0.45         1.11666667   1.75         2.43333333   3.15
+   3.8          3.88333333   5.23333333   5.51666667   5.95         5.9
+   8.35         7.73333333   8.36666667   9.5          9.58333333
+  10.63333333  11.56666667  12.35        13.25        11.96666667
+  11.03333333  10.16666667  10.           8.66666667   9.15         7.25
+   7.33333333   6.58333333   6.06666667   5.95         5.11666667   3.6
+   3.3          3.56666667   2.48333333   1.5          1.13333333
+   0.56666667]```
+
+![progress check](images/red_green_sticky.png)
