@@ -4154,35 +4154,147 @@ z
 
 </center>
 
-</article></slide><slide class=""><hgroup><h2><code>enumerate()</code></h2></hgroup><article  id="enumerate">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>06. Lists</h2></hgroup><article  id="lists">
+
+</article></slide><slide class=""><hgroup><h2>Lists</h2></hgroup><article  id="lists-1">
 
 <ul>
-<li>The <code>enumerate()</code> function creates paired indices and values for elements of a sequence</li>
+<li><code>list</code>s are a built in <code>Python</code> datatype</li>
+<li>Denoted by square brackets, comma-separated
+
+<ul>
+<li><em>iterable</em> lists of values</li>
+<li>indexed and sliced like arrays</li>
+</ul></li>
 </ul>
 
-<pre class = 'prettyprint lang-python'>&gt;&gt;&gt; seq = enumerate(&#39;aeiou&#39;)
-&gt;&gt;&gt; print(&quot;seq is:&quot;, seq)
-seq is: &lt;enumerate object at 0x10de8e360&gt;
-&gt;&gt;&gt; for idx, val in seq:
-...     print(idx, val)</pre>
+<pre class = 'prettyprint lang-python'>&gt;&gt;&gt; odds = [1, 3, 5, 7]
+&gt;&gt;&gt; print(&quot;odds are:&quot;, odds)
+odds are: [1, 3, 5, 7]
+&gt;&gt;&gt; print(&#39;first and last:&#39;, odds[0], odds[-1])
+first and last: 1 7
+&gt;&gt;&gt; for number in odds:
+...     print(number)</pre>
 
 <div class="attention">
 <p><strong>LIVE DEMO</strong></p></div>
 
-</article></slide><slide class=""><hgroup><h2>Using <code>enumerate()</code></h2></hgroup><article  id="using-enumerate">
+</article></slide><slide class=""><hgroup><h2>Mutability</h2></hgroup><article  id="mutability">
 
 <ul>
-<li>We can write a loop using <code>enumerate()</code> that solves the linear equation</li>
+<li><code>list</code>s, like <code>string</code>s, are sequences</li>
 </ul>
 
-<p>\[y = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + a_4 x^4\]</p>
-
+<div class="higlight">
 <ul>
-<li>for \(x=5\) when given the coefficients as a list: <code>coeffs = [2, 4, 3, 2, 1]</code></li>
-</ul>
+<li><strong>BUT</strong> <code>list</code> elements can be changed: <code>list</code>s are <em>mutable</em></li>
+<li><code>string</code>s are not <em>mutable</em></li>
+</ul></div>
+
+<pre class = 'prettyprint lang-python'>&gt;&gt;&gt; names = [&quot;Curie&quot;, &quot;Darwing&quot;, &quot;Turing&quot;] # typo in Darwin&#39;s name
+&gt;&gt;&gt; print(&quot;names is originally:&quot;, names)
+names is originally: [&#39;Curie&#39;, &#39;Darwing&#39;, &#39;Turing&#39;]
+&gt;&gt;&gt; names[1] = &#39;Darwin&#39;    # correct the name
+&gt;&gt;&gt; print(&#39;final value of names:&#39;, names)
+final value of names: [&#39;Curie&#39;, &#39;Darwin&#39;, &#39;Turing&#39;]
+&gt;&gt;&gt; name = &quot;darwin&quot;
+&gt;&gt;&gt; name[0] = &quot;D&quot;
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: &#39;str&#39; object does not support item assignment</pre>
 
 <div class="attention">
-<p><strong>LIVE DEMO</strong></p></div></article></slide>
+<p><strong>LIVE DEMO</strong></p></div>
+
+</article></slide><slide class=""><hgroup><h2>Changer danger</h2></hgroup><article  id="changer-danger">
+
+<div class="attention">
+<p><strong>There are risks to modifying <code>list</code>s in-place</strong></p></div>
+
+<pre class = 'prettyprint lang-python'>&gt;&gt;&gt; my_list = [1, 2, 3, 4]
+&gt;&gt;&gt; your_list = my_list
+&gt;&gt;&gt; print(&quot;my list:&quot;, my_list)
+my list: [1, 2, 3, 4]
+&gt;&gt;&gt; my_list[1] = 0
+&gt;&gt;&gt; print(&quot;your list:&quot;, your_list)</pre>
+
+<div class="attention">
+<p><strong>QUESTION:</strong> What is the value of <code>your_list</code>?</p></div>
+
+<div class="attention">
+<p><strong>LIVE DEMO</strong></p></div>
+
+</article></slide><slide class=""><hgroup><h2><code>list</code> copies</h2></hgroup><article  id="list-copies">
+
+<div class="highlight">
+<ul>
+<li>To avoid this kind of effect:
+
+<ul>
+<li>make a <em>copy</em> of a <code>list</code> by <em>slicing</em> it or using the <code>list()</code> function</li>
+<li><code>new_list = old_list[:]</code></li>
+</ul></li>
+</ul></div>
+
+<pre class = 'prettyprint lang-python'>&gt;&gt;&gt; my_list = [1, 2, 3, 4]           # original list
+&gt;&gt;&gt; your_list = my_list[:]           # copy 1
+&gt;&gt;&gt; your_other_list = list(my_list)  # copy 2
+&gt;&gt;&gt; print(&quot;my_list:&quot;, my_list)
+my_list: [1, 2, 3, 4]
+&gt;&gt;&gt; my_list[1] = 0                   # change element
+&gt;&gt;&gt; print(&quot;my_list:&quot;, my_list)
+my_list: [1, 0, 3, 4]
+&gt;&gt;&gt; print(&quot;your_list:&quot;, your_list)
+your_list: [1, 2, 3, 4]
+&gt;&gt;&gt; print(&quot;your_other_list:&quot;, your_list)
+your_other_list: [1, 2, 3, 4]</pre>
+
+<div class="attention">
+<p><strong>LIVE DEMO</strong></p></div>
+
+</article></slide><slide class=""><hgroup><h2><code>list</code> functions</h2></hgroup><article  id="list-functions">
+
+<ul>
+<li><code>list</code>s are <code>Python</code> <em>objects</em> and have useful functions (<em>methods</em>)</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>&gt;&gt;&gt; print(odds)
+[1, 3, 5, 7]
+&gt;&gt;&gt; odds.append(9)
+&gt;&gt;&gt; print(&quot;odds after adding a value:&quot;, odds)
+odds after adding a value: [1, 3, 5, 7, 9]
+&gt;&gt;&gt; odds.reverse()
+&gt;&gt;&gt; print(&quot;odds after reversing the list:&quot;, odds)
+odds after reversing the list: [9, 7, 5, 3, 1]
+&gt;&gt;&gt; odds.pop()
+1
+&gt;&gt;&gt; print(&quot;odds after popping:&quot;, odds)
+odds after popping: [9, 7, 5, 3]</pre>
+
+<div class="attention">
+<p><strong>LIVE DEMO</strong></p></div>
+
+</article></slide><slide class=""><hgroup><h2>Overloading</h2></hgroup><article  id="overloading">
+
+<div class="higlight">
+<p><em>Overloading</em> refers to an <em>operator</em> (e.g. <code>+</code>) having more than one meaning, depending on the thing it operates on.</p></div>
+
+<ul>
+<li>For numbers, <code>+</code> means <em>add</em></li>
+<li>For <code>list</code>s, <code>+</code> means <em>concatenate</em></li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>&gt;&gt;&gt; vowels = [&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;]
+&gt;&gt;&gt; vowels_welsh = [&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;, &#39;w&#39;, &#39;y&#39;]
+&gt;&gt;&gt; print(vowels + vowels_welsh)
+[&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;, &#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;, &#39;w&#39;, &#39;y&#39;]
+&gt;&gt;&gt; counts = [2, 4, 6, 8, 10]
+&gt;&gt;&gt; repeats = counts * 2
+&gt;&gt;&gt; print(repeats)
+[2, 4, 6, 8, 10, 2, 4, 6, 8, 10]</pre>
+
+<div class="attention">
+<p><strong>QUESTION:</strong> What does &lsquo;multiplication&rsquo; (<code>*</code>) do for lists?</p></div></article></slide>
 
 
   <slide class="backdrop"></slide>

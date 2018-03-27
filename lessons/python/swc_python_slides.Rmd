@@ -952,4 +952,152 @@ Can you write a loop that takes a string, e.g. `Newton`, and produces a new stri
 
 # 06. Lists
 
+## Lists
 
+- `list`s are a built in `Python` datatype
+- Denoted by square brackets, comma-separated
+  - *iterable* lists of values
+  - indexed and sliced like arrays
+
+```python
+>>> odds = [1, 3, 5, 7]
+>>> print("odds are:", odds)
+odds are: [1, 3, 5, 7]
+>>> print('first and last:', odds[0], odds[-1])
+first and last: 1 7
+>>> for number in odds:
+...     print(number)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Mutability
+
+- `list`s, like `string`s, are sequences
+
+<div class="higlight">
+- **BUT** `list` elements can be changed: `list`s are *mutable*
+- `string`s are not *mutable*
+</div>
+
+```python
+>>> names = ["Curie", "Darwing", "Turing"] # typo in Darwin's name
+>>> print("names is originally:", names)
+names is originally: ['Curie', 'Darwing', 'Turing']
+>>> names[1] = 'Darwin'    # correct the name
+>>> print('final value of names:', names)
+final value of names: ['Curie', 'Darwin', 'Turing']
+>>> name = "darwin"
+>>> name[0] = "D"
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'str' object does not support item assignment
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Changer danger
+
+<div class="attention">
+**There are risks to modifying `list`s in-place**
+</div>
+
+```python
+>>> my_list = [1, 2, 3, 4]
+>>> your_list = my_list
+>>> print("my list:", my_list)
+my list: [1, 2, 3, 4]
+>>> my_list[1] = 0
+>>> print("your list:", your_list)
+```
+
+<div class="attention">
+**QUESTION:** What is the value of `your_list`?
+</div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `list` copies
+
+<div class="highlight">
+- To avoid this kind of effect:
+  - make a *copy* of a `list` by *slicing* it or using the `list()` function
+  - `new_list = old_list[:]`
+</div>
+
+```python
+>>> my_list = [1, 2, 3, 4]           # original list
+>>> your_list = my_list[:]           # copy 1
+>>> your_other_list = list(my_list)  # copy 2
+>>> print("my_list:", my_list)
+my_list: [1, 2, 3, 4]
+>>> my_list[1] = 0                   # change element
+>>> print("my_list:", my_list)
+my_list: [1, 0, 3, 4]
+>>> print("your_list:", your_list)
+your_list: [1, 2, 3, 4]
+>>> print("your_other_list:", your_list)
+your_other_list: [1, 2, 3, 4]
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `list` functions
+
+- `list`s are `Python` *objects* and have useful functions (*methods*)
+
+```python
+>>> print(odds)
+[1, 3, 5, 7]
+>>> odds.append(9)
+>>> print("odds after adding a value:", odds)
+odds after adding a value: [1, 3, 5, 7, 9]
+>>> odds.reverse()
+>>> print("odds after reversing the list:", odds)
+odds after reversing the list: [9, 7, 5, 3, 1]
+>>> odds.pop()
+1
+>>> print("odds after popping:", odds)
+odds after popping: [9, 7, 5, 3]
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Overloading
+
+<div class="higlight">
+*Overloading* refers to an *operator* (e.g. `+`) having more than one meaning, depending on the thing it operates on.
+</div>
+
+- For numbers, `+` means *add*
+- For `list`s, `+` means *concatenate*
+
+```python
+>>> vowels = ['a', 'e', 'i', 'o', 'u']
+>>> vowels_welsh = ['a', 'e', 'i', 'o', 'u', 'w', 'y']
+>>> print(vowels + vowels_welsh)
+['a', 'e', 'i', 'o', 'u', 'a', 'e', 'i', 'o', 'u', 'w', 'y']
+>>> counts = [2, 4, 6, 8, 10]
+>>> repeats = counts * 2
+>>> print(repeats)
+[2, 4, 6, 8, 10, 2, 4, 6, 8, 10]
+```
+
+<div class="attention">
+**QUESTION:** What does 'multiplication' (`*`) do for lists?
+</div>

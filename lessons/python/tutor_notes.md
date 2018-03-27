@@ -1172,3 +1172,177 @@ notweN
 
 ----
 
+**SLIDE** Lists
+
+- Lists are defined as ordered lists of values
+  - enclosed in **square brackets**
+  - separated by commas
+
+```python
+>>> odds = [1, 3, 5, 7]
+>>> print("odds are:", odds)
+odds are: [1, 3, 5, 7]
+```
+
+- They can be **indexed and sliced**, as seen for arrays
+
+```python
+>>> print('first and last:', odds[0], odds[-1])
+first and last: 1 7
+>>> print(odds[2:])
+[5, 7]
+```
+
+* They can be iterated over, in `for' loops
+
+```python
+>>> for number in odds:
+...     print(number)
+... 
+1
+3
+5
+7
+```
+
+----
+
+**SLIDE** Mutability
+
+- `Python` has a concept of **mutability**.
+  - Items that can be modified in-place are *mutable*.
+  - Those that can't are *immutable*.
+
+- Lists are *mutable*, strings are *immutable*.
+  - `list`s and `string`s are both sequences, **BUT** you can change the elements in a list, after it is created: **lists are mutable**
+
+```python
+>>> names = ["Curie", "Darwing", "Turing"] # typo in Darwin's name
+>>> print("names is originally:", names)
+names is originally: ['Curie', 'Darwing', 'Turing']
+```
+
+- **We have a typo - let's correct it**
+
+```python
+>>> names[1] = 'Darwin'    # correct the name
+>>> print('final value of names:', names)
+final value of names: ['Curie', 'Darwin', 'Turing']
+```
+
+- `string`s are **NOT** mutable
+
+```python
+>>> name = "darwin"
+>>> name[0] = "D"
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'str' object does not support item assignment
+```
+
+----
+**SLIDE** Changer danger
+
+- **There are risks associated with modifying lists in-place**
+
+- Rather than make copies of lists, when assigned to more than one variable, `Python` will make *reference* to the original list
+
+```python
+>>> my_list = [1, 2, 3, 4]
+>>> your_list = my_list
+>>> print("my list:", my_list)
+my list: [1, 2, 3, 4]
+>>> my_list[1] = 0
+```
+
+- **ASK LEARNERS WHAT THEY THINK `your_list` contains**
+
+```python
+>>> print("your list:", your_list)
+your list: [1, 0, 3, 4]
+```
+
+- **If two variables refer to the same list, any changes to that list are reflected in both variables.**
+
+----
+
+**SLIDE** List copies
+
+- To avoid this kind of effect:
+  - make a *copy* of a `list` by *slicing* it**, or using the `list()` function that returns a new list
+
+```python
+>>> my_list = [1, 2, 3, 4]           # original list
+>>> your_list = my_list[:]           # copy 1
+>>> your_other_list = list(my_list)  # copy 2
+>>> print("my_list:", my_list)
+my_list: [1, 2, 3, 4]
+>>> my_list[1] = 0
+>>> print("my_list:", my_list)
+my_list: [1, 0, 3, 4]
+>>> print("your_list:", your_list)
+your_list: [1, 2, 3, 4]
+>>> print("your_other_list:", your_list)
+your_other_list: [1, 2, 3, 4]
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+
+**SLIDE** `list` functions
+
+- **`list`s are `Python` objects and have a number of useful functions (called *methods*) to modify their contents**
+
+- `.append()` adds a value to the end of the list
+
+```python
+>>> print(odds)
+[1, 3, 5, 7]
+>>> odds.append(9)
+>>> print("odds after adding a value:", odds)
+odds after adding a value: [1, 3, 5, 7, 9]
+```
+
+- `.reverse()` reverses the order of list items **in place**
+
+```python
+>>> odds.reverse()
+>>> print("odds after reversing the list:", odds)
+odds after reversing the list: [9, 7, 5, 3, 1]
+```
+
+- `.pop()` returns the last item in the list, and removes it from the list
+
+```python
+>>> odds.pop()
+1
+>>> print("odds after popping:", odds)
+odds after popping: [9, 7, 5, 3]
+```
+
+----
+
+**SLIDE** Overloading
+
+* *Overloading* refers to an *operator* (e.g. `+`) having more than one meaning, depending on the thing it operates on.
+
+
+```python
+>>> vowels = ['a', 'e', 'i', 'o', 'u']
+>>> vowels_welsh = ['a', 'e', 'i', 'o', 'u', 'w', 'y']
+>>> print(vowels + vowels_welsh)
+['a', 'e', 'i', 'o', 'u', 'a', 'e', 'i', 'o', 'u', 'w', 'y']
+```
+
+- We can add (`+`) and **even multiply** (`*`) lists, even though they're not really arithmetic operations
+ **NOTE: multiplication of lists does not work like multiplication of `numpy` arrays**
+
+```python
+>>> counts = [2, 4, 6, 8, 10]
+>>> repeats = counts * 2
+>>> print(repeats)
+[2, 4, 6, 8, 10, 2, 4, 6, 8, 10]
+```
+
+- **Ask the learners what 'multiplication' (`*`) does for lists**
