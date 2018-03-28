@@ -21,7 +21,7 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 11: Functions](#section-11-functions)
 - [SECTION 12: Refactoring](#section-12-refactoring)
 - [SECTION 13: Testing and documentation](#section-13-testing-and-documentation)
-- [SECTION 13: Errors](#section-13-errors)
+- [SECTION 14: Errors](#section-14-errors)
 - [SECTION 15: Defensive programming](#section-15-defensive-programming)
 
 <!-- /TOC -->
@@ -2761,7 +2761,7 @@ def rescale(data):
 
 ----
 
-## SECTION 13: Errors
+## SECTION 14: Errors
 
 ----
 

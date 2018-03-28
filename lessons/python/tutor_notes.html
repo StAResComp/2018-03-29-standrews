@@ -394,7 +394,8 @@ blockquote {
 <li><a href="#section-11-functions">SECTION 11: Functions</a></li>
 <li><a href="#section-12-refactoring">SECTION 12: Refactoring</a></li>
 <li><a href="#section-13-testing-and-documentation">SECTION 13: Testing and documentation</a></li>
-<li><a href="#section-13-errors">SECTION 13: Errors</a></li>
+<li><a href="#section-14-errors">SECTION 14: Errors</a></li>
+<li><a href="#section-15-defensive-programming">SECTION 15: Defensive programming</a></li>
 </ul>
 <!-- /TOC -->
 <hr>
@@ -3206,12 +3207,12 @@ When writing a function, we should
 </div></code></pre>
 <p><img src="images/red_green_sticky.png" alt="progress check"></p>
 <hr>
-<p><strong>SLIDE</strong> ERRORS AND EXCEPTIONS</p>
+<p><strong>SLIDE</strong> Errors and exceptions</p>
 <ul>
 <li><strong>MOVE NOTEBOOK TO THE SCREEN</strong></li>
 </ul>
 <hr>
-<p><strong>SLIDE</strong> CREATE A NEW NOTEBOOK</p>
+<p><strong>SLIDE</strong> Create a new notebook</p>
 <ul>
 <li><strong>Call the notebook <code>errors</code></strong></li>
 <li><strong>ADD AN INTRO</strong></li>
@@ -3221,7 +3222,7 @@ When writing a function, we should
 <span class="hljs-code">`Python`</span> provides useful error reports of what has gone wrong, which can help with debugging.
 </div></code></pre>
 <hr>
-<h2>SECTION 13: Errors</h2>
+<h2>SECTION 14: Errors</h2>
 <hr>
 <p><strong>SLIDE</strong> Create a new notebook</p>
 <ul>
@@ -3470,6 +3471,370 @@ IndexError: list index out of range
 print(message)
 </div></code></pre>
 <p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<h2>SECTION 15: Defensive programming</h2>
+<hr>
+<p><strong>SLIDE</strong> (Un)readable code</p>
+<ul>
+<li>
+<p>What does this function do?</p>
+</li>
+<li>
+<p><strong>GIVE LEARNERS A COUPLE OF MINUTES TO TRY TO WORK IT OUT</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">s</span><span class="hljs-params">(p)</span>:</span>
+    a = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> p:
+        a += v
+    m = a / len(p)
+    d = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> p:
+        d += (v - m) * (v - m)
+    <span class="hljs-keyword">return</span> numpy.sqrt(d / (len(p) - <span class="hljs-number">1</span>))
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Readable code</p>
+<ul>
+<li>
+<p>What does this function do?</p>
+</li>
+<li>
+<p><strong>GIVE LEARNERS A COUPLE OF MINUTES TO TRY TO WORK IT OUT</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">std_dev</span><span class="hljs-params">(sample)</span>:</span>
+    sample_sum = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> sample:
+        sample_sum += value
+
+    sample_mean = sample_sum / len(sample)
+
+    sum_squared_devs = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> sample:
+        sum_squared_devs += (value - sample_mean) * (value - sample_mean)
+
+    <span class="hljs-keyword">return</span> numpy.sqrt(sum_squared_devs / (len(sample) - <span class="hljs-number">1</span>))
+</div></code></pre>
+<ul>
+<li>
+<p><strong>This is the same code as in the previous slide</strong></p>
+<ul>
+<li>sensible function name</li>
+<li>sensible variable names</li>
+<li>blank lines to separate code blocks</li>
+</ul>
+</li>
+<li>
+<p><strong>Even without comments/documentation it's readable</strong></p>
+</li>
+<li>
+<p><strong>FIRST LINE OF DEFENCE: sensible names, and documentation</strong></p>
+<ul>
+<li>But that's not all you can do to make your life easier.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Create a new notebook</p>
+<ul>
+<li>
+<p><strong>Call it <code>defensive</code></strong></p>
+</li>
+<li>
+<p><strong>ADD INTRO IN MARKDOWN</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section"># Defensive Programming</span>
+
+<span class="hljs-emphasis">*Defensive programming*</span> is the practice of expecting your code to have mistakes, and guarding against them.
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Defensive programming</p>
+<ul>
+<li>
+<p>So far <strong>we have focused on the basic tools</strong> of writing a program: variables, lists, loops, conditionals, and functions.</p>
+<ul>
+<li>We haven't looked very much at whether a program is getting the right answer (and whether it continues to get the right answer as we change it).</li>
+<li><strong>It's all very well having some code, but if it doesn't give the right answer it can be damaging, or worse than useless</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Defensive programming</strong> is the practice of expecting your code to have mistakes, and guarding against them.</p>
+<ul>
+<li>To do this, we will write some <strong>code that <em>checks its own operation</em>.</strong></li>
+<li>This is generally good practice, speeds up software development, and helps ensure that your code is doing what you intend.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Assertions</p>
+<ul>
+<li><strong>ADD INTRODUCTORY TEXT</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section">## Assertions</span>
+
+Assertions are a pythonic way to see if a program's state is correct.
+
+``python
+assert <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">condition</span>&gt;</span></span>, "Some text describing the problem"
+``
+</div></code></pre>
+<ul>
+<li>
+<p><strong>Assertions</strong> are a <code>Pythonic</code> way to see if code runs correctly</p>
+<ul>
+<li>10-20% of the <code>Firefox</code> source code is assertions/checks on the rest of the code!</li>
+</ul>
+</li>
+<li>
+<p><strong>We <em>assert</em> that a <em>condition</em> should be <code>True</code></strong></p>
+<ul>
+<li>If it's <code>True</code>, the code may be correct</li>
+<li>If it's <code>False</code>, the code is <strong>not</strong> correct</li>
+</ul>
+</li>
+<li>
+<p>The syntax for an assertion is that we <code>assert</code> some <code>&lt;condition&gt;</code> is <code>True</code>, and if it's not, an error is thrown (<code>AssertionError</code>), with some text explaining the problem.</p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Example assertion</p>
+<ul>
+<li>Type code <strong>then ask learners what it does</strong></li>
+</ul>
+<pre class="hljs"><code><div>numbers = [<span class="hljs-number">1.5</span>, <span class="hljs-number">2.3</span>, <span class="hljs-number">0.7</span>, <span class="hljs-number">-0.001</span>, <span class="hljs-number">4.4</span>]
+total = <span class="hljs-number">0.0</span>
+<span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> numbers:
+    <span class="hljs-keyword">assert</span> n &gt; <span class="hljs-number">0.0</span>, <span class="hljs-string">'Data should only contain positive values'</span>
+    total += n
+print(<span class="hljs-string">'total is:'</span>, total)
+</div></code></pre>
+<ul>
+<li><strong>EXECUTE CELL</strong></li>
+</ul>
+<pre class="hljs"><code><div>---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-1</span><span class="hljs-number">-985</span>f50018947&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+      <span class="hljs-number">2</span> total = <span class="hljs-number">0.0</span>
+      <span class="hljs-number">3</span> <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> numbers:
+----&gt; <span class="hljs-number">4</span>     <span class="hljs-keyword">assert</span> n &gt; <span class="hljs-number">0.0</span>, <span class="hljs-string">'Data should only contain positive values'</span>
+      <span class="hljs-number">5</span>     total += n
+      <span class="hljs-number">6</span> print(<span class="hljs-string">'total is:'</span>, total)
+
+AssertionError: Data should only contain positive values
+</div></code></pre>
+<ul>
+<li>The <strong>traceback tells us there is an <code>AssertionError</code> and highlights which <em>assertion</em> failed.</strong>
+<ul>
+<li>The assertion is a check that the code <strong>behaves how <em>we</em> expect</strong></li>
+<li>It can be valid Python, and not throw an error, but it might not be what we want</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> When do we use assertions?</p>
+<ul>
+<li>
+<p><strong>Assertions are useful in three circumstances:</strong></p>
+<ol>
+<li><em>preconditions</em> - must be true at the start of an operation</li>
+<li><em>postcondition</em> - something guaranteed to be true when an operation completes</li>
+<li><em>invariant</em> - something always true at a particular point in code</li>
+</ol>
+</li>
+<li>
+<p><strong>PUT EXAMPLE CODE IN NEW CELL</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normalise_rectangle</span><span class="hljs-params">(rect)</span>:</span>
+    <span class="hljs-string">"""Normalises a rectangle to the origin, longest axis 1.0 units."""</span>
+    x0, y0, x1, y1 = rect
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    <span class="hljs-keyword">if</span> dx &gt; dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = <span class="hljs-number">1.0</span>, scaled
+    <span class="hljs-keyword">else</span>:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, <span class="hljs-number">1.0</span>
+        
+    <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, upper_x, upper_y)
+</div></code></pre>
+<ul>
+<li><strong>Test with some values - in the same cell</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Test function</span>
+normalise_rectangle((<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">4.0</span>))
+normalise_rectangle((<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">6.0</span>))
+</div></code></pre>
+<ul>
+<li><strong>DO ALL INPUTS MAKE SENSE?</strong></li>
+</ul>
+<pre class="hljs"><code><div>normalise_rectangle((<span class="hljs-number">6.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>))
+normalise_rectangle((<span class="hljs-number">6.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">1.0</span>))
+</div></code></pre>
+<ul>
+<li><strong>ASK LEARNERS WHAT SORT OF CHECKS WE NEED TO MAKE</strong></li>
+<li>Examples:
+<ul>
+<li><strong>Input type</strong> - 4 values, all numbers</li>
+<li><strong>x0 &lt; x1; y0 &lt; y1</strong> - lower left corner is identified first</li>
+<li><strong>output values less than or equal to 1</strong> - correct result returned</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Preconditions</p>
+<ul>
+<li>
+<p><strong>Preconditions</strong> must be true at the start of an operation or function</p>
+<ul>
+<li>Here, we want to ensure that <code>rect</code> has four values</li>
+</ul>
+</li>
+<li>
+<p><strong>MAKE CHANGE IN CELL</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normalise_rectangle</span><span class="hljs-params">(rect)</span>:</span>
+    <span class="hljs-string">"""Normalises a rectangle to the origin, longest axis 1.0 units."""</span>
+    <span class="hljs-keyword">assert</span> len(rect) == <span class="hljs-number">4</span>, <span class="hljs-string">"Rectangle must have four co-ordinates"</span>
+    x0, y0, x1, y1 = rect
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    <span class="hljs-keyword">if</span> dx &gt; dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = <span class="hljs-number">1.0</span>, scaled
+    <span class="hljs-keyword">else</span>:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, <span class="hljs-number">1.0</span>
+        
+    <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, upper_x, upper_y)
+</div></code></pre>
+<ul>
+<li><strong>TEST FAILING INPUT AND SHOW ASSERTIONERROR</strong></li>
+</ul>
+<pre class="hljs"><code><div>normalise_rectangle((<span class="hljs-number">6.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">1.0</span>))
+
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-10</span><span class="hljs-number">-6</span>da0caef5016&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+      <span class="hljs-number">1</span> <span class="hljs-comment"># Test function</span>
+----&gt; <span class="hljs-number">2</span> normalise_rectangle((<span class="hljs-number">6.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">1.0</span>))
+
+&lt;ipython-input<span class="hljs-number">-9</span><span class="hljs-number">-7</span>b5bc166ed3d&gt; <span class="hljs-keyword">in</span> normalise_rectangle(rect)
+      <span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normalise_rectangle</span><span class="hljs-params">(rect)</span>:</span>
+      <span class="hljs-number">2</span>     <span class="hljs-string">"""Normalises a rectangle to the origin, longest axis 1.0 units."""</span>
+----&gt; <span class="hljs-number">3</span>     <span class="hljs-keyword">assert</span> len(rect) == <span class="hljs-number">4</span>, <span class="hljs-string">"Rectangle must have four co-ordinates"</span>
+      <span class="hljs-number">4</span>     x0, y0, x1, y1 = rect
+      <span class="hljs-number">5</span> 
+
+AssertionError: Rectangle must have four co-ordinates
+</div></code></pre>
+<ul>
+<li><strong>SHOW ANOTHER PROBLEM IN NEW CELL</strong></li>
+</ul>
+<pre class="hljs"><code><div>normalise_rectangle((<span class="hljs-number">6.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">-0.5</span>))
+</div></code></pre>
+<ul>
+<li><strong>Ask learners what's going on</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Postconditions</p>
+<ul>
+<li>
+<p><strong>Postconditions</strong> must be true at the end of an operation or function.</p>
+<ul>
+<li>Here, we want to assert that the upper x and y values are in the range [0, 1]</li>
+</ul>
+</li>
+<li>
+<p><strong>MAKE CHANGE IN CELL</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normalise_rectangle</span><span class="hljs-params">(rect)</span>:</span>
+    <span class="hljs-string">"""Normalises a rectangle to the origin, longest axis 1.0 units."""</span>
+    <span class="hljs-keyword">assert</span> len(rect) == <span class="hljs-number">4</span>, <span class="hljs-string">"Rectangle must have four co-ordinates"</span>
+    x0, y0, x1, y1 = rect
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    <span class="hljs-keyword">if</span> dx &gt; dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = <span class="hljs-number">1.0</span>, scaled
+    <span class="hljs-keyword">else</span>:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, <span class="hljs-number">1.0</span>
+        
+    <span class="hljs-keyword">assert</span> <span class="hljs-number">0</span> &lt; upper_x &lt;= <span class="hljs-number">1.0</span>, <span class="hljs-string">"Calculated upper x-coordinate invalid"</span>
+    <span class="hljs-keyword">assert</span> <span class="hljs-number">0</span> &lt; upper_y &lt;= <span class="hljs-number">1.0</span>, <span class="hljs-string">"Calculated upper y-coordinate invalid"</span>    
+        
+    <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, upper_x, upper_y)
+</div></code></pre>
+<ul>
+<li><strong>TEST FAILING INPUT TO SHOW ASSERTIONERROR</strong></li>
+</ul>
+<pre class="hljs"><code><div>normalise_rectangle((<span class="hljs-number">6.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">-0.5</span>))
+</div></code></pre>
+<ul>
+<li><strong>This isn't our code's fault!</strong>
+<ul>
+<li>The problem is that the input values have the upper-right corner below the lower left corner</li>
+<li><strong>We actually need to add another <em>precondition</em></strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normalise_rectangle</span><span class="hljs-params">(rect)</span>:</span>
+    <span class="hljs-string">"""Normalises a rectangle to the origin, longest axis 1.0 units."""</span>
+    <span class="hljs-keyword">assert</span> len(rect) == <span class="hljs-number">4</span>, <span class="hljs-string">"Rectangle must have four co-ordinates"</span>
+    x0, y0, x1, y1 = rect
+
+    <span class="hljs-keyword">assert</span> x0 &lt; x1, <span class="hljs-string">"Invalid x-coordinates"</span>
+    <span class="hljs-keyword">assert</span> y0 &lt; y1, <span class="hljs-string">"Invalid y-coordinates"</span>
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    <span class="hljs-keyword">if</span> dx &gt; dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = <span class="hljs-number">1.0</span>, scaled
+    <span class="hljs-keyword">else</span>:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, <span class="hljs-number">1.0</span>
+        
+    <span class="hljs-keyword">assert</span> <span class="hljs-number">0</span> &lt; upper_x &lt;= <span class="hljs-number">1.0</span>, <span class="hljs-string">"Calculated upper x-coordinate invalid"</span>
+    <span class="hljs-keyword">assert</span> <span class="hljs-number">0</span> &lt; upper_y &lt;= <span class="hljs-number">1.0</span>, <span class="hljs-string">"Calculated upper y-coordinate invalid"</span>    
+        
+    <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, upper_x, upper_y)
+</div></code></pre>
+<ul>
+<li><strong>DEMONSTRATE THE ERROR THAT'S RAISED</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Notes on assertions</p>
+<ul>
+<li>
+<p><strong>PUT SLIDES ON SCREEN</strong></p>
+</li>
+<li>
+<p>Assertions help understand programs: they <strong>declare what the program should be doing</strong></p>
+</li>
+<li>
+<p>Assertions help the person reading the program match their understanding of the code to what the code expects</p>
+</li>
+<li>
+<p><em>Fail early, fail often</em></p>
+</li>
+<li>
+<p><strong>Turn bugs into assertions or tests</strong>: if you've made the mistake once, you might make it again</p>
+</li>
+</ul>
 
 </body>
 </html>
