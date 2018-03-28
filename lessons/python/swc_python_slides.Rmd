@@ -1165,8 +1165,9 @@ not greater
 
 ## Conditional logic
 
-<img src="images/python-flowchart-conditional.png" />
-
+<center>
+<img src="images/python-flowchart-conditional.png" width="75%" />
+</center>
 
 ## `if-elif-else`
 
@@ -1559,7 +1560,7 @@ Please do use the course Etherpad:
 ## XKCD
 
 <center>
-<img src="images/good_code.png" height="100%" />
+<img src="images/good_code.png" width="40%" />
 </center>
 
 ## What are we doing?
