@@ -22,6 +22,7 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 12: Refactoring](#section-12-refactoring)
 - [SECTION 13: Testing and documentation](#section-13-testing-and-documentation)
 - [SECTION 13: Errors](#section-13-errors)
+- [SECTION 15: Defensive programming](#section-15-defensive-programming)
 
 <!-- /TOC -->
 
@@ -2741,12 +2742,12 @@ def rescale(data):
 ![progress check](images/red_green_sticky.png)
 
 ----
-**SLIDE** ERRORS AND EXCEPTIONS
+**SLIDE** Errors and exceptions
 
 * **MOVE NOTEBOOK TO THE SCREEN**
 
 ----
-**SLIDE** CREATE A NEW NOTEBOOK
+**SLIDE** Create a new notebook
 
 * **Call the notebook `errors`**
 * **ADD AN INTRO**
@@ -2995,3 +2996,330 @@ print(message)
 ```
 
 ![progress check](images/red_green_sticky.png)
+
+----
+
+## SECTION 15: Defensive programming
+
+----
+
+**SLIDE** (Un)readable code
+
+- What does this function do?
+
+- **GIVE LEARNERS A COUPLE OF MINUTES TO TRY TO WORK IT OUT**
+
+```python
+def s(p):
+    a = 0
+    for v in p:
+        a += v
+    m = a / len(p)
+    d = 0
+    for v in p:
+        d += (v - m) * (v - m)
+    return numpy.sqrt(d / (len(p) - 1))
+```
+
+----
+
+**SLIDE** Readable code
+
+- What does this function do?
+
+- **GIVE LEARNERS A COUPLE OF MINUTES TO TRY TO WORK IT OUT**
+
+```python
+def std_dev(sample):
+    sample_sum = 0
+    for value in sample:
+        sample_sum += value
+
+    sample_mean = sample_sum / len(sample)
+
+    sum_squared_devs = 0
+    for value in sample:
+        sum_squared_devs += (value - sample_mean) * (value - sample_mean)
+
+    return numpy.sqrt(sum_squared_devs / (len(sample) - 1))
+```
+
+- **This is the same code as in the previous slide**
+  - sensible function name
+  - sensible variable names
+  - blank lines to separate code blocks
+
+- **Even without comments/documentation it's readable**
+
+- **FIRST LINE OF DEFENCE: sensible names, and documentation**
+  - But that's not all you can do to make your life easier.
+
+----
+
+**SLIDE** Create a new notebook
+
+- **Call it `defensive`**
+
+- **ADD INTRO IN MARKDOWN**
+
+```markdown
+# Defensive Programming
+
+*Defensive programming* is the practice of expecting your code to have mistakes, and guarding against them.
+```
+
+----
+
+**SLIDE** Defensive programming
+
+- So far **we have focused on the basic tools** of writing a program: variables, lists, loops, conditionals, and functions.
+  - We haven't looked very much at whether a program is getting the right answer (and whether it continues to get the right answer as we change it).
+  - **It's all very well having some code, but if it doesn't give the right answer it can be damaging, or worse than useless**
+
+- **Defensive programming** is the practice of expecting your code to have mistakes, and guarding against them.
+  - To do this, we will write some **code that *checks its own operation*.**
+  - This is generally good practice, speeds up software development, and helps ensure that your code is doing what you intend.
+
+----
+**SLIDE** Assertions
+
+- **ADD INTRODUCTORY TEXT**
+
+```markdown
+## Assertions
+
+Assertions are a pythonic way to see if a program's state is correct.
+
+``python
+assert <condition>, "Some text describing the problem"
+``
+```
+
+- **Assertions** are a `Pythonic` way to see if code runs correctly
+    - 10-20% of the `Firefox` source code is assertions/checks on the rest of the code!
+
+- **We *assert* that a *condition* should be `True`**
+    - If it's `True`, the code may be correct
+    - If it's `False`, the code is **not** correct
+
+- The syntax for an assertion is that we `assert` some `<condition>` is `True`, and if it's not, an error is thrown (`AssertionError`), with some text explaining the problem.
+
+----
+
+**SLIDE** Example assertion
+
+- Type code **then ask learners what it does**
+
+```python
+numbers = [1.5, 2.3, 0.7, -0.001, 4.4]
+total = 0.0
+for n in numbers:
+    assert n > 0.0, 'Data should only contain positive values'
+    total += n
+print('total is:', total)
+```
+
+- **EXECUTE CELL**
+
+```python
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+<ipython-input-1-985f50018947> in <module>()
+      2 total = 0.0
+      3 for n in numbers:
+----> 4     assert n > 0.0, 'Data should only contain positive values'
+      5     total += n
+      6 print('total is:', total)
+
+AssertionError: Data should only contain positive values
+```
+
+- The **traceback tells us there is an `AssertionError` and highlights which *assertion* failed.**
+  - The assertion is a check that the code **behaves how *we* expect**
+  - It can be valid Python, and not throw an error, but it might not be what we want
+
+----
+
+**SLIDE** When do we use assertions?
+
+- **Assertions are useful in three circumstances:**
+  1. *preconditions* - must be true at the start of an operation
+  2. *postcondition* - something guaranteed to be true when an operation completes
+  3. *invariant* - something always true at a particular point in code
+
+- **PUT EXAMPLE CODE IN NEW CELL**
+
+```python
+def normalise_rectangle(rect):
+    """Normalises a rectangle to the origin, longest axis 1.0 units."""
+    x0, y0, x1, y1 = rect
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    if dx > dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = 1.0, scaled
+    else:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, 1.0
+        
+    return (0, 0, upper_x, upper_y)
+```
+
+- **Test with some values - in the same cell**
+
+```python
+# Test function
+normalise_rectangle((1.0, 1.0, 4.0, 4.0))
+normalise_rectangle((1.0, 1.0, 4.0, 6.0))
+```
+
+- **DO ALL INPUTS MAKE SENSE?**
+
+```python
+normalise_rectangle((6.0, 4.0, 1.0, 1.0))
+normalise_rectangle((6.0, 4.0, 1.0))
+```
+
+- **ASK LEARNERS WHAT SORT OF CHECKS WE NEED TO MAKE**
+- Examples:
+  - **Input type** - 4 values, all numbers
+  - **x0 < x1; y0 < y1** - lower left corner is identified first
+  - **output values less than or equal to 1** - correct result returned
+
+----
+
+**SLIDE** Preconditions
+
+- **Preconditions** must be true at the start of an operation or function
+  - Here, we want to ensure that `rect` has four values
+
+- **MAKE CHANGE IN CELL**
+
+```python
+def normalise_rectangle(rect):
+    """Normalises a rectangle to the origin, longest axis 1.0 units."""
+    assert len(rect) == 4, "Rectangle must have four co-ordinates"
+    x0, y0, x1, y1 = rect
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    if dx > dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = 1.0, scaled
+    else:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, 1.0
+        
+    return (0, 0, upper_x, upper_y)
+```
+
+- **TEST FAILING INPUT AND SHOW ASSERTIONERROR**
+
+```python
+normalise_rectangle((6.0, 4.0, 1.0))
+
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+<ipython-input-10-6da0caef5016> in <module>()
+      1 # Test function
+----> 2 normalise_rectangle((6.0, 4.0, 1.0))
+
+<ipython-input-9-7b5bc166ed3d> in normalise_rectangle(rect)
+      1 def normalise_rectangle(rect):
+      2     """Normalises a rectangle to the origin, longest axis 1.0 units."""
+----> 3     assert len(rect) == 4, "Rectangle must have four co-ordinates"
+      4     x0, y0, x1, y1 = rect
+      5 
+
+AssertionError: Rectangle must have four co-ordinates
+```
+
+- **SHOW ANOTHER PROBLEM IN NEW CELL**
+
+```python
+normalise_rectangle((6.0, 4.0, 1.0, -0.5))
+```
+
+- **Ask learners what's going on**
+
+----
+
+**SLIDE** Postconditions
+
+- **Postconditions** must be true at the end of an operation or function.
+  - Here, we want to assert that the upper x and y values are in the range [0, 1]
+
+- **MAKE CHANGE IN CELL**
+
+```python
+def normalise_rectangle(rect):
+    """Normalises a rectangle to the origin, longest axis 1.0 units."""
+    assert len(rect) == 4, "Rectangle must have four co-ordinates"
+    x0, y0, x1, y1 = rect
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    if dx > dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = 1.0, scaled
+    else:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, 1.0
+        
+    assert 0 < upper_x <= 1.0, "Calculated upper x-coordinate invalid"
+    assert 0 < upper_y <= 1.0, "Calculated upper y-coordinate invalid"    
+        
+    return (0, 0, upper_x, upper_y)
+```
+
+- **TEST FAILING INPUT TO SHOW ASSERTIONERROR**
+
+```python
+normalise_rectangle((6.0, 4.0, 1.0, -0.5))
+```
+
+- **This isn't our code's fault!**
+  - The problem is that the input values have the upper-right corner below the lower left corner
+  - **We actually need to add another *precondition***
+
+```python
+def normalise_rectangle(rect):
+    """Normalises a rectangle to the origin, longest axis 1.0 units."""
+    assert len(rect) == 4, "Rectangle must have four co-ordinates"
+    x0, y0, x1, y1 = rect
+
+    assert x0 < x1, "Invalid x-coordinates"
+    assert y0 < y1, "Invalid y-coordinates"
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    if dx > dy:
+        scaled = float(dy) / dx
+        upper_x, upper_y = 1.0, scaled
+    else:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, 1.0
+        
+    assert 0 < upper_x <= 1.0, "Calculated upper x-coordinate invalid"
+    assert 0 < upper_y <= 1.0, "Calculated upper y-coordinate invalid"    
+        
+    return (0, 0, upper_x, upper_y)
+```
+
+- **DEMONSTRATE THE ERROR THAT'S RAISED**
+
+----
+
+**SLIDE** Notes on assertions
+
+- **PUT SLIDES ON SCREEN**
+
+- Assertions help understand programs: they **declare what the program should be doing**
+- Assertions help the person reading the program match their understanding of the code to what the code expects
+- *Fail early, fail often*
+- **Turn bugs into assertions or tests**: if you've made the mistake once, you might make it again

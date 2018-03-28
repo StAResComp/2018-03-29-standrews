@@ -2401,3 +2401,199 @@ print(message)
 <center>
 <img src="images/red_green_sticky.png" width="100%" />
 </center>
+
+
+# 15. Defensive programming
+
+## (Un)readable code
+
+<div class="attention">
+What does this function do?
+</div>
+
+```python
+def s(p):
+    a = 0
+    for v in p:
+        a += v
+    m = a / len(p)
+    d = 0
+    for v in p:
+        d += (v - m) * (v - m)
+    return numpy.sqrt(d / (len(p) - 1))
+```
+
+## Readable code
+
+<div class="highlight">
+What does this function do?
+</div>
+
+```python
+def std_dev(sample):
+    sample_sum = 0
+    for value in sample:
+        sample_sum += value
+
+    sample_mean = sample_sum / len(sample)
+
+    sum_squared_devs = 0
+    for value in sample:
+        sum_squared_devs += (value - sample_mean) * (value - sample_mean)
+
+    return numpy.sqrt(sum_squared_devs / (len(sample) - 1))
+```
+
+<div class="attention">
+First line of defence: sensible naming, style and documentation
+</div>
+
+
+## Create a new notebook
+
+<center>
+<img src="images/new_notebook_menu.png" height="150px" />
+<img src="images/empty_notebook.png" height="150px" />
+<img src="images/defensive_notebook.png" height="200px" />
+</center>
+
+
+## Defensive programming
+
+<div class="highlight">
+We've focused on the basics of building code: variables, loops, functions, etc.
+</div>
+
+- We've *not* focused on whether the code is 'correct'
+- *Defensive programming* is expecting your code to have mistakes, and guarding against them
+
+<div class="attention">
+**Write code that checks its own operation**
+</div>
+
+- This is good practice
+  - speeds up software development
+  - helps ensure that your code is doing what you intend
+  
+## Assertions
+
+<div class="highlight">
+- Assertions are a `Pythonic` way to see if code runs correctly
+  - 10-20% of the `Firefox` source code is checks on the rest of the code!
+</div>
+
+- We `assert` that a *condition* is `True`
+  - If it's `True`, the code may be correct
+  - If it's `False`, the code is **not** correct
+    
+```python
+assert <condition>, "Some text describing the problem"
+```
+
+## Example assertion
+
+```python
+numbers = [1.5, 2.3, 0.7, -0.001, 4.4]
+total = 0.0
+for n in numbers:
+    assert n > 0.0, 'Data should only contain positive values'
+    total += n
+print('total is:', total)
+```
+
+<div class="attention">
+**QUESTION:** What does this assertion do?
+</div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## When do we use assertions?
+
+<div class="highlight">
+- *preconditions* - must be true at the start of an operation
+- *postcondition* - guaranteed to be true when operation completes
+- *invariant* - something true at a particular point in code
+</div>
+
+```python
+def normalise_rectangle(rect):
+    """Normalises a rectangle to the origin, longest axis 1.0 units."""
+    x0, y0, x1, y1 = rect
+    
+    dx = x1 - x0
+    dy = y1 - y0
+    
+    if dx > dy:
+        scaled = float(dx) / dy
+        upper_x, upper_y = 1.0, scaled
+    else:
+        scaled = float(dx) / dy
+        upper_x, upper_y = scaled, 1.0
+        
+    return (0, 0, upper_x, upper_y)
+```
+
+
+## Preconditions
+
+<div class="highlight">
+*Preconditions* must be true at the start of an operation or function
+</div>
+
+- Here, we want to ensure that `rect` has four values
+
+```python
+def normalise_rectangle(rect):
+    """Normalises a rectangle to the origin, longest axis 1.0 units."""
+    assert len(rect) == 4, "Rectangle must have four co-ordinates"
+    x0, y0, x1, y1 = rect
+    [...]
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Postconditions
+
+<div class="highlight">
+*Postconditions* must be true at the end of an operation or function.
+</div>
+
+- Here, we want to assert that the upper x and y values are in the range [0, 1]
+
+```python
+def normalise_rectangle(rect):
+    """Normalises a rectangle to the origin, longest axis 1.0 units."""
+    [...]
+
+    assert 0 < upper_x <= 1.0, "Calculated upper x-coordinate invalid"
+    assert 0 < upper_y <= 1.0, "Calculated upper y-coordinate invalid"    
+        
+    return (0, 0, upper_x, upper_y)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Notes on assertions
+
+<div class="highlight">
+Assertions help understand programs
+</div>
+
+- assertions declare what the program should be doing
+- assertions help the person reading the program match their understanding of the code to what the code expects
+
+<div class="attention">
+**Fail early, fail often**
+</div>
+
+- Turn bugs into assertions or tests: if you've made the mistake once, you might make it again
+
