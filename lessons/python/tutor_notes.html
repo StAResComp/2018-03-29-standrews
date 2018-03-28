@@ -372,265 +372,6 @@ blockquote {
 
 </style>
 
-<style>
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-
-body {
-	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
-	font-size: 10px;
-	padding: 0 0px;
-	line-height: 18px;
-	word-wrap: break-word;
-}
-
-#code-csp-warning {
-	position: fixed;
-	top: 0;
-	right: 0;
-	color: white;
-	margin: 16px;
-	text-align: center;
-	font-size: 10px;
-	font-family: sans-serif;
-	background-color:#444444;
-	cursor: pointer;
-	padding: 6px;
-	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
-}
-
-#code-csp-warning:hover {
-	text-decoration: none;
-	background-color:#007acc;
-	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
-}
-
-
-body.scrollBeyondLastLine {
-	margin-bottom: calc(100vh - 22px);
-}
-
-body.showEditorSelection .code-line {
-	position: relative;
-}
-
-body.showEditorSelection .code-active-line:before,
-body.showEditorSelection .code-line:hover:before {
-	content: "";
-	display: block;
-	position: absolute;
-	top: 0;
-	left: -12px;
-	height: 100%;
-}
-
-body.showEditorSelection li.code-active-line:before,
-body.showEditorSelection li.code-line:hover:before {
-	left: -30px;
-}
-
-.vscode-light.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.15);
-}
-
-.vscode-light.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.40);
-}
-
-.vscode-dark.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.4);
-}
-
-.vscode-dark.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.60);
-}
-
-.vscode-high-contrast.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 160, 0, 0.7);
-}
-
-.vscode-high-contrast.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 160, 0, 1);
-}
-
-img {
-	max-width: 100%;
-	max-height: 100%;
-	display: block;
-    margin: 0 auto;
-}
-
-a {
-	color: #4080D0;
-	text-decoration: none;
-}
-
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-	outline: 1px solid -webkit-focus-ring-color;
-	outline-offset: -1px;
-}
-
-hr {
-	border: 0;
-	height: 2px;
-	border-bottom: 2px solid;
-}
-
-h1 {
-	padding-bottom: 0.3em;
-	line-height: 1.2;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-}
-
-h1, h2, h3 {
-	font-weight: normal;
-}
-
-h1 code,
-h2 code,
-h3 code,
-h4 code,
-h5 code,
-h6 code {
-	font-size: inherit;
-	line-height: auto;
-}
-
-a:hover {
-	color: #4080D0;
-	text-decoration: underline;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-table > thead > tr > th {
-	text-align: left;
-	border-bottom: 1px solid;
-}
-
-table > thead > tr > th,
-table > thead > tr > td,
-table > tbody > tr > th,
-table > tbody > tr > td {
-	padding: 5px 10px;
-}
-
-table > tbody > tr + tr > td {
-	border-top: 1px solid;
-}
-
-blockquote {
-	margin: 0 7px 0 5px;
-	padding: 0 16px 0 10px;
-	border-left: 5px solid;
-}
-
-code {
-	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
-	font-size: 10px;
-	line-height: 16px;
-}
-
-body.wordWrap pre {
-	white-space: pre-wrap;
-}
-
-.mac code {
-	font-size: 10px;
-	line-height: 16px;
-}
-
-pre:not(.hljs),
-pre.hljs code > div {
-	padding: 16px;
-	border-radius: 3px;
-	overflow: auto;
-}
-
-/** Theming */
-
-.vscode-light,
-.vscode-light pre code {
-	color: rgb(30, 30, 30);
-}
-
-.vscode-dark,
-.vscode-dark pre code {
-	color: #DDD;
-}
-
-.vscode-high-contrast,
-.vscode-high-contrast pre code {
-	color: white;
-}
-
-.vscode-light code {
-	color: #A31515;
-}
-
-.vscode-dark code {
-	color: #D7BA7D;
-}
-
-.vscode-light pre:not(.hljs),
-.vscode-light code > div {
-	background-color: rgba(220, 220, 220, 0.4);
-}
-
-.vscode-dark pre:not(.hljs),
-.vscode-dark code > div {
-	background-color: rgba(10, 10, 10, 0.4);
-}
-
-.vscode-high-contrast pre:not(.hljs),
-.vscode-high-contrast code > div {
-	background-color: rgb(0, 0, 0);
-}
-
-.vscode-high-contrast h1 {
-	border-color: rgb(0, 0, 0);
-}
-
-.vscode-light table > thead > tr > th {
-	border-color: rgba(0, 0, 0, 0.69);
-}
-
-.vscode-dark table > thead > tr > th {
-	border-color: rgba(255, 255, 255, 0.69);
-}
-
-.vscode-light h1,
-.vscode-light hr,
-.vscode-light table > tbody > tr + tr > td {
-	border-color: rgba(0, 0, 0, 0.18);
-}
-
-.vscode-dark h1,
-.vscode-dark hr,
-.vscode-dark table > tbody > tr + tr > td {
-	border-color: rgba(255, 255, 255, 0.18);
-}
-
-.vscode-light blockquote,
-.vscode-dark blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
-}
-
-.vscode-high-contrast blockquote {
-	background: transparent;
-	border-color: #fff;
-}
-</style>
-
 </head>
 <body>
 <h1>2018-03-29 Python lesson tutor notes</h1>
@@ -638,7 +379,7 @@ pre.hljs code > div {
 <h1>Start the slides</h1>
 <!-- TOC -->
 <ul>
-<li><a href="#title-building-programs-with-python">TITLE: Building Programs With Python</a></li>
+<li><a href="#title-building-programs-with-python-part-1">TITLE: Building Programs With Python (Part 1)</a></li>
 <li><a href="#section-01-setup">SECTION 01: Setup</a></li>
 <li><a href="#section-02-getting-started">SECTION 02: Getting Started</a></li>
 <li><a href="#section-03-data-analysis">SECTION 03: Data Analysis</a></li>
@@ -648,10 +389,16 @@ pre.hljs code > div {
 <li><a href="#section-07-making-choices">SECTION 07: Making choices</a></li>
 <li><a href="#section-08-analysing-multiple-files">SECTION 08: Analysing multiple files</a></li>
 <li><a href="#section-09-conclusions-part-1">SECTION 09: Conclusions (Part 1)</a></li>
+<li><a href="#title-building-programs-with-python-part-2">TITLE: Building Programs With Python (Part 2)</a></li>
+<li><a href="#section-10-jupyter-notebooks">SECTION 10: <code>Jupyter</code> notebooks</a></li>
+<li><a href="#section-11-functions">SECTION 11: Functions</a></li>
+<li><a href="#section-12-refactoring">SECTION 12: Refactoring</a></li>
+<li><a href="#section-13-testing-and-documentation">SECTION 13: Testing and documentation</a></li>
+<li><a href="#section-13-errors">SECTION 13: Errors</a></li>
 </ul>
 <!-- /TOC -->
 <hr>
-<h2>TITLE: Building Programs With Python</h2>
+<h2>TITLE: Building Programs With Python (Part 1)</h2>
 <hr>
 <p><strong>SLIDE:</strong> Etherpad</p>
 <ul>
@@ -2636,6 +2383,1093 @@ files = []
 <ul>
 <li><strong>SEND THEM HOME HAPPY!</strong></li>
 </ul>
+<hr>
+<h2>TITLE: Building Programs With Python (Part 2)</h2>
+<hr>
+<p><strong>SLIDE:</strong> Etherpad</p>
+<ul>
+<li>Please use the Etherpad for the course <strong>DEMONSTRATE LINK</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Why are we here?</p>
+<ul>
+<li>We're here to learn <strong>how to program</strong></li>
+<li>This is a way to <strong>solve problems in your research</strong> through making a computer do work <strong>quickly</strong> and <strong>accurately</strong>
+<ul>
+<li>You'll be continuing to <strong>build your data analysis</strong> script from yesterday</li>
+<li>You'll <strong>automate</strong> functions to perform tasks over and over again (in various combinations)</li>
+</ul>
+</li>
+<li>You'll <strong>manipulate data</strong>, which is at the heart of all academia
+<ul>
+<li>You'll learn how to build <strong>functions</strong> that do specific, defined tasks and encapsulate code, making it reusable and readable</li>
+<li>You'll learn some <strong>defensive programming</strong>, so that you automatically catch problems in your code/data handling</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> XKCD</p>
+<ul>
+<li>Again, this slide is only a little bit flippant</li>
+<li><em>No-one</em> writes perfect code, first time
+<ul>
+<li>It's all about revision, and good practice: <strong>defensive programming</strong></li>
+<li>These principles will make your life, and other people's lives, much easier</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Setting up</p>
+<ul>
+<li>
+<p>We want a neat (clean) working environment</p>
+</li>
+<li>
+<p>Change directory to desktop (in terminal or Explorer)</p>
+</li>
+<li>
+<p>Change your working directory to <code>python-novice-inflammation</code> (from yesterday/earlier)</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ <span class="hljs-built_in">cd</span> ~/Desktop
+$ <span class="hljs-built_in">cd</span> python-novice-inflammation
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p>## SECTION 10: <code>Jupyter</code> notebooks</p>
+<hr>
+<p><strong>SLIDE</strong> Starting <code>Jupyter</code></p>
+<ul>
+<li>Make sure you're in the project directory <code>python-novice-inflammation</code></li>
+<li><strong>Start <code>Jupyter</code></strong> from the command-line</li>
+<li><strong>CHECK WHETHER EVERYONE SEES A WORKING JUPYTER NOTEBOOK</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ jupyter notebook
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> <code>Jupyter</code> landing page</p>
+<ul>
+<li>
+<p><strong><code>Jupyter</code> landing page is a file browser</strong>, like Explorer/Finder</p>
+<ul>
+<li>Point out <code>Python</code> (<code>.py</code>) files, <code>.zip</code> files, and directories)</li>
+<li>Point out directory (<code>data</code>), and how the file symbols are different. (<em>the triangle by the check box gives a key</em>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Point out <code>New</code> button.</strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Create a new notebook</p>
+<ul>
+<li>Click on <code>New -&gt; Python 3</code></li>
+<li>Point out that there may or may not be other options in the student's installation</li>
+<li>Indicate the new features on the empty notebook:
+<ul>
+<li>The <strong>notebook name</strong>: <code>Untitled</code></li>
+<li><strong>Checkpoint</strong> information (the last time the notebook was saved, for safety)</li>
+<li>The <strong>menu bar</strong> (<code>File Edit etc.</code>) - just like <code>Word</code> or <code>Excel</code></li>
+<li>An indication of <strong>which kernel you're using/language you're in</strong></li>
+<li><strong>Icon view</strong> (just like <code>Word</code> or <code>Excel</code>)</li>
+<li>An empty cell with <code>In [ ]:</code></li>
+</ul>
+</li>
+<li>Point out the <strong>box around the cell</strong>, and that it <strong>changes colour</strong> when you start to edit</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> My first notebook</p>
+<ul>
+<li><strong>Give the notebook the name <code>functions</code></strong></li>
+<li>Click on <code>Untitled</code> and enter the name <code>functions</code></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Cell types</p>
+<ul>
+<li>
+<p><code>Jupyter</code> documents are comprised of <code>cells</code></p>
+</li>
+<li>
+<p>A <code>cell</code> can be one of <strong>several types</strong> - we'll focus on two:</p>
+<ul>
+<li><code>Code</code>: <strong>code</strong> in the current kernel/language</li>
+<li><code>Markdown</code>: <strong>text</strong>, with the opportunity for formatting</li>
+</ul>
+</li>
+<li>
+<p><strong>Change the first cell type to <code>Markdown</code></strong></p>
+<ul>
+<li>The box <strong>colour changes</strong> from green to blue</li>
+<li>The <code>In []</code> <strong>prompt disappears</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Markdown text</p>
+<ul>
+<li>
+<p><code>Markdown</code> lets us <strong>enter formatted text</strong></p>
+<ul>
+<li><strong>Headers</strong> are preceded by a hash: <code>#</code></li>
+<li>The <strong>level of header</strong> is determined by the number of hashes: <code>#</code></li>
+<li><strong>Typewriter text/code</strong> is shown by enclosing in backticks: ```</li>
+<li><strong>Italics</strong> are shown by enclosing text in single asterisks: <code>*italic*</code></li>
+<li><strong>LaTeX</strong> can be entered within dollar signs <code>$</code></li>
+</ul>
+</li>
+<li>
+<p>Press <code>Shift + Enter</code> to execute a cell</p>
+</li>
+<li>
+<p>The cell is rendered, and a new cell appears beneath the executed cell</p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section"># Functions</span>
+
+Functions are pieces of code that take an input and return an output. They enable us to break our code into logical chunks that are easier to understand and maintain.
+
+<span class="hljs-section">## Temperature conversion</span>
+
+As an example in <span class="hljs-code">`Python`</span>, we will create a function that converts temperature between <span class="hljs-emphasis">*Fahrenheit*</span> and <span class="hljs-emphasis">*Kelvin*</span> scales.
+</div></code></pre>
+<hr>
+<p>## SECTION 11: Functions</p>
+<hr>
+<p><strong>SLIDE</strong> Motivation</p>
+<ul>
+<li>
+<p>We wrote some code that plots values of interest from multiple datasets</p>
+<ul>
+<li><strong>but that code is long and complicated</strong></li>
+</ul>
+</li>
+<li>
+<p>The code is also not very flexible if we want to deal with thousands of files, and we can't modify it to plot only a subset of files very easily</p>
+<ul>
+<li>Cutting and pasting is slow and error-prone</li>
+</ul>
+</li>
+<li>
+<p><strong>SO</strong> we will package our code for reuse.</p>
+<ul>
+<li><strong>We do this by writing functions</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> What is a function?</p>
+<ul>
+<li>
+<p>Functions in code work <strong>like mathematical functions</strong>, like $y = f(x)$</p>
+<ul>
+<li>$f()$  is the function</li>
+<li>$x$  is an <strong>input</strong> (or inputs)</li>
+<li>$y$  is the <strong>returned value</strong>, or output(s)</li>
+</ul>
+</li>
+<li>
+<p>The function's output  $y$ depends in some way on the value of  $x$ - the dependency is defined by $f()$.</p>
+</li>
+<li>
+<p><strong>Not all functions in code take an input, or produce a usable output, but the principle is generally the same.</strong></p>
+</li>
+<li>
+<p><strong>You've already been using functions in this course: <code>print()</code>, <code>numpy.max()</code>, etc.</strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> My first function</p>
+<ul>
+<li><strong>REFER TO THE CODE IN THE NOTEBOOK</strong>
+<ul>
+<li>We've written a function to convert Fahrenheit to Kelvin, called <code>fahr_to_kelvin()</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Describe the mathematical function</strong>:
+<ul>
+<li>This function takes <code>x</code>, subtracts 32, multiplies by 5/9, and adds 273.15</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>In <code>Python</code> this <strong>translates to the code below</strong>:
+<ul>
+<li>The function <strong>performs a calculation, which is <em>returned</em> by the <code>return</code> statement</strong>.</li>
+<li>The value of <strong>the variable <code>temp</code> is taken through the same calculation as in the mathematical function</strong>, and is then <em>return</em>ed.</li>
+<li>Functions are <em>defined</em> by the <code>def</code> keyword</li>
+<li>The name of the function follows the <code>def</code> keyword (equivalent to <code>f</code> in the mathematical example)</li>
+<li>The first line ends in a colon, just like a <code>for</code> loop or <code>if</code> statement.</li>
+<li>The code, or <em>body</em> of the function is indented, just like a <code>for</code> loop or <code>if</code> statement.</li>
+<li>The <em>parameters</em> or <em>inputs</em> to the function are then defined in parentheses. These get a variable name <strong>which only exists within the function</strong>. Here, there is one parameter, called <code>temp</code>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Calling the function</p>
+<ul>
+<li>We <strong>call <code>fahr_to_kelvin</code> in exactly the same way we call any other function we've seen</strong> so far
+<ul>
+<li>e.g. <code>print()</code> or <code>numpy.mean()</code></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>print(<span class="hljs-string">'freezing point of water:'</span>, fahr_to_kelvin(<span class="hljs-number">32</span>))
+print(<span class="hljs-string">'boiling point of water:'</span>, fahr_to_kelvin(<span class="hljs-number">212</span>))
+</div></code></pre>
+<ul>
+<li><strong>NOTE: that the returned values from executing code show up in the notebook below the cell</strong></li>
+</ul>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> Create a new function</p>
+<ul>
+<li><strong>ASK THE LEARNERS HOW WE WOULD CREATE A NEW FUNCTION TO CONVERT KELVIN TO CELSIUS</strong></li>
+<li><strong>Walk through the process, being prompted</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">kelvin_to_celsius</span><span class="hljs-params">(temp)</span>:</span>
+  <span class="hljs-keyword">return</span> temp - <span class="hljs-number">273.15</span>
+</div></code></pre>
+<ul>
+<li><strong>ASK THE LEARNERS HOW TO CALL THE FUNCTION</strong></li>
+</ul>
+<pre class="hljs"><code><div>print(<span class="hljs-string">'freezing point of water'</span>, kelvin_to_celsius(<span class="hljs-number">273.15</span>))
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Composing functions</p>
+<ul>
+<li>
+<p><strong>Composing <code>Python</code> functions works just like mathematical functions</strong>: <code>y = f(g(x))</code></p>
+</li>
+<li>
+<p><strong>ASK HOW WE CAN CONVERT FAHRENHEIT TO CELSIUS WITH OUR EXISTING FUNCTIONS</strong></p>
+<ul>
+<li>We could convert a temperature in fahrenheit (<code>temp_f</code>) to a temperature in celsius (<code>temp_c</code>) by <strong>executing the code</strong>:</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>temp_f = <span class="hljs-number">212.0</span>
+temp_c = kelvin_to_celsius(fahr_to_kelvin(temp_f))
+print(temp_c)
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> New functions from old</p>
+<ul>
+<li>**ASK LEARNERS HOW WE CAN TURN THIS INTO A NEW FUNCTION: <code>fahr_to_celsius()</code>:</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fahr_to_celsius</span><span class="hljs-params">(temp_f)</span>:</span>
+    <span class="hljs-keyword">return</span> kelvin_to_celsius(fahr_to_kelvin(temp_f))
+</div></code></pre>
+<ul>
+<li>We can call this just like any other function</li>
+</ul>
+<pre class="hljs"><code><div>print(<span class="hljs-string">'freezing point of water in Celsius:'</span>, fahr_to_celsius(<span class="hljs-number">32.0</span>))
+</div></code></pre>
+<ul>
+<li><strong>THIS IS HOW PROGRAMS ARE BUILT: COMBINING SMALL CHUNKS OF CODE INTO LARGER BITS UNTIL WE GET THE RESULT WE WANT</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Exercise 08 (10min)</p>
+<ul>
+<li><strong>SHOW THE SLIDES FOR THE EXERCISE</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">outer</span><span class="hljs-params">(s)</span>
+    <span class="hljs-title">return</span> <span class="hljs-title">s</span>[0] + <span class="hljs-title">s</span>[-1]
+</span></div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<ul>
+<li><strong>RETURN TO THE NOTEBOOK</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Function scope</p>
+<ul>
+<li><strong>Make a Markdown note</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section">## Function scope</span>
+
+Variables defined within a function (including parameters) are not available outside the function unless they are returned.
+</div></code></pre>
+<ul>
+<li>
+<p><strong>This is called <em>function scope</em></strong></p>
+</li>
+<li>
+<p><strong>DEMO THE CODE BELOW</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>a = <span class="hljs-string">"Hello"</span>
+
+print(a)
+</div></code></pre>
+<ul>
+<li>
+<p>This code defines a variable <code>a</code> and gives it a value &quot;Hello&quot;</p>
+</li>
+<li>
+<p><strong>NOW DECLARE A FUNCTION (IN THE SAME CELL) AND CALL IT</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>a = <span class="hljs-string">"Hello"</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_fn</span><span class="hljs-params">(a)</span>:</span>
+    a = <span class="hljs-string">"Goodbye"</span>
+
+my_fn(a)
+print(a)
+</div></code></pre>
+<ul>
+<li>Returning <code>a</code> doesn't - by itself - change anything</li>
+</ul>
+<pre class="hljs"><code><div>a = <span class="hljs-string">"Hello"</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_fn</span><span class="hljs-params">()</span>:</span>
+    a = <span class="hljs-string">"Goodbye"</span>
+    <span class="hljs-keyword">return</span> a
+
+my_fn(a)
+print(a)
+</div></code></pre>
+<ul>
+<li>To move values to and from functions, you should generally <code>return</code> them from the function, <em>and</em> catch them in a variable</li>
+<li><strong>COMPLETE THE CODE EXAMPLE IN THE CELL</strong></li>
+</ul>
+<pre class="hljs"><code><div>a = <span class="hljs-string">"Hello"</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_fn</span><span class="hljs-params">(a)</span>:</span>
+  a = <span class="hljs-string">"Goodbye"</span>
+  <span class="hljs-keyword">return</span> a
+  
+a = my_fn(a)
+print(a)
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Exercise 09 (5min)</p>
+<ul>
+<li>
+<p><strong>PUT THE SLIDES ON SCREEN</strong></p>
+</li>
+<li>
+<p><strong>MCQ: put coloured stickies up</strong></p>
+</li>
+<li>
+<p>Solution: <code>1: 7 3</code> (this differs from that on the SWC page)</p>
+</li>
+</ul>
+<hr>
+<p>## SECTION 12: Refactoring</p>
+<hr>
+<p><strong>SLIDE</strong> Tidying up</p>
+<ul>
+<li>
+<p>Now we can write functions, <strong>let's make the inflammation analysis easier to reuse</strong></p>
+<ul>
+<li><strong>ONE FUNCTION PER OPERATION</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>CLOSE THE NOTEBOOKS</strong></p>
+</li>
+<li>
+<p>**OPEN UP THE <code>ANALYSE_FILES.PY</code> SCRIPT</p>
+</li>
+<li>
+<p><strong>TALK THE STUDENTS THROUGH THE CODE LOGIC: TWO SECTIONS - ANALYSE AND DETECT PROBLEMS</strong></p>
+</li>
+<li>
+<p>The code can be divided into two main sections, which could be functions:</p>
+<ol>
+<li>check the data for problems</li>
+<li>plot the data</li>
+</ol>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> <code>detect_problems()</code></p>
+<ul>
+<li>
+<p>We noticed that some data was questionable</p>
+</li>
+<li>
+<p>This function spots problems with the data</p>
+<ul>
+<li>Call the function after loading, before plotting</li>
+</ul>
+</li>
+<li>
+<p><strong>OPEN EDITOR AND CHANGE CODE</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ nano analyse_files.py
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># Detect problems with a dataset</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">detect_problems</span><span class="hljs-params">(data)</span>:</span>
+    <span class="hljs-keyword">if</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> np.max(data, axis=<span class="hljs-number">0</span>)[<span class="hljs-number">20</span>] == <span class="hljs-number">20</span>:
+        print(<span class="hljs-string">"Suspicious-looking maxima!"</span>)
+    <span class="hljs-keyword">elif</span> np.sum(data.min(axis=<span class="hljs-number">0</span>)) == <span class="hljs-number">0</span>:
+        print(<span class="hljs-string">'Minima sum to zero!'</span>)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">'Seems OK!'</span>)
+
+<span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files:
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-comment"># identify problems in the data</span>
+    detect_problems(data)
+</div></code></pre>
+<ul>
+<li><strong>SAVE AND RUN SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python analyse_files.py
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>plot_data()</code></p>
+<ul>
+<li>We'll write <strong>a function that plots the data</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Plot passed data in the specified file</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">plot_data</span><span class="hljs-params">(data, fname)</span>:</span>
+    <span class="hljs-comment"># create figure and three axes</span>
+    fig = plt.figure(figsize=(<span class="hljs-number">10.0</span>, <span class="hljs-number">3.0</span>))
+    axes1 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
+    axes2 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+    axes3 = fig.add_subplot(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>)
+
+    <span class="hljs-comment"># decorate the axes</span>
+    axes1.set_ylabel(<span class="hljs-string">'average'</span>)
+    axes2.set_ylabel(<span class="hljs-string">'maximum'</span>)
+    axes3.set_ylabel(<span class="hljs-string">'minimum'</span>)
+
+    <span class="hljs-comment"># plot the data</span>
+    axes1.plot(data.mean(axis=<span class="hljs-number">0</span>))
+    axes2.plot(data.max(axis=<span class="hljs-number">0</span>))
+    axes3.plot(data.min(axis=<span class="hljs-number">0</span>))
+
+    <span class="hljs-comment"># tidy plot and render</span>
+    fig.tight_layout()
+    print(<span class="hljs-string">'Writing image to'</span>, imgname)
+    plt.savefig(imgname)
+
+<span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files:
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-comment"># identify problems in the data</span>
+    detect_problems(data)
+
+    <span class="hljs-comment"># plot image in file</span>
+    imgname = fname[:<span class="hljs-number">-4</span>] + <span class="hljs-string">'.png'</span>
+    plot_data(data, imgname)
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Code reuse</p>
+<ul>
+<li><strong>The logic of the code is now easier to understand</strong></li>
+<li>We identify the input files, then apply one function per action in a loop:
+<ul>
+<li>Print the filename</li>
+<li>Load the data with <code>np.loadtxt()</code></li>
+<li><code>detect_problems()</code> in the data</li>
+<li><code>plot_data()</code> the data</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Analyse each file in turn</span>
+<span class="hljs-keyword">for</span> fname <span class="hljs-keyword">in</span> files:
+    print(<span class="hljs-string">"Analysing"</span>, fname)
+
+    <span class="hljs-comment"># load data</span>
+    data = np.loadtxt(fname=fname, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-comment"># identify problems in the data</span>
+    detect_problems(data)
+
+    <span class="hljs-comment"># plot image in file</span>
+    imgname = fname[:<span class="hljs-number">-4</span>] + <span class="hljs-string">'.png'</span>
+    plot_data(data, imgname)
+</div></code></pre>
+<ul>
+<li><strong>THIS HAS ADVANTAGES</strong>
+<ul>
+<li><strong>The code is much shorter (as we read it, here)</strong></li>
+<li><strong>The function names are human-readable and descriptive</strong></li>
+<li><strong>It is much easier to see what the code is doing</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> Good code pays off</p>
+<ul>
+<li><strong>YOU MAY BE ASKING YOURSELF WHY YOU WANT TO BOTHER WITH THIS</strong>
+<ul>
+<li>After 6 months, the referee report arrives and you need to rerun experiments</li>
+<li>Another student is continuing the project</li>
+<li>Some random person reads your article and asks for the code</li>
+<li>Helps spot errors quickly</li>
+<li>Clarifies structure in your mind as well as in the code</li>
+<li>Saves you time in the long run! (&quot;Future You&quot; will back this up)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>SECTION 13: Testing and documentation</h2>
+<hr>
+<p><strong>SLIDE</strong> Motivation</p>
+<ul>
+<li>Once a useful function is written, it gets reused over and over, often without further checking</li>
+<li>When you write a function you should:
+<ul>
+<li><strong>Test output for correctness</strong></li>
+<li><strong>Document the expected function</strong></li>
+</ul>
+</li>
+<li>We'll demonstrate this with a function to centre a numerical array</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Create a new notebook</p>
+<ul>
+<li>
+<p><strong>New notebook called <code>testing</code></strong></p>
+</li>
+<li>
+<p><strong>ADD AN INTRO IN MARKDOWN</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section"># Testing and Documentation</span>
+
+When writing a function, we should
+
+<span class="hljs-bullet">- </span>test output for correctness
+<span class="hljs-bullet">- </span>document the expected function
+</div></code></pre>
+<ul>
+<li><strong>ADD IMPORTS</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>centre()</code></p>
+<ul>
+<li>
+<p><strong>Write the test function</strong></p>
+</li>
+<li>
+<p>When doing some analyses, such as PCA, we might want to recentre and normalise our dataset.</p>
+</li>
+<li>
+<p>Let's write a function to recentre an array of data, like the inflammation data.</p>
+</li>
+<li>
+<p><strong>EXPLAIN THE MATHS IF NECESSARY</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">centre</span><span class="hljs-params">(data, desired)</span>:</span>
+    <span class="hljs-keyword">return</span> (data - np.mean(data)) + desired
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Test datasets</p>
+<ul>
+<li>
+<p><strong>ASK THE LEARNERS HOW WE CAN CHECK THAT THE FUNCTION WORKS IN THE WAY WE INTEND</strong></p>
+</li>
+<li>
+<p>We could try <code>centre()</code> on our real data, but we <em>don't know what the answer should be!</em>*</p>
+<ul>
+<li>We'll use <code>numpy</code>'s <code>zeros()</code> function to generate an <strong>input set where we know the answer</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>SHOW THE TEST DATA</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>z = np.zeros((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))
+z
+</div></code></pre>
+<ul>
+<li><strong>Let's recentre the data at the value 2</strong></li>
+</ul>
+<pre class="hljs"><code><div>centre(z, <span class="hljs-number">3.0</span>)
+</div></code></pre>
+<ul>
+<li><strong>This works, so we'll try it on real data</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Real data</p>
+<ul>
+<li><strong>LOAD THE DATA</strong></li>
+</ul>
+<pre class="hljs"><code><div>data = np.loadtxt(fname=<span class="hljs-string">'data/inflammation-01.csv'</span>, delimiter=<span class="hljs-string">','</span>)
+</div></code></pre>
+<ul>
+<li><strong>Let's recentre the data to zero</strong></li>
+</ul>
+<pre class="hljs"><code><div>centre(data, <span class="hljs-number">0</span>))
+</div></code></pre>
+<ul>
+<li>This looks OK, but <strong>how would we know it worked?</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Check properties</p>
+<ul>
+<li>
+<p><strong>ASK LEARNERS HOW THEY COULD VERIFY THE FUNCTION WORKED AS INTENDED</strong></p>
+</li>
+<li>
+<p>We can <strong>check properties of the original and centred data</strong></p>
+<ul>
+<li><code>mean</code>, <code>min</code>, <code>max</code>, <code>std</code></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>print(<span class="hljs-string">'original min, mean, and max are:'</span>, numpy.min(data), numpy.mean(data), numpy.max(data))
+</div></code></pre>
+<ul>
+<li>We'd expect the <strong>mean of the new dataset to be approximately <code>0.0</code></strong></li>
+<li>Also, the <strong>range (<code>max</code> - <code>min</code>) should be unchanged.</strong></li>
+</ul>
+<pre class="hljs"><code><div>centred = centre(data, <span class="hljs-number">0</span>)
+print(<span class="hljs-string">'min, mean, and max of centered data are:'</span>, numpy.min(centred),
+      numpy.mean(centred), numpy.max(centred))  
+</div></code></pre>
+<ul>
+<li>The limits seem OK, but has the <em>shape</em> of the data distribution changed?</li>
+<li>The <strong>variance of the dataset should be unchanged.</strong></li>
+</ul>
+<pre class="hljs"><code><div>print(<span class="hljs-string">'std dev before and after:'</span>, numpy.std(data), numpy.std(centred))    
+</div></code></pre>
+<ul>
+<li>
+<p>The range and variance are as expected, but the mean is not quite <code>0.0</code></p>
+</li>
+<li>
+<p><strong>The function is probably OK, as-is</strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Documenting functions</p>
+<ul>
+<li>
+<p>We can document what our function does by <strong>writing comments in the code</strong>, and this is a good thing.</p>
+</li>
+<li>
+<p>But Python allows us to <strong>document what a function does directly in the function</strong> using a <em>docstring</em>.</p>
+</li>
+<li>
+<p>This is a string that is put in a <strong>specific place in the function definition, and it has special properties that are useful</strong>.</p>
+</li>
+<li>
+<p>To add a docstring to our <code>centre()</code> function, we add a string immediately after the function declaration</p>
+</li>
+<li>
+<p><strong>ADD DOCSTRING TO EXISTING FUNCTION AND RUN CELL</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">centre</span><span class="hljs-params">(data, desired)</span>:</span>
+    <span class="hljs-string">"""Returns the array in data, recentered around the desired value."""</span>
+    <span class="hljs-keyword">return</span> (data - numpy.mean(data)) + desired
+</div></code></pre>
+<ul>
+<li>
+<p><strong>RESTART KERNEL AND RUN ALL</strong></p>
+</li>
+<li>
+<p>This documents the function directly in the source code, and it also <strong>hooks that documentation into <code>Python</code>'s <code>help</code> system.</strong></p>
+<ul>
+<li>We can ask for help on any function using the <code>help()</code> function:</li>
+</ul>
+</li>
+<li>
+<p><strong>built-in</strong> functions</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>help(<span class="hljs-keyword">print</span>)
+</div></code></pre>
+<ul>
+<li><strong>functions from modules</strong></li>
+</ul>
+<pre class="hljs"><code><div>help(numpy.mean)
+</div></code></pre>
+<ul>
+<li>and <strong>if you write it</strong> your own functions</li>
+</ul>
+<pre class="hljs"><code><div>help(centre)
+</div></code></pre>
+<ul>
+<li>
+<p><strong>SHOW LEARNERS HOW DETAILED THE BUILTIN AND NUMPY HELP IS</strong></p>
+</li>
+<li>
+<p>Using the triple quotes (&quot;&quot;&quot;) allows us to use a multi-line string to describe the function:</p>
+</li>
+<li>
+<p><strong>ADD EXTRA DOCUMENTATION</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">centre</span><span class="hljs-params">(data, desired)</span>:</span>
+    <span class="hljs-string">"""Returns the array in data, recentred around the desired value.
+    
+    Example
+    -------
+    &gt;&gt;&gt; centre([1, 2, 3], 0)
+    [-1, 0, 1]
+    """</span>
+    <span class="hljs-keyword">return</span> (data - numpy.mean(data)) + desired
+</div></code></pre>
+<ul>
+<li><strong>DEMONSTRATE THE CHANGE</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Default arguments</p>
+<ul>
+<li>So far we have named the two arguments in our <code>centre()</code> function
+<ul>
+<li>We need to specify both of them when we call the function</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>centre([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-number">0</span>)
+array([<span class="hljs-number">-1.</span>,  <span class="hljs-number">0.</span>,  <span class="hljs-number">1.</span>])
+
+centre([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-13</span><span class="hljs-number">-9131</span>fef8e3dc&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+----&gt; <span class="hljs-number">1</span> centre([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+
+TypeError: centre() missing <span class="hljs-number">1</span> required positional argument: <span class="hljs-string">'desired'</span>
+</div></code></pre>
+<ul>
+<li>We <strong>can set a <em>default</em> value for function arguments</strong> when we define the function</li>
+<li>Set defaults <strong>by assigning a value in the function declaration</strong>, as follows:</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">centre</span><span class="hljs-params">(data, desired=<span class="hljs-number">0.0</span>)</span>:</span>
+    <span class="hljs-string">"""Returns the array in data, recentred around the desired value.
+    
+    Example
+    -------
+    &gt;&gt;&gt; centre([1, 2, 3], 0)
+    [-1, 0, 1]
+    """</span>
+    <span class="hljs-keyword">return</span> (data - numpy.mean(data)) + desired
+</div></code></pre>
+<ul>
+<li>The change we've made is to set <code>desired=0.0</code> in the function <em>prototype</em>.</li>
+<li>Now, by default, the function will recentre the passed data to zero, without us having to specify that:</li>
+</ul>
+<pre class="hljs"><code><div>centre([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Create a new notebook</p>
+<ul>
+<li><strong>New notebook called <code>testing</code></strong></li>
+<li><strong>ADD AN INTRO IN MARKDOWN</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section"># Testing and Documentation</span>
+
+When writing a function, we should
+
+<span class="hljs-bullet">* </span>test output for correctness
+<span class="hljs-bullet">* </span>document the expected function
+</div></code></pre>
+<ul>
+<li><strong>ADD IMPORTS</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> numpy
+</div></code></pre>
+<ul>
+<li><strong>Write the test function</strong></li>
+<li>When doing some analyses, such as PCA, we might want to recentre and normalise our dataset.</li>
+<li>Let's write a function to recentre an array of data, like the inflammation data.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">centre</span><span class="hljs-params">(data, desired)</span>:</span>
+    <span class="hljs-keyword">return</span> (data - np.mean(data)) + desired
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Exercise 10 (10min)</p>
+<ul>
+<li><strong>MOVE SLIDES TO THE SCREEN</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rescale</span><span class="hljs-params">(data)</span>:</span>
+    <span class="hljs-string">"""Returns input array rescaled to [0.0, 0.1]."""</span>
+    l = numpy.min(data)
+    h = numpy.max(data)
+    <span class="hljs-keyword">return</span> (data - l) / (h - l)
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
+<hr>
+<p><strong>SLIDE</strong> ERRORS AND EXCEPTIONS</p>
+<ul>
+<li><strong>MOVE NOTEBOOK TO THE SCREEN</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> CREATE A NEW NOTEBOOK</p>
+<ul>
+<li><strong>Call the notebook <code>errors</code></strong></li>
+<li><strong>ADD AN INTRO</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section"># Errors and Exceptions</span>
+
+<span class="hljs-code">`Python`</span> provides useful error reports of what has gone wrong, which can help with debugging.
+</div></code></pre>
+<hr>
+<h2>SECTION 13: Errors</h2>
+<hr>
+<p><strong>SLIDE</strong> Create a new notebook</p>
+<ul>
+<li><strong>Call the notebook <code>errors</code></strong></li>
+<li><strong>ADD AN INTRO</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-section"># Errors and Exceptions</span>
+
+<span class="hljs-code">`Python`</span> provides useful error reports of what has gone wrong, which can help with debugging.
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Errors</p>
+<ul>
+<li><strong>Programming is essentially just making errors over and over again until the code works</strong> <img class="emoji" alt="wink" src="data:image/png;base64,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" />
+<ul>
+<li>The key skill is <strong>learning how to identify, and then fix, the errors</strong> when they are reported.</li>
+<li><strong>All programmers</strong> make errors.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Traceback</p>
+<ul>
+<li>
+<p><code>Python</code> tries to be helpful, and provides extensive information about errors</p>
+<ul>
+<li>These are called <em>tracebacks</em></li>
+</ul>
+</li>
+<li>
+<p><strong>We'll induce a traceback, so we can look at it</strong></p>
+</li>
+<li>
+<p><strong>ENTER CODE IN A CELL</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">favourite_ice_cream</span><span class="hljs-params">()</span>:</span>
+    ice_creams = [<span class="hljs-string">"chocolate"</span>,
+                  <span class="hljs-string">"vanilla"</span>,
+                  <span class="hljs-string">"strawberry"</span>]
+    print(ice_creams[<span class="hljs-number">3</span>])
+</div></code></pre>
+<ul>
+<li><strong>NEW CELL</strong></li>
+</ul>
+<pre class="hljs"><code><div>favourite_ice_cream()
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Anatomy of a traceback</p>
+<pre class="hljs"><code><div>---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-4</span><span class="hljs-number">-8</span>f18c934933f&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+----&gt; <span class="hljs-number">1</span> favourite_ice_cream()
+
+&lt;ipython-input<span class="hljs-number">-3</span><span class="hljs-number">-3</span>f8910a0f7ad&gt; <span class="hljs-keyword">in</span> favourite_ice_cream()
+      <span class="hljs-number">3</span>                   <span class="hljs-string">"vanilla"</span>,
+      <span class="hljs-number">4</span>                   <span class="hljs-string">"strawberry"</span>]
+----&gt; <span class="hljs-number">5</span>     print(ice_creams[<span class="hljs-number">3</span>])
+
+IndexError: list index out of range
+
+</div></code></pre>
+<ul>
+<li>
+<p><strong>TALK THROUGH THE TRACEBACK IN THE NOTEBOOK</strong></p>
+<ul>
+<li>The <em>stack</em> of all steps leading to the error is shown</li>
+<li>The steps are separated by lines starting <code>&lt;ipython-input-1…</code></li>
+<li>The steps run in order from top to bottom</li>
+</ul>
+</li>
+<li>
+<p>The first step has an arrow, showing where we were when the error happened. We were calling the <code>favourite_ice_cream()</code> function</p>
+</li>
+<li>
+<p>The second step tells us that we were <em>in</em> the <code>favourite_ice_cream()</code> function</p>
+<ul>
+<li>The second step also points to the line <code>print(ice_creams[3])</code>, which is where the error occurs</li>
+<li>This is also the last step, and the precise error is shown on the final line: <code>IndexError: list index out of range</code></li>
+</ul>
+</li>
+<li>
+<p>Together, this tells us that we have made an index error in the line <code>print(ice_creams[3])</code>, and by looking we can see that we've tried to use an index outside the length of the list.</p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Syntax errors</p>
+<ul>
+<li>
+<p><strong>The error you saw just now was a <em>logic error</em></strong> - the code was valid <code>Python</code>, but it did something 'illegal' when it ran</p>
+<ul>
+<li><strong>We have to run the code to see the error</strong></li>
+</ul>
+</li>
+<li>
+<p><strong><em>Syntax</em> errors occur when the code is not interpretable as valid <code>Python</code></strong></p>
+<ul>
+<li><strong>The error is reported before the code runs</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>ENTER CODE IN A NEW CELL - NOTE THE EXTRA SPACE AND LACK OF COLON!</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">some_function</span><span class="hljs-params">()</span>
+    <span class="hljs-title">msg</span> = "<span class="hljs-title">hello</span>, <span class="hljs-title">world</span>!"
+    <span class="hljs-title">print</span><span class="hljs-params">(msg)</span>
+     <span class="hljs-title">return</span> <span class="hljs-title">msg</span>
+</span></div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Syntax traceback</p>
+<pre class="hljs"><code><div>  File <span class="hljs-string">"&lt;ipython-input-6-bef8c18baffa&gt;"</span>, line <span class="hljs-number">1</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">some_function</span><span class="hljs-params">()</span>
+                       ^
+<span class="hljs-title">SyntaxError</span>:</span> invalid syntax
+</div></code></pre>
+<ul>
+<li>
+<p><code>Python</code> tells us there's a <code>SyntaxError</code> - the code isn't written correctly</p>
+<ul>
+<li><strong>We don't get the chance to run the code</strong></li>
+</ul>
+</li>
+<li>
+<p>It points to the approximate location of the problem with a caret/hat (<code>^</code>)</p>
+<ul>
+<li>We can see that we need to put a colon at the end of the function declaration</li>
+</ul>
+</li>
+<li>
+<p><strong>FIX THE CODE IN PLACE</strong></p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Fixed?</p>
+<ul>
+<li><strong>SHOW AND RUN FIXED CODE</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">some_function</span><span class="hljs-params">()</span>:</span>
+    msg = <span class="hljs-string">"hello, world!"</span>
+    print(msg)
+     <span class="hljs-keyword">return</span> msg
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Not quite</p>
+<pre class="hljs"><code><div>  File <span class="hljs-string">"&lt;ipython-input-7-b32ba7f38b6b&gt;"</span>, line <span class="hljs-number">4</span>
+    <span class="hljs-keyword">return</span> msg
+    ^
+IndentationError: unexpected indent
+</div></code></pre>
+<ul>
+<li>
+<p><code>Python</code> now tells us that there's an <code>IndentationError</code></p>
+</li>
+<li>
+<p>We don't learn about all the syntax errors at one time - <code>Python</code> gives up after the first one it finds</p>
+<ul>
+<li><strong>(fixing the first error in a file might correct all subsequent errors)</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Name errors</p>
+<ul>
+<li>
+<p>If you try to use a variable that is not defined in <em>scope</em>, you will get a <code>NameError</code></p>
+<ul>
+<li>This often happens with typos</li>
+</ul>
+</li>
+<li>
+<p><strong>ENTER CODE IN A NEW CELL</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>print(a)
+</div></code></pre>
+<ul>
+<li>We have a <strong>NAME ERROR</strong></li>
+</ul>
+<pre class="hljs"><code><div>---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-5</span>-c5a4f3535135&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+----&gt; <span class="hljs-number">1</span> print(a)
+
+NameError: name <span class="hljs-string">'a'</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> defined
+</div></code></pre>
+<ul>
+<li><strong>This is true in functions/loops, too</strong>
+<ul>
+<li><strong>ENTER CODE IN A NEW CELL</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">3</span>):
+    count = count + i
+</div></code></pre>
+<ul>
+<li><strong>This still gives us a name error</strong></li>
+</ul>
+<pre class="hljs"><code><div> ---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-6</span><span class="hljs-number">-15</span>ebe951e74d&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+      <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">3</span>):
+----&gt; <span class="hljs-number">2</span>     count = count + i
+
+NameError: name <span class="hljs-string">'count'</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> defined
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Index errors</p>
+<ul>
+<li>
+<p>If you try to access an element of a collection that does not exist, you'll get an <code>IndexError</code></p>
+</li>
+<li>
+<p><strong>ENTER CODE IN NEW CELL</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>letters = [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>]
+print(<span class="hljs-string">"Letter #1 is"</span>, letters[<span class="hljs-number">0</span>])
+print(<span class="hljs-string">"Letter #2 is"</span>, letters[<span class="hljs-number">1</span>])
+print(<span class="hljs-string">"Letter #3 is"</span>, letters[<span class="hljs-number">2</span>])
+
+Letter <span class="hljs-comment">#1 is a</span>
+Letter <span class="hljs-comment">#2 is b</span>
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+&lt;ipython-input<span class="hljs-number">-9</span><span class="hljs-number">-62</span>bced7460d2&gt; <span class="hljs-keyword">in</span> &lt;module&gt;()
+      <span class="hljs-number">2</span> print(<span class="hljs-string">"Letter #1 is"</span>, letters[<span class="hljs-number">0</span>])
+      <span class="hljs-number">3</span> print(<span class="hljs-string">"Letter #2 is"</span>, letters[<span class="hljs-number">1</span>])
+----&gt; <span class="hljs-number">4</span> print(<span class="hljs-string">"Letter #3 is"</span>, letters[<span class="hljs-number">2</span>])
+
+IndexError: list index out of range
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Exercise 11 (10min)</p>
+<ul>
+<li><strong>PUT SLIDES ON SCREEN</strong></li>
+</ul>
+<pre class="hljs"><code><div>message = <span class="hljs-string">""</span>
+<span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>):
+    <span class="hljs-comment"># use a if the number is a multiple of 3, otherwise use b</span>
+    <span class="hljs-keyword">if</span> (number % <span class="hljs-number">3</span>) == <span class="hljs-number">0</span>:
+        message = message + <span class="hljs-string">"a"</span>
+    <span class="hljs-keyword">else</span>:
+        message = message + <span class="hljs-string">"b"</span>
+print(message)
+</div></code></pre>
+<p><img src="images/red_green_sticky.png" alt="progress check"></p>
 
 </body>
 </html>

@@ -2024,3 +2024,380 @@ Why should I bother?
 - Helps spot errors quickly
 - Clarifies structure in your mind as well as in the code
 - Saves you time in the long run! ("Future You" will back this up)
+
+
+# 13. Testing and documentation
+
+## Motivation
+
+- Once written, functions are reused
+
+<div class="attention">
+- Functions might be reused without further checks
+</div>
+
+<div class="highlight">
+- When functions are written:
+    - test for correctness 
+    - document their function
+</div>
+
+- Example: centring a numerical array
+
+## Create a new notebook
+
+<center>
+<img src="images/new_notebook_menu.png" height="150px" />
+<img src="images/empty_notebook.png" height="150px" />
+</center>
+
+<div class="highlight">
+- Call it `testing`
+</div>
+
+
+## `centre()`
+
+- Add the function
+
+```python
+import numpy as np
+
+def centre(data, desired):
+    return (data - np.mean(data)) + desired
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Test datasets
+
+- We could try `centre()` on real data
+    - but we don't know the answer!
+    
+<div class="highlight">    
+Use `numpy` to create an artificial dataset
+</div>
+
+```python
+z = np.zeros((2, 2))
+print(centre(z, 3.0))
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Real data
+
+<div class="highlight">
+Try the function on real data…
+</div>
+
+```python
+data = numpy.loadtxt(fname='data/inflammation-01.csv', delimiter=',')
+print(centre(data, 0))
+```
+
+- But how do we know it worked?
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Check properties
+
+- We can check properties of the original and centred data
+  - `mean`, `min`, `max`, `std`
+
+```python
+centred = centre(data, 0)
+print('original min, mean, and max are:', numpy.min(data), numpy.mean(data), numpy.max(data))
+print('min, mean, and max of centered data are:', numpy.min(centred),
+      numpy.mean(centred), numpy.max(centred))
+print('std dev before and after:', numpy.std(data), numpy.std(centred))      
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Documenting functions
+
+- Writing comments in the code (using the hash `#`) is a good thing
+
+<div class="highlight">
+- `Python` provides for *docstrings*
+  - These go after the function definition
+  - Hook into `Python`'s help system
+</div>
+    
+```python
+def centre(data, desired):
+    """Returns the array in data, recentered around the desired value."""
+    return (data - numpy.mean(data)) + desired
+
+help(centre)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+## Default arguments
+
+<div class="highlight">
+- The `centre()` function *requires* two arguments
+- We can specify a *default* argument in how we define the function
+</div>
+
+```python
+def centre(data, desired=0.0):
+    """Returns the array in data, recentered around the desired value.
+    
+    Example: centre([1, 2, 3], 0) => [-1, 0, 1]
+    """
+    return (data - np.mean(data)) + desired
+```
+
+```python
+centre(data, 0.0)
+centre(data, desired=0.0)
+centre(data)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## <img src="images/exercise.png" height="75px" /> Exercise 10 (10min)
+
+<div class="highlight">
+Can you write a function called `rescale()` that
+- takes an array as input
+- returns an array with values scaled in the range [0.0, 1.0]
+- has an informative docstring
+</div>
+
+<div class="attention">
+- **HINT:** If `L` and `H` are the lowest and highest values in the original array, then the replacement for a value `v` should be `(v-L) / (H-L)`.
+</div>
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>
+
+
+# 14. Errors and Exceptions
+
+## Create a new notebook
+
+<center>
+<img src="images/new_notebook_menu.png" height="150px" />
+<img src="images/empty_notebook.png" height="150px" />
+<img src="images/errors_notebook.png" height="200px" />
+</center>
+
+
+## Errors
+
+<div class="highlight">
+> Programming *n.* - the process of making errors and correcting them until the code works
+</div>
+
+- **All** programmers make errors
+- Identifying, fixing, and coping with errors is a valuable skill
+
+
+## Traceback
+
+<div class="highlight">
+`Python` tries to tell you what has gone wrong by providing a `traceback`
+</div>
+
+```python
+def favourite_ice_cream():
+    ice_creams = [
+        "chocolate",
+        "vanilla",
+        "strawberry"
+    ]
+    print(ice_creams[3])
+```
+
+```python
+favourite_ice_cream()
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Anatomy of a traceback
+
+```python
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+<ipython-input-1-b0e1f9b712d6> in <module>()
+      8     print(ice_creams[3])
+      9 
+---> 10 favourite_ice_cream()
+
+<ipython-input-1-b0e1f9b712d6> in favourite_ice_cream()
+      6         "strawberry"
+      7     ]
+----> 8     print(ice_creams[3])
+      9 
+     10 favourite_ice_cream()
+
+IndexError: list index out of range
+```
+
+- (mostly, you can just look at the last couple of levels)
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Syntax errors
+
+<div class="highlight">
+- *Logic* errors occur when the code is 'correct' but does something *illegal*
+</div>
+
+<div class="attention">
+- *Syntax* errors occur when the code is not understandable as `Python`
+</div>
+
+```python
+def some_function()
+    msg = "hello, world!"
+    print(msg)
+     return msg
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Syntax traceback
+
+```python
+  File "<ipython-input-3-dbf32ad5d3e8>", line 1
+    def some_function()
+                       ^
+SyntaxError: invalid syntax
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Fixed?
+
+```python
+def some_function():
+    msg = "hello, world!"
+    print(msg)
+     return msg
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Not quite
+
+```python
+  File "<ipython-input-4-e169556d667b>", line 4
+    return msg
+    ^
+IndentationError: unexpected indent
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Name errors
+
+<div class="highlight">
+- `NameError`s occur when a variable is not defined in scope
+  - (often due to a typo!)
+</div>
+
+```python
+print(a)
+
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-5-c5a4f3535135> in <module>()
+----> 1 print(a)
+
+NameError: name 'a' is not defined
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Index Errors
+
+<div class="highlight">
+- Trying to access an element of a collection that does not exist gives an `IndexError`
+</div>
+
+```python
+letters = ['a', 'b']
+print("Letter #1 is", letters[0])
+print("Letter #2 is", letters[1])
+print("Letter #3 is", letters[2])
+
+Letter #1 is a
+Letter #2 is b
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+<ipython-input-9-62bced7460d2> in <module>()
+      2 print("Letter #1 is", letters[0])
+      3 print("Letter #2 is", letters[1])
+----> 4 print("Letter #3 is", letters[2])
+
+IndexError: list index out of range
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## <img src="images/exercise.png" height="75px" /> Exercise 11 (10min)
+
+* Can you read the code below, and (without running it) identify what the errors are?
+* Can you fix all the errors so the code prints `abbabbabba`?
+
+```python
+for number in range(10):
+    # use a if the number is a multiple of 3, otherwise use b
+    if (Number % 3) = 0:
+        message = message + a
+    else:
+        message = message + "b"
+print(message)
+```
+
+<center>
+<img src="images/red_green_sticky.png" width="100%" />
+</center>

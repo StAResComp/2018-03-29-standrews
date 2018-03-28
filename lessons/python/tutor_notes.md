@@ -20,6 +20,8 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 10: `Jupyter` notebooks](#section-10-jupyter-notebooks)
 - [SECTION 11: Functions](#section-11-functions)
 - [SECTION 12: Refactoring](#section-12-refactoring)
+- [SECTION 13: Testing and documentation](#section-13-testing-and-documentation)
+- [SECTION 13: Errors](#section-13-errors)
 
 <!-- /TOC -->
 
@@ -2368,6 +2370,7 @@ $ python analyse_files.py
 ```
 
 ----
+
 **SLIDE** `plot_data()`
 
 - We'll write **a function that plots the data**
@@ -2412,6 +2415,7 @@ for fname in files:
 ```
 
 ----
+
 **SLIDE** Code reuse
 
 - **The logic of the code is now easier to understand**
@@ -2446,6 +2450,7 @@ for fname in files:
 ![progress check](images/red_green_sticky.png)
 
 ----
+
 **SLIDE** Good code pays off
 
 - **YOU MAY BE ASKING YOURSELF WHY YOU WANT TO BOTHER WITH THIS**
@@ -2455,3 +2460,538 @@ for fname in files:
   - Helps spot errors quickly
   - Clarifies structure in your mind as well as in the code
   - Saves you time in the long run! ("Future You" will back this up)
+
+----
+
+## SECTION 13: Testing and documentation
+
+----
+
+**SLIDE** Motivation
+
+- Once a useful function is written, it gets reused over and over, often without further checking
+- When you write a function you should:
+  - **Test output for correctness**
+  - **Document the expected function**
+- We'll demonstrate this with a function to centre a numerical array
+
+----
+
+**SLIDE** Create a new notebook
+
+- **New notebook called `testing`**
+
+- **ADD AN INTRO IN MARKDOWN**
+
+```markdown
+# Testing and Documentation
+
+When writing a function, we should
+
+- test output for correctness
+- document the expected function
+```
+
+- **ADD IMPORTS**
+
+```python
+import numpy as np
+```
+
+----
+
+**SLIDE** `centre()`
+
+- **Write the test function**
+
+- When doing some analyses, such as PCA, we might want to recentre and normalise our dataset.
+- Let's write a function to recentre an array of data, like the inflammation data.
+
+- **EXPLAIN THE MATHS IF NECESSARY**
+
+```python
+def centre(data, desired):
+    return (data - np.mean(data)) + desired
+```
+
+----
+
+**SLIDE** Test datasets
+
+- **ASK THE LEARNERS HOW WE CAN CHECK THAT THE FUNCTION WORKS IN THE WAY WE INTEND**
+
+- We could try `centre()` on our real data, but we *don't know what the answer should be!**
+  - We'll use `numpy`'s `zeros()` function to generate an **input set where we know the answer**
+
+- **SHOW THE TEST DATA**
+
+```python
+z = np.zeros((2, 2))
+z
+```
+
+- **Let's recentre the data at the value 2**
+
+```python
+centre(z, 3.0)
+```
+
+- **This works, so we'll try it on real data**
+
+----
+
+**SLIDE** Real data
+
+- **LOAD THE DATA**
+ 
+```python
+data = np.loadtxt(fname='data/inflammation-01.csv', delimiter=',')
+```
+
+- **Let's recentre the data to zero**
+
+```python
+centre(data, 0))
+```
+
+- This looks OK, but **how would we know it worked?**
+
+----
+
+**SLIDE** Check properties
+
+- **ASK LEARNERS HOW THEY COULD VERIFY THE FUNCTION WORKED AS INTENDED**
+
+- We can **check properties of the original and centred data**
+  - `mean`, `min`, `max`, `std`
+
+```python
+print('original min, mean, and max are:', numpy.min(data), numpy.mean(data), numpy.max(data))
+```
+  
+- We'd expect the **mean of the new dataset to be approximately `0.0`**
+- Also, the **range (`max` - `min`) should be unchanged.**
+
+```python
+centred = centre(data, 0)
+print('min, mean, and max of centered data are:', numpy.min(centred),
+      numpy.mean(centred), numpy.max(centred))  
+```
+
+- The limits seem OK, but has the *shape* of the data distribution changed?
+- The **variance of the dataset should be unchanged.**
+
+```python
+print('std dev before and after:', numpy.std(data), numpy.std(centred))    
+```
+
+- The range and variance are as expected, but the mean is not quite `0.0`
+
+- **The function is probably OK, as-is**
+
+----
+
+**SLIDE** Documenting functions
+
+- We can document what our function does by **writing comments in the code**, and this is a good thing.
+- But Python allows us to **document what a function does directly in the function** using a *docstring*.
+- This is a string that is put in a **specific place in the function definition, and it has special properties that are useful**.
+- To add a docstring to our `centre()` function, we add a string immediately after the function declaration
+
+- **ADD DOCSTRING TO EXISTING FUNCTION AND RUN CELL**
+
+```python
+def centre(data, desired):
+    """Returns the array in data, recentered around the desired value."""
+    return (data - numpy.mean(data)) + desired
+```
+
+- **RESTART KERNEL AND RUN ALL**
+
+- This documents the function directly in the source code, and it also **hooks that documentation into `Python`'s `help` system.**
+  - We can ask for help on any function using the `help()` function:
+
+- **built-in** functions
+
+```python
+help(print)
+```
+
+- **functions from modules**
+
+```python
+help(numpy.mean)
+```
+
+- and **if you write it** your own functions
+
+```python
+help(centre)
+```
+
+- **SHOW LEARNERS HOW DETAILED THE BUILTIN AND NUMPY HELP IS**
+- Using the triple quotes (""") allows us to use a multi-line string to describe the function:
+
+- **ADD EXTRA DOCUMENTATION**
+
+```python
+def centre(data, desired):
+    """Returns the array in data, recentred around the desired value.
+    
+    Example
+    -------
+    >>> centre([1, 2, 3], 0)
+    [-1, 0, 1]
+    """
+    return (data - numpy.mean(data)) + desired
+```
+
+- **DEMONSTRATE THE CHANGE**
+
+----
+
+**SLIDE** Default arguments
+
+- So far we have named the two arguments in our `centre()` function
+  - We need to specify both of them when we call the function
+
+```python
+centre([1, 2, 3], 0)
+array([-1.,  0.,  1.])
+
+centre([1, 2, 3])
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-13-9131fef8e3dc> in <module>()
+----> 1 centre([1, 2, 3])
+
+TypeError: centre() missing 1 required positional argument: 'desired'
+```
+
+- We **can set a *default* value for function arguments** when we define the function
+- Set defaults **by assigning a value in the function declaration**, as follows:
+
+```python
+def centre(data, desired=0.0):
+    """Returns the array in data, recentred around the desired value.
+    
+    Example
+    -------
+    >>> centre([1, 2, 3], 0)
+    [-1, 0, 1]
+    """
+    return (data - numpy.mean(data)) + desired
+```
+
+- The change we've made is to set `desired=0.0` in the function *prototype*.
+- Now, by default, the function will recentre the passed data to zero, without us having to specify that:
+
+```python
+centre([1, 2, 3])
+```
+
+
+
+
+----
+
+**SLIDE** Create a new notebook
+
+* **New notebook called `testing`**
+* **ADD AN INTRO IN MARKDOWN**
+
+```markdown
+# Testing and Documentation
+
+When writing a function, we should
+
+* test output for correctness
+* document the expected function
+```
+
+* **ADD IMPORTS**
+
+```python
+import numpy
+```
+
+* **Write the test function**
+* When doing some analyses, such as PCA, we might want to recentre and normalise our dataset.
+* Let's write a function to recentre an array of data, like the inflammation data.
+
+```python
+def centre(data, desired):
+    return (data - np.mean(data)) + desired
+```
+
+----
+
+**SLIDE** Exercise 10 (10min)
+
+- **MOVE SLIDES TO THE SCREEN**
+
+```python
+def rescale(data):
+    """Returns input array rescaled to [0.0, 0.1]."""
+    l = numpy.min(data)
+    h = numpy.max(data)
+    return (data - l) / (h - l)
+```
+
+![progress check](images/red_green_sticky.png)
+
+----
+**SLIDE** ERRORS AND EXCEPTIONS
+
+* **MOVE NOTEBOOK TO THE SCREEN**
+
+----
+**SLIDE** CREATE A NEW NOTEBOOK
+
+* **Call the notebook `errors`**
+* **ADD AN INTRO**
+
+```markdown
+# Errors and Exceptions
+
+`Python` provides useful error reports of what has gone wrong, which can help with debugging.
+```
+
+
+----
+
+## SECTION 13: Errors
+
+----
+
+**SLIDE** Create a new notebook
+
+- **Call the notebook `errors`**
+- **ADD AN INTRO**
+
+```markdown
+# Errors and Exceptions
+
+`Python` provides useful error reports of what has gone wrong, which can help with debugging.
+```
+
+----
+
+**SLIDE** Errors
+
+- **Programming is essentially just making errors over and over again until the code works** ;)
+  - The key skill is **learning how to identify, and then fix, the errors** when they are reported.
+  - **All programmers** make errors. 
+
+----
+
+**SLIDE** Traceback
+
+- `Python` tries to be helpful, and provides extensive information about errors
+  - These are called *tracebacks*
+
+- **We'll induce a traceback, so we can look at it**
+
+- **ENTER CODE IN A CELL**
+
+```python
+def favourite_ice_cream():
+    ice_creams = ["chocolate",
+                  "vanilla",
+                  "strawberry"]
+    print(ice_creams[3])
+```
+
+- **NEW CELL**
+
+```
+favourite_ice_cream()
+```
+
+----
+
+**SLIDE** Anatomy of a traceback
+
+```python
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+<ipython-input-4-8f18c934933f> in <module>()
+----> 1 favourite_ice_cream()
+
+<ipython-input-3-3f8910a0f7ad> in favourite_ice_cream()
+      3                   "vanilla",
+      4                   "strawberry"]
+----> 5     print(ice_creams[3])
+
+IndexError: list index out of range
+
+```
+
+- **TALK THROUGH THE TRACEBACK IN THE NOTEBOOK**
+  - The *stack* of all steps leading to the error is shown
+  - The steps are separated by lines starting `<ipython-input-1…`
+  - The steps run in order from top to bottom
+
+- The first step has an arrow, showing where we were when the error happened. We were calling the `favourite_ice_cream()` function
+
+- The second step tells us that we were *in* the `favourite_ice_cream()` function
+  - The second step also points to the line `print(ice_creams[3])`, which is where the error occurs
+  - This is also the last step, and the precise error is shown on the final line: `IndexError: list index out of range`
+
+- Together, this tells us that we have made an index error in the line `print(ice_creams[3])`, and by looking we can see that we've tried to use an index outside the length of the list.
+
+----
+
+**SLIDE** Syntax errors
+
+- **The error you saw just now was a *logic error*** - the code was valid `Python`, but it did something 'illegal' when it ran
+  - **We have to run the code to see the error**
+
+- ***Syntax* errors occur when the code is not interpretable as valid `Python`**
+  - **The error is reported before the code runs**
+
+- **ENTER CODE IN A NEW CELL - NOTE THE EXTRA SPACE AND LACK OF COLON!**
+
+```python
+def some_function()
+    msg = "hello, world!"
+    print(msg)
+     return msg
+```
+
+----
+
+**SLIDE** Syntax traceback
+
+```python
+  File "<ipython-input-6-bef8c18baffa>", line 1
+    def some_function()
+                       ^
+SyntaxError: invalid syntax
+```
+
+- `Python` tells us there's a `SyntaxError` - the code isn't written correctly
+  - **We don't get the chance to run the code**
+
+- It points to the approximate location of the problem with a caret/hat (`^`)
+  - We can see that we need to put a colon at the end of the function declaration
+
+- **FIX THE CODE IN PLACE**
+
+----
+**SLIDE** Fixed?
+
+- **SHOW AND RUN FIXED CODE**
+
+```python
+def some_function():
+    msg = "hello, world!"
+    print(msg)
+     return msg
+```
+
+----
+
+**SLIDE** Not quite
+
+```python
+  File "<ipython-input-7-b32ba7f38b6b>", line 4
+    return msg
+    ^
+IndentationError: unexpected indent
+```
+
+- `Python` now tells us that there's an `IndentationError`
+
+- We don't learn about all the syntax errors at one time - `Python` gives up after the first one it finds
+  - **(fixing the first error in a file might correct all subsequent errors)**
+
+----
+
+**SLIDE** Name errors
+
+- If you try to use a variable that is not defined in *scope*, you will get a `NameError`
+  - This often happens with typos
+
+- **ENTER CODE IN A NEW CELL**
+
+```python
+print(a)
+```
+
+- We have a **NAME ERROR**
+
+```python
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-5-c5a4f3535135> in <module>()
+----> 1 print(a)
+
+NameError: name 'a' is not defined
+```
+
+- **This is true in functions/loops, too**
+  - **ENTER CODE IN A NEW CELL**
+
+```python
+for i in range(3):
+    count = count + i
+```
+
+- **This still gives us a name error**
+
+
+```python
+ ---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-6-15ebe951e74d> in <module>()
+      1 for i in range(3):
+----> 2     count = count + i
+
+NameError: name 'count' is not defined
+```
+
+----
+
+**SLIDE** Index errors
+
+- If you try to access an element of a collection that does not exist, you'll get an `IndexError`
+
+- **ENTER CODE IN NEW CELL**
+
+```python
+letters = ['a', 'b']
+print("Letter #1 is", letters[0])
+print("Letter #2 is", letters[1])
+print("Letter #3 is", letters[2])
+
+Letter #1 is a
+Letter #2 is b
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+<ipython-input-9-62bced7460d2> in <module>()
+      2 print("Letter #1 is", letters[0])
+      3 print("Letter #2 is", letters[1])
+----> 4 print("Letter #3 is", letters[2])
+
+IndexError: list index out of range
+```
+
+----
+
+**SLIDE** Exercise 11 (10min)
+
+- **PUT SLIDES ON SCREEN**
+
+```python
+message = ""
+for number in range(10):
+    # use a if the number is a multiple of 3, otherwise use b
+    if (number % 3) == 0:
+        message = message + "a"
+    else:
+        message = message + "b"
+print(message)
+```
+
+![progress check](images/red_green_sticky.png)
