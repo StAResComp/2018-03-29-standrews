@@ -2027,7 +2027,282 @@ Why should I bother?
 - Saves you time in the long run! ("Future You" will back this up)
 
 
-# 13. Testing and documentation
+# 13. Command-line programs
+
+## Learning objectives
+
+<div class="highlight">
+How can I write Python programs that will work like Unix command-line tools?
+</div>
+
+
+- Use the values of command-line arguments in a program.
+- Handle flags and files separately in a command-line program.
+- Read data from standard input in a program so that it can be used in a pipeline (with *pipes*: `|`)
+
+## The `sys` module
+
+<div class="highlight">
+`sys` is a `Python` module for interacting with the operating system
+</div>
+
+<div class="attention">
+Open a new file called `sys_version.py` in your editor
+</div>
+
+```bash
+$ nano sys_version.py
+```
+
+```python
+import sys
+print('version is', sys.version)
+```
+
+```bash
+$ python sys_version.py 
+version is 3.6.3 |Anaconda custom (64-bit)| (default, Oct  6 2017, 12:04:38) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## `sys.argv`
+
+<div class="highlight">
+`sys.argv` is a variable that contains the command-line arguments used to call our script
+</div>
+
+<div class="attention">
+Open a new file called `sys_argv.py` in your editor
+</div>
+
+```bash
+$ nano sys_argv.py
+```
+
+```python
+import sys
+print('sys.argv is', sys.argv)
+```
+
+```bash
+$ python sys_argv.py 
+sys.argv is ['sys_argv.py']
+$ python sys_argv.py item1 item2 somefile.txt
+sys.argv is ['sys_argv.py', 'item1', 'item2', 'somefile.txt']
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Building a new script
+
+<div class="highlight">
+We're going to build a script that reports readings from data files
+</div>
+
+```bash
+$ python readings.py mydata.csv
+```
+
+- We will make it take options `--min`, `--max`, `--mean`
+  - The script will report *one* of these
+
+```bash
+$ python readings.py --min mydata.csv
+```
+
+- We will make it handle multiple files
+
+```bash
+$ python readings.py --min mydata.csv myotherdata.csv
+```
+
+- We will make it take `STDIN` so we can use it with *pipes*
+
+```bash
+$ cat mydata.csv | readings.py --min
+```
+
+
+## Starting the framework
+
+<div class="highlight">
+We start with a script that doesn't do all that
+</div>
+
+- We'll build features in one-by-one
+
+```bash
+$ nano readings.py
+```
+
+```python
+import sys
+import numpy
+
+def main():
+    script = sys.argv[0]
+    filename = sys.argv[1]
+    data = numpy.loadtxt(filename, delimiter=',')
+    for m in numpy.mean(data, axis=1):
+        print(m)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Calling a script
+
+<div class="attention">
+There's a way to tell if a `Python` file is being run as a script
+</div>
+
+- If we use this, we can use the same file as:
+  - a module (`import readings`)
+  - a script (`$ python readings.py`)
+
+- The `Python` code has `__name__ == '__main__'` only when run as a script
+
+<div class="highlight">
+We run `main()` only if the file is run as a script
+</div>
+
+```python
+if __name__ == '__main__':
+   main()
+```
+
+<div class="attention">
+Add this to `readings.py` and run the script
+</div>
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Handling multiple files
+
+<div class="highlight">
+We want to be able to analyse multiple files with one command
+</div>
+
+<div class="attention">
+**NOTE:** wildcards are expanded by the operating system
+</div>
+
+```bash
+$ ls data/small-*
+data/small-01.csv  data/small-02.csv  data/small-03.csv
+$ python sys_argv.py data/small-*
+sys.argv is ['sys_argv.py', 'data/small-01.csv', 'data/small-02.csv', 'data/small-03.csv']
+```
+
+- All arguments from index `1` onwards are filenames
+
+```python
+def main():
+    script = sys.argv[0]
+    for filename in sys.argv[1:]:
+        print(filename)
+        data = numpy.loadtxt(filename, delimiter=',')
+        for m in numpy.mean(data, axis=1):
+            print(m)
+```
+
+
+## Handling flags
+
+<div class="highlight">
+We want to use `--min`, `--max`, `--mean` to tell the script what to calculate
+</div>
+
+```bash
+$ python readings.py --max myfile.csv
+```
+
+<div class="attention">
+The flag will be `sys.argv[1]`, so filenames are `sys.argv[2:]`
+</div>
+
+- We should check that flags are valid
+
+```python
+def main():
+    script = sys.argv[0]
+    action = sys.argv[1]
+    filenames = sys.argv[2:]
+    if action not in ['--min', '--mean', '--max']:
+        print('Action is not one of --min, --mean, or --max: ' + action)
+        sys.exit(1)
+    for f in filenames:
+        process(f, action)
+```
+
+
+## Add `process()`
+
+<div class="highlight">
+We split the script into two functions for readability
+</div>
+
+- The `process()` function returns the summarised data
+
+```python
+def process(filename, action):
+    data = numpy.loadtxt(filename, delimiter=',')
+
+    if action == '--min':
+        values = numpy.min(data, axis=1)
+    elif action == '--mean':
+        values = numpy.mean(data, axis=1)
+    elif action == '--max':
+        values = numpy.max(data, axis=1)
+
+    for m in values:
+        print(m)
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+## Using `STDIN`
+
+<div class="highlight">
+The final change will let us use `STDIN` if no file is specified
+</div>
+
+- `sys.stdin` catches `STDIN` from the operating system
+
+```python
+    if len(filenames) == 0:
+        process(sys.stdin, action)
+    else:
+        for f in filenames:
+            process(f, action)
+```            
+
+```bash
+$ python readings.py --max < data/small-01.csv
+```
+
+<div class="attention">
+**LIVE DEMO**
+</div>
+
+
+# 14. Testing and documentation
 
 ## Motivation
 
@@ -2195,7 +2470,7 @@ Can you write a function called `rescale()` that
 </center>
 
 
-# 14. Errors and Exceptions
+# 15. Errors and Exceptions
 
 ## Create a new notebook
 
@@ -2404,7 +2679,7 @@ print(message)
 </center>
 
 
-# 15. Defensive programming
+# 16. Defensive programming
 
 ## (Un)readable code
 

@@ -1,6 +1,6 @@
 # 2018-03-29 Python lesson tutor notes
 
-These notes are intended for the tutor as they work through the material, but
+These notes are intended for the tutor as they work through the material, but may be useful for independent learning.
 
 # Start the slides
 
@@ -20,9 +20,10 @@ These notes are intended for the tutor as they work through the material, but
 - [SECTION 10: `Jupyter` notebooks](#section-10-jupyter-notebooks)
 - [SECTION 11: Functions](#section-11-functions)
 - [SECTION 12: Refactoring](#section-12-refactoring)
-- [SECTION 13: Testing and documentation](#section-13-testing-and-documentation)
-- [SECTION 14: Errors](#section-14-errors)
-- [SECTION 15: Defensive programming](#section-15-defensive-programming)
+- [SECTION 13: Command-line programs](#section-13-command-line-programs)
+- [SECTION 14: Testing and documentation](#section-14-testing-and-documentation)
+- [SECTION 15: Errors](#section-15-errors)
+- [SECTION 16: Defensive programming](#section-16-defensive-programming)
 
 <!-- /TOC -->
 
@@ -2464,7 +2465,362 @@ for fname in files:
 
 ----
 
-## SECTION 13: Testing and documentation
+## SECTION 13: Command-line programs
+
+----
+
+**SLIDE** Learning objectives
+
+- **How can I write Python programs that will work like Unix command-line tools?**
+
+- Use the values of **command-line arguments** in a program.
+- Handle **flags and files** separately in a command-line program.
+- **Read data from standard input** in a program so that it can be used in a pipeline (with *pipes*: `|`)
+
+----
+
+**SLIDE** The `sys` module
+
+- The `sys` module is the main way `Python` lets you interact with the operating system. You can:
+  - **run programs**
+  - **parse commands**
+  - **get information about the system**
+
+- We're going to use it in some new scripts
+  - **Create a new file called `sys_version.py`**
+
+```bash
+$ nano sys_version.py
+```
+
+- **Enter the code below**
+
+```python
+import sys
+print('version is', sys.version)
+```
+
+- **Run the script**
+
+```bash
+$ python sys_version.py 
+version is 3.6.3 |Anaconda custom (64-bit)| (default, Oct  6 2017, 12:04:38) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+```
+
+----
+
+**SLIDE** `sys.argv`
+
+- `sys.argv` is a variable that contains the command-line arguments used to call our script
+  - The variable is a **list of arguments**
+
+- **Open a new file called `sys_argv.py` in the editor**
+
+```bash
+$ nano sys_argv.py
+```
+
+- **Enter the code below**
+
+```python
+import sys
+print('sys.argv is', sys.argv)
+```
+
+- **Run the script with some options**
+
+```bash
+$ python sys_argv.py 
+sys.argv is ['sys_argv.py']
+$ python sys_argv.py item1 item2 somefile.txt
+sys.argv is ['sys_argv.py', 'item1', 'item2', 'somefile.txt']
+```
+
+- The **name of the script is always the first element: `sys.argv[0]`**
+
+----
+
+**SLIDE** Building a new script
+
+- We're going to build a script that **reports readings from data files**
+
+```bash
+$ python readings.py mydata.csv
+```
+
+- We will make it **take options** `--min`, `--max`, `--mean`
+  - The script will report *one* of these
+
+```bash
+$ python readings.py --min mydata.csv
+```
+
+- We will make it **handle multiple files**
+
+```bash
+$ python readings.py --min mydata.csv myotherdata.csv
+```
+
+- We will make it take `STDIN` so we can **use it with *pipes***
+
+```bash
+$ python readings.py --min < mydata.csv
+```
+
+----
+
+**SLIDE** Starting the framework
+
+- We start with a script that doesn't do all that
+  - We'll **build features in one-by-one**
+
+- **Create a new file called `readings.py` in the editor**
+
+```bash
+$ nano readings.py
+```
+
+- **Add the code below and explain**
+  - **imports at the top**
+  - **define a `main()` function** to hold code that does the work of the script
+  - We **catch the script name**
+  - We **catch the first argument** (filename)
+  - We **load the data**
+  - For each patient, we print the mean inflammation
+
+```python
+import sys
+import numpy
+
+def main():
+    script = sys.argv[0]
+    filename = sys.argv[1]
+    data = numpy.loadtxt(filename, delimiter=',')
+    for m in numpy.mean(data, axis=1):
+        print(m)
+```
+
+- **Run the script**
+
+```bash
+$ python readings.py
+```
+
+- **NOTHING HAPPENS - WHY?**
+  - We've defined a function, but it hasn't been called
+
+----
+
+**SLIDE** Calling a script
+
+- **There's a way to tell if a `Python` file is being run as a script**
+
+- If we use this, we can use the same file as:
+  - a module (`import readings`)
+  - a script (`$ python readings.py`)
+
+- The `Python` code has `__name__ == '__main__'` only when run as a script
+
+- **We want to run `main()` only if the file is run as a script**
+  - **Add this code to the bottom of `readings.py`**
+
+```python
+if __name__ == '__main__':
+   main()
+```
+
+- **Run the script**
+  - `small-01.csv` is a reduced dataset, created for testing
+
+```bash
+$ python readings.py data/small-01.csv 
+0.333333333333
+1.0
+```
+
+----
+
+**SLIDE** Handling multiple files
+
+- We want to be able to analyse multiple files with one command
+  - **NOTE:** wildcards are expanded by the operating system
+  - **DEMO the code**
+
+```bash
+$ ls data/small-*
+data/small-01.csv  data/small-02.csv  data/small-03.csv
+$ python sys_argv.py data/small-*
+sys.argv is ['sys_argv.py', 'data/small-01.csv', 'data/small-02.csv', 'data/small-03.csv']
+```
+
+- **All arguments from index `1` onwards are filenames**
+  - So loop over everything in `sys.argv[1:]`
+  - **Change the `main()` function**
+
+```python
+def main():
+    script = sys.argv[0]
+    for filename in sys.argv[1:]:
+        print(filename)
+        data = numpy.loadtxt(filename, delimiter=',')
+        for m in numpy.mean(data, axis=1):
+            print(m)
+```
+
+- **Demo the code**
+
+```bash
+$ python readings.py data/small-*
+data/small-01.csv
+0.333333333333
+1.0
+data/small-02.csv
+13.6666666667
+11.0
+data/small-03.csv
+0.666666666667
+0.666666666667
+$ python readings.py data/small-01.csv
+data/small-01.csv
+0.333333333333
+1.0
+```
+
+----
+
+**SLIDES** Handling flags
+
+- **We want to use `--min`, `--max`, `--mean` to tell the script what to calculate**
+
+```bash
+$ python readings.py --max myfile.csv
+```
+
+- The flag will be `sys.argv[1]`, so filenames are `sys.argv[2:]`
+  - We'll need to modify the code to handle this
+
+- We should check that flags are valid
+  - Check this with an `if` statement
+  - **Use `sys.exit()` to quit the script if the action is wrong**
+
+- **MODIFY THE SCRIPT AS BELOW**
+
+```python
+def main():
+    script = sys.argv[0]
+    action = sys.argv[1]
+    filenames = sys.argv[2:]
+    if action not in ['--min', '--mean', '--max']:
+        print('Action is not one of --min, --mean, or --max: ' + action)
+        sys.exit(1)
+    for f in filenames:
+        process(f, action)
+```
+
+- **TRY THE SCRIPT**
+
+```bash
+$ python readings.py --min data/small-01.csv 
+Traceback (most recent call last):
+  File "readings.py", line 15, in <module>
+    main()
+  File "readings.py", line 12, in main
+    process(f, action)
+NameError: name 'process' is not defined
+```
+
+- We'll add a `process()` function shortly
+- **TEST A BAD ACTION**
+
+```python
+$ python readings.py --std data/small-01.csv 
+Action is not one of --min, --mean, or --max: --std
+```
+
+- **We have a useful error message**
+
+----
+
+**SLIDE** Add `process()`
+
+- We split the script into two functions for **readability**
+  - The `main()` function clearly handles the command-line
+  - The `process()` function handles the data
+
+- **Add the code to `readings.py`
+
+```python
+def process(filename, action):
+    data = numpy.loadtxt(filename, delimiter=',')
+
+    if action == '--min':
+        values = numpy.min(data, axis=1)
+    elif action == '--mean':
+        values = numpy.mean(data, axis=1)
+    elif action == '--max':
+        values = numpy.max(data, axis=1)
+
+    for m in values:
+        print(m)
+```
+
+- **TRY THE SCRIPT**
+
+```bash
+$ python readings.py --min data/small-01.csv 
+0.0
+0.0
+$ python readings.py --mean data/small-01.csv 
+0.333333333333
+1.0
+$ python readings.py --mean data/small-0*
+0.333333333333
+1.0
+13.6666666667
+11.0
+0.666666666667
+0.666666666667
+```
+
+----
+
+**SLIDE** Using `STDIN`
+
+- The final change will let us **use `STDIN` if no file is specified**
+  - `sys.stdin` catches `STDIN` from the operating system
+
+- **MODIFY THE SCRIPT AS BELOW**
+
+```python
+    if len(filenames) == 0:
+        process(sys.stdin, action)
+    else:
+        for f in filenames:
+            process(f, action)
+```            
+
+- **TEST THE SCRIPT**
+
+```bash
+$ python readings.py --mean data/small-*
+0.333333333333
+1.0
+13.6666666667
+11.0
+0.666666666667
+0.666666666667
+$ python readings.py --mean < data/small-01.csv 
+0.333333333333
+1.0
+```
+
+- **AND WE'RE DONE!!!**
+
+
+----
+
+## SECTION 14: Testing and documentation
 
 ----
 
@@ -2761,7 +3117,7 @@ def rescale(data):
 
 ----
 
-## SECTION 14: Errors
+## SECTION 15: Errors
 
 ----
 
@@ -2999,7 +3355,7 @@ print(message)
 
 ----
 
-## SECTION 15: Defensive programming
+## SECTION 16: Defensive programming
 
 ----
 
