@@ -375,7 +375,7 @@ blockquote {
 </head>
 <body>
 <h1>2018-03-29 Python lesson tutor notes</h1>
-<p>These notes are intended for the tutor as they work through the material, but</p>
+<p>These notes are intended for the tutor as they work through the material, but may be useful for independent learning.</p>
 <h1>Start the slides</h1>
 <!-- TOC -->
 <ul>
@@ -393,9 +393,10 @@ blockquote {
 <li><a href="#section-10-jupyter-notebooks">SECTION 10: <code>Jupyter</code> notebooks</a></li>
 <li><a href="#section-11-functions">SECTION 11: Functions</a></li>
 <li><a href="#section-12-refactoring">SECTION 12: Refactoring</a></li>
-<li><a href="#section-13-testing-and-documentation">SECTION 13: Testing and documentation</a></li>
-<li><a href="#section-14-errors">SECTION 14: Errors</a></li>
-<li><a href="#section-15-defensive-programming">SECTION 15: Defensive programming</a></li>
+<li><a href="#section-13-command-line-programs">SECTION 13: Command-line programs</a></li>
+<li><a href="#section-14-testing-and-documentation">SECTION 14: Testing and documentation</a></li>
+<li><a href="#section-15-errors">SECTION 15: Errors</a></li>
+<li><a href="#section-16-defensive-programming">SECTION 16: Defensive programming</a></li>
 </ul>
 <!-- /TOC -->
 <hr>
@@ -2922,7 +2923,387 @@ print(a)
 </li>
 </ul>
 <hr>
-<h2>SECTION 13: Testing and documentation</h2>
+<h2>SECTION 13: Command-line programs</h2>
+<hr>
+<p><strong>SLIDE</strong> Learning objectives</p>
+<ul>
+<li>
+<p><strong>How can I write Python programs that will work like Unix command-line tools?</strong></p>
+</li>
+<li>
+<p>Use the values of <strong>command-line arguments</strong> in a program.</p>
+</li>
+<li>
+<p>Handle <strong>flags and files</strong> separately in a command-line program.</p>
+</li>
+<li>
+<p><strong>Read data from standard input</strong> in a program so that it can be used in a pipeline (with <em>pipes</em>: <code>|</code>)</p>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> The <code>sys</code> module</p>
+<ul>
+<li>
+<p>The <code>sys</code> module is the main way <code>Python</code> lets you interact with the operating system. You can:</p>
+<ul>
+<li><strong>run programs</strong></li>
+<li><strong>parse commands</strong></li>
+<li><strong>get information about the system</strong></li>
+</ul>
+</li>
+<li>
+<p>We're going to use it in some new scripts</p>
+<ul>
+<li><strong>Create a new file called <code>sys_version.py</code></strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ nano sys_version.py
+</div></code></pre>
+<ul>
+<li><strong>Enter the code below</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> sys
+print(<span class="hljs-string">'version is'</span>, sys.version)
+</div></code></pre>
+<ul>
+<li><strong>Run the script</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python sys_version.py 
+version is 3.6.3 |Anaconda custom (64-bit)| (default, Oct  6 2017, 12:04:38) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> <code>sys.argv</code></p>
+<ul>
+<li>
+<p><code>sys.argv</code> is a variable that contains the command-line arguments used to call our script</p>
+<ul>
+<li>The variable is a <strong>list of arguments</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Open a new file called <code>sys_argv.py</code> in the editor</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ nano sys_argv.py
+</div></code></pre>
+<ul>
+<li><strong>Enter the code below</strong></li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> sys
+print(<span class="hljs-string">'sys.argv is'</span>, sys.argv)
+</div></code></pre>
+<ul>
+<li><strong>Run the script with some options</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python sys_argv.py 
+sys.argv is [<span class="hljs-string">'sys_argv.py'</span>]
+$ python sys_argv.py item1 item2 somefile.txt
+sys.argv is [<span class="hljs-string">'sys_argv.py'</span>, <span class="hljs-string">'item1'</span>, <span class="hljs-string">'item2'</span>, <span class="hljs-string">'somefile.txt'</span>]
+</div></code></pre>
+<ul>
+<li>The <strong>name of the script is always the first element: <code>sys.argv[0]</code></strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Building a new script</p>
+<ul>
+<li>We're going to build a script that <strong>reports readings from data files</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py mydata.csv
+</div></code></pre>
+<ul>
+<li>We will make it <strong>take options</strong> <code>--min</code>, <code>--max</code>, <code>--mean</code>
+<ul>
+<li>The script will report <em>one</em> of these</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --min mydata.csv
+</div></code></pre>
+<ul>
+<li>We will make it <strong>handle multiple files</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --min mydata.csv myotherdata.csv
+</div></code></pre>
+<ul>
+<li>We will make it take <code>STDIN</code> so we can <strong>use it with <em>pipes</em></strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --min &lt; mydata.csv
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Starting the framework</p>
+<ul>
+<li>
+<p>We start with a script that doesn't do all that</p>
+<ul>
+<li>We'll <strong>build features in one-by-one</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Create a new file called <code>readings.py</code> in the editor</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ nano readings.py
+</div></code></pre>
+<ul>
+<li><strong>Add the code below and explain</strong>
+<ul>
+<li><strong>imports at the top</strong></li>
+<li><strong>define a <code>main()</code> function</strong> to hold code that does the work of the script</li>
+<li>We <strong>catch the script name</strong></li>
+<li>We <strong>catch the first argument</strong> (filename)</li>
+<li>We <strong>load the data</strong></li>
+<li>For each patient, we print the mean inflammation</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> numpy
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    script = sys.argv[<span class="hljs-number">0</span>]
+    filename = sys.argv[<span class="hljs-number">1</span>]
+    data = numpy.loadtxt(filename, delimiter=<span class="hljs-string">','</span>)
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> numpy.mean(data, axis=<span class="hljs-number">1</span>):
+        print(m)
+</div></code></pre>
+<ul>
+<li><strong>Run the script</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py
+</div></code></pre>
+<ul>
+<li><strong>NOTHING HAPPENS - WHY?</strong>
+<ul>
+<li>We've defined a function, but it hasn't been called</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Calling a script</p>
+<ul>
+<li>
+<p><strong>There's a way to tell if a <code>Python</code> file is being run as a script</strong></p>
+</li>
+<li>
+<p>If we use this, we can use the same file as:</p>
+<ul>
+<li>a module (<code>import readings</code>)</li>
+<li>a script (<code>$ python readings.py</code>)</li>
+</ul>
+</li>
+<li>
+<p>The <code>Python</code> code has <code>__name__ == '__main__'</code> only when run as a script</p>
+</li>
+<li>
+<p><strong>We want to run <code>main()</code> only if the file is run as a script</strong></p>
+<ul>
+<li><strong>Add this code to the bottom of <code>readings.py</code></strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+   main()
+</div></code></pre>
+<ul>
+<li><strong>Run the script</strong>
+<ul>
+<li><code>small-01.csv</code> is a reduced dataset, created for testing</li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py data/small-01.csv 
+0.333333333333
+1.0
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Handling multiple files</p>
+<ul>
+<li>We want to be able to analyse multiple files with one command
+<ul>
+<li><strong>NOTE:</strong> wildcards are expanded by the operating system</li>
+<li><strong>DEMO the code</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div>$ ls data/small-*
+data/small-01.csv  data/small-02.csv  data/small-03.csv
+$ python sys_argv.py data/small-*
+sys.argv is [<span class="hljs-string">'sys_argv.py'</span>, <span class="hljs-string">'data/small-01.csv'</span>, <span class="hljs-string">'data/small-02.csv'</span>, <span class="hljs-string">'data/small-03.csv'</span>]
+</div></code></pre>
+<ul>
+<li><strong>All arguments from index <code>1</code> onwards are filenames</strong>
+<ul>
+<li>So loop over everything in <code>sys.argv[1:]</code></li>
+<li><strong>Change the <code>main()</code> function</strong></li>
+</ul>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    script = sys.argv[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> sys.argv[<span class="hljs-number">1</span>:]:
+        print(filename)
+        data = numpy.loadtxt(filename, delimiter=<span class="hljs-string">','</span>)
+        <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> numpy.mean(data, axis=<span class="hljs-number">1</span>):
+            print(m)
+</div></code></pre>
+<ul>
+<li><strong>Demo the code</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py data/small-*
+data/small-01.csv
+0.333333333333
+1.0
+data/small-02.csv
+13.6666666667
+11.0
+data/small-03.csv
+0.666666666667
+0.666666666667
+$ python readings.py data/small-01.csv
+data/small-01.csv
+0.333333333333
+1.0
+</div></code></pre>
+<hr>
+<p><strong>SLIDES</strong> Handling flags</p>
+<ul>
+<li><strong>We want to use <code>--min</code>, <code>--max</code>, <code>--mean</code> to tell the script what to calculate</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --max myfile.csv
+</div></code></pre>
+<ul>
+<li>
+<p>The flag will be <code>sys.argv[1]</code>, so filenames are <code>sys.argv[2:]</code></p>
+<ul>
+<li>We'll need to modify the code to handle this</li>
+</ul>
+</li>
+<li>
+<p>We should check that flags are valid</p>
+<ul>
+<li>Check this with an <code>if</code> statement</li>
+<li><strong>Use <code>sys.exit()</code> to quit the script if the action is wrong</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>MODIFY THE SCRIPT AS BELOW</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    script = sys.argv[<span class="hljs-number">0</span>]
+    action = sys.argv[<span class="hljs-number">1</span>]
+    filenames = sys.argv[<span class="hljs-number">2</span>:]
+    <span class="hljs-keyword">if</span> action <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> [<span class="hljs-string">'--min'</span>, <span class="hljs-string">'--mean'</span>, <span class="hljs-string">'--max'</span>]:
+        print(<span class="hljs-string">'Action is not one of --min, --mean, or --max: '</span> + action)
+        sys.exit(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> filenames:
+        process(f, action)
+</div></code></pre>
+<ul>
+<li><strong>TRY THE SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --min data/small-01.csv 
+Traceback (most recent call last):
+  File <span class="hljs-string">"readings.py"</span>, line 15, <span class="hljs-keyword">in</span> &lt;module&gt;
+    main()
+  File <span class="hljs-string">"readings.py"</span>, line 12, <span class="hljs-keyword">in</span> main
+    process(f, action)
+NameError: name <span class="hljs-string">'process'</span> is not defined
+</div></code></pre>
+<ul>
+<li>We'll add a <code>process()</code> function shortly</li>
+<li><strong>TEST A BAD ACTION</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --std data/small<span class="hljs-number">-01.</span>csv 
+Action <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> one of --min, --mean, <span class="hljs-keyword">or</span> --max: --std
+</div></code></pre>
+<ul>
+<li><strong>We have a useful error message</strong></li>
+</ul>
+<hr>
+<p><strong>SLIDE</strong> Add <code>process()</code></p>
+<ul>
+<li>
+<p>We split the script into two functions for <strong>readability</strong></p>
+<ul>
+<li>The <code>main()</code> function clearly handles the command-line</li>
+<li>The <code>process()</code> function handles the data</li>
+</ul>
+</li>
+<li>
+<p>**Add the code to <code>readings.py</code></p>
+</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(filename, action)</span>:</span>
+    data = numpy.loadtxt(filename, delimiter=<span class="hljs-string">','</span>)
+
+    <span class="hljs-keyword">if</span> action == <span class="hljs-string">'--min'</span>:
+        values = numpy.min(data, axis=<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">elif</span> action == <span class="hljs-string">'--mean'</span>:
+        values = numpy.mean(data, axis=<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">elif</span> action == <span class="hljs-string">'--max'</span>:
+        values = numpy.max(data, axis=<span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> values:
+        print(m)
+</div></code></pre>
+<ul>
+<li><strong>TRY THE SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --min data/small-01.csv 
+0.0
+0.0
+$ python readings.py --mean data/small-01.csv 
+0.333333333333
+1.0
+$ python readings.py --mean data/small-0*
+0.333333333333
+1.0
+13.6666666667
+11.0
+0.666666666667
+0.666666666667
+</div></code></pre>
+<hr>
+<p><strong>SLIDE</strong> Using <code>STDIN</code></p>
+<ul>
+<li>
+<p>The final change will let us <strong>use <code>STDIN</code> if no file is specified</strong></p>
+<ul>
+<li><code>sys.stdin</code> catches <code>STDIN</code> from the operating system</li>
+</ul>
+</li>
+<li>
+<p><strong>MODIFY THE SCRIPT AS BELOW</strong></p>
+</li>
+</ul>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">if</span> len(filenames) == <span class="hljs-number">0</span>:
+        process(sys.stdin, action)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> filenames:
+            process(f, action)
+</div></code></pre>
+<ul>
+<li><strong>TEST THE SCRIPT</strong></li>
+</ul>
+<pre class="hljs"><code><div>$ python readings.py --mean data/small-*
+0.333333333333
+1.0
+13.6666666667
+11.0
+0.666666666667
+0.666666666667
+$ python readings.py --mean &lt; data/small-01.csv 
+0.333333333333
+1.0
+</div></code></pre>
+<ul>
+<li><strong>AND WE'RE DONE!!!</strong></li>
+</ul>
+<hr>
+<h2>SECTION 14: Testing and documentation</h2>
 <hr>
 <p><strong>SLIDE</strong> Motivation</p>
 <ul>
@@ -3222,7 +3603,7 @@ When writing a function, we should
 <span class="hljs-code">`Python`</span> provides useful error reports of what has gone wrong, which can help with debugging.
 </div></code></pre>
 <hr>
-<h2>SECTION 14: Errors</h2>
+<h2>SECTION 15: Errors</h2>
 <hr>
 <p><strong>SLIDE</strong> Create a new notebook</p>
 <ul>
@@ -3472,7 +3853,7 @@ print(message)
 </div></code></pre>
 <p><img src="images/red_green_sticky.png" alt="progress check"></p>
 <hr>
-<h2>SECTION 15: Defensive programming</h2>
+<h2>SECTION 16: Defensive programming</h2>
 <hr>
 <p><strong>SLIDE</strong> (Un)readable code</p>
 <ul>
